@@ -293,29 +293,28 @@
         }
         
         /* ============================================================
-                   COUNTY GRID - SQUEEZED
+                   COUNTY GRID - SQUEEZED (same as location tags)
                    ============================================================ */
         .county-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
             padding: 2px 0;
         }
         .county-grid .county-item {
-            background: #f8f9fa;
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 600;
+            background: #f5f5f5;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 10px;
             color: #555;
             transition: all 0.3s ease;
             cursor: pointer;
             border: 1px solid #eee;
-            min-height: 30px;
+            white-space: nowrap;
+            min-height: 28px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 4px;
+            gap: 3px;
         }
         .county-grid .county-item:active {
             background: #E0006C;
@@ -323,36 +322,35 @@
             border-color: #E0006C;
         }
         .county-grid .county-item i {
+            font-size: 8px;
             color: #E0006C;
-            font-size: 10px;
         }
         .county-grid .county-item:active i {
             color: #fff;
         }
         
         /* ============================================================
-                   TOWN GRID - SQUEEZED
+                   TOWN GRID - SQUEEZED (same as location tags)
                    ============================================================ */
         .town-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
             padding: 2px 0;
         }
         .town-grid .town-item {
-            background: #f8f9fa;
-            padding: 5px 12px;
-            border-radius: 8px;
+            background: #f5f5f5;
+            padding: 3px 10px;
+            border-radius: 15px;
             font-size: 10px;
-            font-weight: 600;
             color: #555;
             transition: all 0.3s ease;
             cursor: pointer;
             border: 1px solid #eee;
+            white-space: nowrap;
             min-height: 28px;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 3px;
         }
         .town-grid .town-item:active {
@@ -361,9 +359,8 @@
             border-color: #E0006C;
         }
         .town-grid .town-item i {
+            font-size: 8px;
             color: #E0006C;
-            font-size: 9px;
-            margin-right: 2px;
         }
         .town-grid .town-item:active i {
             color: #fff;
@@ -899,7 +896,7 @@
     </section>
 
     <!-- ============================================================
-         POPULAR COUNTIES - SQUEEZED
+         POPULAR COUNTIES - SQUEEZED (updated)
          ============================================================ -->
     <section class="section-box">
         <div class="section-header">
@@ -908,17 +905,17 @@
             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="county-grid">
-            <div class="county-item"><i class="fas fa-map-marker-alt"></i> Kiambu</div>
-            <div class="county-item"><i class="fas fa-map-marker-alt"></i> Kisumu</div>
-            <div class="county-item"><i class="fas fa-map-marker-alt"></i> Machakos</div>
-            <div class="county-item"><i class="fas fa-map-marker-alt"></i> Mombasa</div>
-            <div class="county-item"><i class="fas fa-map-marker-alt"></i> Nairobi</div>
-            <div class="county-item"><i class="fas fa-map-marker-alt"></i> Nakuru</div>
+            <span class="county-item"><i class="fas fa-map-marker-alt"></i> Kiambu</span>
+            <span class="county-item"><i class="fas fa-map-marker-alt"></i> Kisumu</span>
+            <span class="county-item"><i class="fas fa-map-marker-alt"></i> Machakos</span>
+            <span class="county-item"><i class="fas fa-map-marker-alt"></i> Mombasa</span>
+            <span class="county-item"><i class="fas fa-map-marker-alt"></i> Nairobi</span>
+            <span class="county-item"><i class="fas fa-map-marker-alt"></i> Nakuru</span>
         </div>
     </section>
 
     <!-- ============================================================
-         ESCORTS FROM OTHER TOWNS - SQUEEZED
+         ESCORTS FROM OTHER TOWNS - SQUEEZED (updated)
          ============================================================ -->
     <section class="section-box">
         <div class="section-header">
@@ -927,46 +924,46 @@
             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="town-grid">
-            <div class="town-item"><i class="fas fa-map-pin"></i> Eldoret</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kiambu</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Mombasa</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Nanyuki</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kisumu</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Naivasha</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Embu</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kisii</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Narok</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Meru</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Nyeri</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Machakos</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Nakuru</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kakamega</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Bungoma</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Nyahururu</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Murang'a</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kericho</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Voi</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Isiolo</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kilifi</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kerugoya</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kitui</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Mwea</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kitale</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Limuru</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Bomet</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kajiado</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Changamwe</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Likoni</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Kenol</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Luanda</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Karatina</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Migori</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Chuka</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Diani</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Homa Bay</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Githunguri</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Sagana</div>
-            <div class="town-item"><i class="fas fa-map-pin"></i> Bondo</div>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Eldoret</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kiambu</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Mombasa</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Nanyuki</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kisumu</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Naivasha</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Embu</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kisii</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Narok</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Meru</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Nyeri</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Machakos</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Nakuru</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kakamega</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Bungoma</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Nyahururu</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Murang'a</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kericho</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Voi</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Isiolo</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kilifi</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kerugoya</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kitui</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Mwea</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kitale</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Limuru</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Bomet</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kajiado</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Changamwe</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Likoni</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Kenol</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Luanda</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Karatina</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Migori</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Chuka</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Diani</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Homa Bay</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Githunguri</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Sagana</span>
+            <span class="town-item"><i class="fas fa-map-pin"></i> Bondo</span>
         </div>
     </section>
 
