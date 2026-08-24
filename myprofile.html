@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>My Profile - Nairobi Vibe Escorts</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Supabase Config -->
+    <script src="supabase-config.js"></script>
+    
+    <style>
+        /* ============================================================
+                   MY PROFILE - COMPLETE FIXED VERSION
+                   ============================================================ */
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+            background: #f3f3f3;
+            font-size: 13px;
+            line-height: 1.5em;
+            color: #333;
+            overflow-x: hidden;
+            padding-bottom: 70px;
+        }
+        
+        /* ---------- HEADER ---------- */
+        .site-header {
+            background: linear-gradient(135deg, #E0006C, #b30057);
+            padding: 10px 18px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        .site-header .logo h1 { font-size: 17px; font-weight: 800; }
+        .site-header .logo span { font-size: 10px; opacity: 0.8; }
+        .site-header .user-info { display: flex; align-items: center; gap: 10px; }
+        .site-header .user-info img { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+        .site-header .user-info .username { font-weight: 600; font-size: 12px; }
+        .site-header .user-info .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            padding: 5px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            min-height: 34px;
+            transition: all 0.3s ease;
+        }
+        .site-header .user-info .logout-btn:hover { background: rgba(255,255,255,0.3); }
+        
+        /* ---------- LOGIN PROMPT ---------- */
+        .login-prompt {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            margin: 20px auto;
+            max-width: 400px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            display: none;
+        }
+        .login-prompt .lock-icon { font-size: 48px; color: #E0006C; margin-bottom: 10px; display: block; }
+        .login-prompt h3 { font-size: 20px; font-weight: 800; color: #333; margin-bottom: 6px; }
+        .login-prompt p { color: #666; font-size: 13px; margin-bottom: 15px; line-height: 1.5; }
+        .login-prompt .btn-login-prompt {
+            background: linear-gradient(135deg, #E0006C, #b30057);
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+            min-height: 44px;
+            line-height: 24px;
+        }
+        .login-prompt .register-link-prompt {
+            display: block;
+            margin-top: 12px;
+            color: #E0006C;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        /* ---------- CONTAINER ---------- */
+        .site-content { max-width: 1200px; margin: 0 auto; padding: 15px; }
+        
+        /* ---------- PROFILE HEADER ---------- */
+        .profile-header {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+        }
+        .profile-header h2 { font-size: 19px; font-weight: 800; color: #E0006C; }
+        .profile-header .breadcrumb { font-size: 12px; color: #999; margin-top: 3px; }
+        .profile-header .breadcrumb span { color: #E0006C; }
+        
+        /* ---------- STATUS BANNER ---------- */
+        .status-banner {
+            border-left: 4px solid #ffc107;
+            padding: 10px 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .status-banner.inactive { background: #f8d7da; border-left-color: #dc3545; }
+        .status-banner.active { background: #d4edda; border-left-color: #28a745; }
+        .status-banner.pending { background: #fff3cd; border-left-color: #ffc107; }
+        .status-banner .status-text { font-size: 12px; font-weight: 600; }
+        .status-banner .status-text i { margin-right: 6px; }
+        .status-banner .btn-activate {
+            background: #E0006C;
+            color: #fff;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            min-height: 34px;
+            transition: all 0.3s ease;
+        }
+        .status-banner .btn-activate:hover { background: #b30057; }
+        .status-banner .btn-activate:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* ---------- WALLET SECTION ---------- */
+        .wallet-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+        }
+        .wallet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .wallet-header .wallet-balance { font-size: 14px; font-weight: 700; color: #E0006C; }
+        .wallet-header .wallet-balance span { font-size: 20px; }
+        .wallet-header .btn-add-fund {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            min-height: 34px;
+            transition: all 0.3s ease;
+        }
+        .wallet-header .btn-add-fund:hover { background: #1e7e34; }
+        
+        .wallet-stats {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .wallet-stats .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 6px 4px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-width: 70px;
+        }
+        .wallet-stats .stat-item label { display: block; font-size: 9px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+        .wallet-stats .stat-item span { font-size: 16px; font-weight: 700; color: #333; }
+        
+        .wallet-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .wallet-footer .chat-status { font-size: 12px; color: #666; }
+        .wallet-footer .chat-status i { margin-right: 4px; }
+        .wallet-footer .btn-chat-activate {
+            background: #17a2b8;
+            color: #fff;
+            border: none;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            min-height: 32px;
+        }
+        .wallet-footer .inbox-link { color: #E0006C; font-weight: 600; text-decoration: none; font-size: 12px; }
+        
+        /* ---------- PHOTO SECTION ---------- */
+        .photo-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+        }
+        .photo-section .photo-upload {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .photo-section .photo-upload .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .photo-section .photo-upload .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .photo-section .photo-upload .btn-upload {
+            background: #E0006C;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            min-height: 34px;
+            transition: all 0.3s ease;
+        }
+        .photo-section .photo-upload .btn-upload:hover { background: #b30057; }
+        .photo-section .photo-upload .file-name { font-size: 11px; color: #999; }
+        
+        .photo-section .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .photo-section .photo-grid .photo-item {
+            aspect-ratio: 1;
+            background: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-size: 10px;
+            border: 2px dashed #ddd;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            min-height: 80px;
+        }
+        .photo-section .photo-grid .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-section .photo-grid .photo-item .delete-photo {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            font-size: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .photo-section .photo-grid .photo-item:hover .delete-photo { display: flex; }
+        .photo-section .photo-grid .photo-item .add-icon { display: flex; flex-direction: column; align-items: center; color: #ccc; }
+        .photo-section .photo-grid .photo-item .add-icon i { font-size: 24px; }
+        .photo-section .photo-grid .photo-item .add-icon span { font-size: 9px; margin-top: 4px; }
+        
+        .photo-section .video-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+        .photo-section .video-section .verify-notice {
+            background: #fff3cd;
+            padding: 10px 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .photo-section .video-section .verify-notice span { font-size: 11px; color: #856404; }
+        .photo-section .video-section .verify-notice .btn-verify {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            min-height: 32px;
+        }
+        
+        /* ---------- NAV TABS ---------- */
+        .nav-tabs {
+            background: #fff;
+            border-radius: 10px;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .nav-tabs .tab-link {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            text-decoration: none;
+            white-space: nowrap;
+            min-height: 32px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .nav-tabs .tab-link:hover { background: #f5f5f5; color: #E0006C; }
+        .nav-tabs .tab-link.active { background: #E0006C; color: #fff; }
+        
+        /* ---------- PROFILE FORM ---------- */
+        .profile-form {
+            background: #fff;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .profile-form .form-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #E0006C;
+            padding: 14px 18px;
+            border-bottom: 2px solid #f0f0f0;
+            background: #fafafa;
+        }
+        
+        /* ----- PROFILE FIELDS TABLE ----- */
+        .profile-fields {
+            width: 100%;
+            border: none;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        
+        .profile-fields tr {
+            border-bottom: 1px dotted #d6d6d6;
+        }
+        .profile-fields tr:last-child { border-bottom: none; }
+        
+        .profile-fields th {
+            width: 35%;
+            text-align: right;
+            padding: 10px 15px 10px 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #555;
+            background: #fafafa;
+            border: none;
+            vertical-align: middle;
+        }
+        
+        .profile-fields td {
+            width: 65%;
+            padding: 8px 15px 8px 10px;
+            text-align: left;
+            border: none;
+            vertical-align: middle;
+        }
+        
+        .profile-fields th .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+        
+        .profile-fields td input,
+        .profile-fields td select,
+        .profile-fields td textarea {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 13px;
+            font-family: 'Open Sans', Arial, sans-serif;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+        .profile-fields td input:focus,
+        .profile-fields td select:focus,
+        .profile-fields td textarea:focus {
+            outline: none;
+            border-color: #E0006C;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(224,0,108,0.1);
+        }
+        .profile-fields td textarea { resize: vertical; min-height: 50px; }
+        
+        /* ----- PROFILE TYPE - COMPACT ----- */
+        .type-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .type-selector .type-opt {
+            padding: 5px 14px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 34px;
+        }
+        .type-selector .type-opt:hover { border-color: #E0006C; }
+        .type-selector .type-opt.active {
+            border-color: #E0006C;
+            background: #fce4ec;
+        }
+        .type-selector .type-opt .badge {
+            font-size: 8px;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-reg { background: #6c757d; color: #fff; }
+        .badge-vip { background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff; }
+        
+        /* ----- MEMBERSHIP PLANS - COMPACT GRID ----- */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .plans-grid .plan-opt {
+            padding: 6px 4px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            text-align: center;
+            min-height: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .plans-grid .plan-opt:hover { border-color: #E0006C; }
+        .plans-grid .plan-opt.active {
+            border-color: #E0006C;
+            background: #fce4ec;
+        }
+        .plans-grid .plan-opt .pname { font-size: 11px; font-weight: 700; color: #333; }
+        .plans-grid .plan-opt .pprice { font-size: 10px; color: #E0006C; font-weight: 600; }
+        .plans-grid .plan-opt .pbadge {
+            font-size: 7px;
+            padding: 1px 6px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+        .pbadge-reg { background: #6c757d; color: #fff; }
+        .pbadge-prime { background: #007bff; color: #fff; }
+        .pbadge-pvip { background: #8b5cf6; color: #fff; }
+        .pbadge-vip { background: linear-gradient(135deg, #f7053e, #d60435); color: #fff; }
+        
+        /* ----- DURATION - COMPACT ROW ----- */
+        .duration-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            margin-top: 4px;
+        }
+        .duration-row .dur-btn {
+            padding: 5px 4px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            background: #fafafa;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .duration-row .dur-btn:hover { border-color: #E0006C; }
+        .duration-row .dur-btn.active {
+            border-color: #E0006C;
+            background: #fce4ec;
+        }
+        .duration-row .dur-btn .dday { font-size: 10px; font-weight: 700; color: #333; }
+        .duration-row .dur-btn .dprice { font-size: 9px; font-weight: 600; color: #E0006C; }
+        
+        /* ----- SERVICES - COMPACT ----- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 4px;
+        }
+        .services-grid .svc-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 0;
+        }
+        .services-grid .svc-item input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            accent-color: #E0006C;
+            cursor: pointer;
+        }
+        .services-grid .svc-item label { font-size: 12px; color: #555; cursor: pointer; }
+        
+        /* ----- OTHER FIELDS ----- */
+        .listing-opt {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+        }
+        .listing-opt input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            accent-color: #E0006C;
+            cursor: pointer;
+        }
+        .listing-opt label { font-size: 12px; color: #555; cursor: pointer; }
+        
+        /* ----- SAVE BUTTON ----- */
+        .form-actions {
+            padding: 12px 18px 18px 18px;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, #E0006C, #b30057);
+            color: #fff;
+            border: none;
+            padding: 10px 35px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 42px;
+            transition: all 0.3s ease;
+        }
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(224,0,108,0.3);
+        }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        
+        /* ---------- ABOUT SECTION ---------- */
+        .about-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e8e8e8;
+        }
+        .about-section .about-title { font-size: 14px; font-weight: 800; color: #E0006C; margin-bottom: 8px; }
+        .about-section .about-content { font-size: 12px; line-height: 1.6; color: #666; }
+        
+        /* ---------- FOOTER ---------- */
+        .site-footer {
+            background: #1a1a2e;
+            color: #ccc;
+            padding: 20px 15px 10px;
+            margin-top: 20px;
+        }
+        .site-footer .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+        .site-footer .footer-content h4 { color: #fff; font-size: 13px; margin-bottom: 6px; }
+        .site-footer .footer-content p { font-size: 11px; line-height: 1.5; color: #aaa; }
+        .site-footer .footer-content a { color: #E0006C; font-size: 11px; }
+        .site-footer .footer-bottom {
+            text-align: center;
+            padding-top: 12px;
+            margin-top: 12px;
+            border-top: 1px solid #333;
+            font-size: 11px;
+            color: #888;
+        }
+        .site-footer .footer-bottom span { color: #E0006C; }
+        
+        /* ---------- TOAST ---------- */
+        .toast {
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transform: translateX(120%);
+            transition: all 0.4s ease;
+            z-index: 9999;
+            max-width: 350px;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: linear-gradient(135deg, #27ae60, #1e8449); }
+        .toast.error { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .toast.info { background: linear-gradient(135deg, #17a2b8, #117a8b); }
+        .toast .toast-close { float: right; margin-left: 10px; cursor: pointer; opacity: 0.8; font-size: 16px; }
+        
+        /* ---------- BOTTOM NAV ---------- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 4px 0 8px 0;
+            z-index: 999;
+            box-shadow: 0 -2px 15px rgba(0,0,0,0.08);
+        }
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            color: #999;
+            font-size: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 4px 8px;
+            min-height: 36px;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .bottom-nav .nav-item.active { color: #E0006C; }
+        .bottom-nav .nav-item i { font-size: 15px; }
+        .bottom-nav .nav-item:active { transform: scale(0.9); }
+        
+        /* ---------- LOADER ---------- */
+        .loader {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .loader.show { display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .profile-fields th,
+            .profile-fields td {
+                display: block;
+                width: 100%;
+                text-align: left;
+                padding: 6px 12px;
+            }
+            .profile-fields th {
+                background: #f5f5f5;
+                border-bottom: none;
+                padding-bottom: 3px;
+            }
+            .profile-fields td {
+                padding-top: 3px;
+            }
+            .profile-fields tr {
+                border-bottom: 1px dotted #d6d6d6;
+            }
+            .plans-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .duration-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .site-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .wallet-stats {
+                flex-direction: column;
+            }
+            .wallet-stats .stat-item {
+                min-width: auto;
+            }
+            .site-footer .footer-content {
+                grid-template-columns: 1fr;
+            }
+            .nav-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            .nav-tabs::-webkit-scrollbar { display: none; }
+            .photo-section .photo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+            .type-selector {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .site-content { padding: 10px; }
+            .profile-header { padding: 12px 14px; }
+            .wallet-section { padding: 12px 14px; }
+            .photo-section { padding: 12px 14px; }
+            .profile-form { padding: 0; }
+            .profile-fields th,
+            .profile-fields td { padding: 5px 10px; }
+            .plans-grid { grid-template-columns: 1fr 1fr; }
+            .duration-row { grid-template-columns: 1fr 1fr; }
+            .profile-form .form-title { padding: 10px 14px; font-size: 14px; }
+            .form-actions { padding: 10px 14px 14px 14px; }
+        }
+        
+        @media (min-width: 769px) {
+            .bottom-nav { display: none; }
+            body { padding-bottom: 0; }
+        }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #E0006C; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         HEADER
+         ============================================================ -->
+    <header class="site-header">
+        <div class="logo">
+            <h1>Nairobi Vibe <span>Escorts</span></h1>
+        </div>
+        <div class="user-info">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23E0006C'/%3E%3Ctext x='20' y='26' font-family='Arial' font-size='18' fill='white' text-anchor='middle' font-weight='bold'%3ENV%3C/text%3E%3C/svg%3E" alt="Profile" id="profileAvatar">
+            <span class="username" id="userDisplayName">User</span>
+            <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+    <div class="site-content">
+
+        <!-- ============================================================
+             LOGIN PROMPT
+             ============================================================ -->
+        <div class="login-prompt" id="loginPrompt">
+            <i class="fas fa-lock lock-icon"></i>
+            <h3>Login Required</h3>
+            <p>Please login to create and manage your profile on Nairobi Vibe.</p>
+            <a href="login.html?redirect=myprofile.html" class="btn-login-prompt">
+                <i class="fas fa-sign-in-alt"></i> Login Now
+            </a>
+            <a href="signup.html" class="register-link-prompt">
+                Don't have an account? <strong>Register here</strong>
+            </a>
+        </div>
+
+        <!-- ============================================================
+             PROFILE CONTENT
+             ============================================================ -->
+        <div id="profileContent" style="display:none;">
+
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <h2>My Profile</h2>
+                <div class="breadcrumb">
+                    Nairobi Vibe Escorts » Hookup with <span id="profileNameDisplay">User</span>
+                </div>
+            </div>
+
+            <!-- Status Banner -->
+            <div class="status-banner inactive" id="statusBanner">
+                <div class="status-text">
+                    <i class="fas fa-circle"></i>
+                    <span id="statusText">Your profile is not active</span>
+                </div>
+                <button class="btn-activate" id="activateBtn">Activate Now</button>
+            </div>
+
+            <!-- Wallet Section -->
+            <div class="wallet-section">
+                <div class="wallet-header">
+                    <div class="wallet-balance">
+                        Available: <span id="walletBalance">KSh0</span>
+                    </div>
+                    <button class="btn-add-fund" id="addFundBtn"><i class="fas fa-plus"></i> Add Fund</button>
+                </div>
+
+                <div class="wallet-stats">
+                    <div class="stat-item">
+                        <label>Total Wallet</label>
+                        <span id="totalWalletBalance">KSh0</span>
+                    </div>
+                    <div class="stat-item">
+                        <label>Bid Wager</label>
+                        <span id="bidWager">KSh0</span>
+                    </div>
+                    <div class="stat-item">
+                        <label>Available</label>
+                        <span id="availableBalance">KSh0</span>
+                    </div>
+                </div>
+
+                <div class="wallet-footer">
+                    <div class="chat-status">
+                        <i class="fas fa-comment"></i> Chat Inactive
+                    </div>
+                    <button class="btn-chat-activate" id="activateChatBtn">Activate Chat</button>
+                    <a href="#" class="inbox-link">Inbox: <span id="chatCount">0</span></a>
+                </div>
+            </div>
+
+            <!-- Photo Section -->
+            <div class="photo-section">
+                <div class="photo-upload">
+                    <div class="file-input-wrapper">
+                        <button class="btn-upload"><i class="fas fa-camera"></i> Add Photos</button>
+                        <input type="file" id="profilePhotoInput" accept="image/*" multiple>
+                    </div>
+                    <span style="font-size:11px; color:#999;" id="photoCount">0 photos</span>
+                </div>
+                <div class="photo-grid" id="photoGrid">
+                    <div class="photo-item" id="addPhotoPlaceholder">
+                        <div class="add-icon">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Photos</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-section">
+                    <div class="verify-notice">
+                        <span><i class="fas fa-video"></i> Only Verified Accounts can Upload Video</span>
+                        <button class="btn-verify" id="verifyBtn">Verify Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <a href="#" class="tab-link active">My Profile</a>
+                <a href="#" class="tab-link">My Wallet</a>
+                <a href="#" class="tab-link">My Membership</a>
+                <a href="#" class="tab-link">My Classified</a>
+                <a href="#" class="tab-link">My Threads</a>
+                <a href="#" class="tab-link">My Settings</a>
+                <a href="#" class="tab-link">Photo Verification</a>
+            </div>
+
+            <!-- ============================================================
+                 PROFILE FORM - TABLE STYLE
+                 ============================================================ -->
+            <form class="profile-form" id="profileForm">
+                <div class="form-title"><i class="fas fa-user-edit"></i> My Profile</div>
+
+                <table class="profile-fields">
+                    <tbody>
+                        <!-- Name -->
+                        <tr>
+                            <th>Full Name <span class="required">*</span></th>
+                            <td><input type="text" id="profileName" placeholder="Enter your full name"></td>
+                        </tr>
+                        
+                        <!-- Phone -->
+                        <tr>
+                            <th>Phone Number <span class="required">*</span></th>
+                            <td><input type="tel" id="profilePhone" placeholder="Enter phone number"></td>
+                        </tr>
+                        
+                        <!-- Gender -->
+                        <tr>
+                            <th>Gender</th>
+                            <td>
+                                <select id="profileGender">
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Transgender">Transgender</option>
+                                    <option value="Non-binary">Non-binary</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        <!-- Sexual Orientation -->
+                        <tr>
+                            <th>Sexual Orientation</th>
+                            <td>
+                                <select id="profileOrientation">
+                                    <option value="Straight">Straight</option>
+                                    <option value="Gay">Gay</option>
+                                    <option value="Lesbian">Lesbian</option>
+                                    <option value="Bisexual">Bisexual</option>
+                                    <option value="Pansexual">Pansexual</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        <!-- Age -->
+                        <tr>
+                            <th>Age</th>
+                            <td>
+                                <select id="profileAge">
+                                    <option value="18">18</option><option value="19">19</option>
+                                    <option value="20">20</option><option value="21">21</option>
+                                    <option value="22">22</option><option value="23">23</option>
+                                    <option value="24">24</option><option value="25">25</option>
+                                    <option value="26">26</option><option value="27">27</option>
+                                    <option value="28">28</option><option value="29">29</option>
+                                    <option value="30">30</option><option value="31">31</option>
+                                    <option value="32">32</option><option value="33">33</option>
+                                    <option value="34">34</option><option value="35">35</option>
+                                    <option value="36+">36+</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        <!-- Nationality -->
+                        <tr>
+                            <th>Nationality</th>
+                            <td>
+                                <select id="profileNationality">
+                                    <option value="Kenyan">Kenyan</option>
+                                    <option value="Tanzanian">Tanzanian</option>
+                                    <option value="Ugandan">Ugandan</option>
+                                    <option value="Rwandan">Rwandan</option>
+                                    <option value="South African">South African</option>
+                                    <option value="Nigerian">Nigerian</option>
+                                    <option value="Ethiopian">Ethiopian</option>
+                                    <option value="European">European</option>
+                                    <option value="American">American</option>
+                                    <option value="Asian">Asian</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        <!-- County -->
+                        <tr>
+                            <th>County</th>
+                            <td>
+                                <select id="profileCounty">
+                                    <option value="">-</option>
+                                    <option value="Nairobi">Nairobi</option>
+                                    <option value="Mombasa">Mombasa</option>
+                                    <option value="Kisumu">Kisumu</option>
+                                    <option value="Nakuru">Nakuru</option>
+                                    <option value="Kiambu">Kiambu</option>
+                                    <option value="Machakos">Machakos</option>
+                                    <option value="Kajiado">Kajiado</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        <!-- City / Town -->
+                        <tr>
+                            <th>City / Town</th>
+                            <td>
+                                <select id="profileCity">
+                                    <option value="">-</option>
+                                    <option value="Nairobi CBD">Nairobi CBD</option>
+                                    <option value="Mombasa CBD">Mombasa CBD</option>
+                                    <option value="Kisumu CBD">Kisumu CBD</option>
+                                    <option value="Nakuru CBD">Nakuru CBD</option>
+                                    <option value="Westlands">Westlands</option>
+                                    <option value="Kilimani">Kilimani</option>
+                                    <option value="Kasarani">Kasarani</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </td>
+                        </tr>
+                        
+                        <!-- Location -->
+                        <tr>
+                            <th>Location</th>
+                            <td><input type="text" id="profileLocation" placeholder="Enter your location"></td>
+                        </tr>
+                        
+                        <!-- Area -->
+                        <tr>
+                            <th>Area</th>
+                            <td><input type="text" id="profileArea" placeholder="Enter your area"></td>
+                        </tr>
+                        
+                        <!-- Nearby Places -->
+                        <tr>
+                            <th>Nearby Places</th>
+                            <td><input type="text" id="profileNearby" placeholder="Enter nearby landmarks"></td>
+                        </tr>
+                        
+                        <!-- ============================================================
+                             FIXED: PROFILE TYPE - COMPACT
+                             ============================================================ -->
+                        <tr>
+                            <th>Profile Type <span class="required">*</span></th>
+                            <td>
+                                <div class="type-selector" id="profileTypeSelector">
+                                    <div class="type-opt active" data-type="regular" onclick="selectProfileType('regular')">
+                                        <i class="fas fa-user" style="color:#6c757d;"></i> Regular
+                                        <span class="badge badge-reg">Std</span>
+                                    </div>
+                                    <div class="type-opt" data-type="vip" onclick="selectProfileType('vip')">
+                                        <i class="fas fa-crown" style="color:#f39c12;"></i> VIP
+                                        <span class="badge badge-vip">Prem</span>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="profileType" value="regular">
+                            </td>
+                        </tr>
+                        
+                        <!-- ============================================================
+                             FIXED: MEMBERSHIP PLAN - COMPACT GRID
+                             ============================================================ -->
+                        <tr>
+                            <th>Membership Plan <span class="required">*</span></th>
+                            <td>
+                                <div class="plans-grid" id="membershipPlans">
+                                    <div class="plan-opt active" data-plan="regular" onclick="selectPlan('regular')">
+                                        <span class="pname">Regular</span>
+                                        <span class="pprice">KSh400</span>
+                                        <span class="pbadge pbadge-reg">Basic</span>
+                                    </div>
+                                    <div class="plan-opt" data-plan="prime" onclick="selectPlan('prime')">
+                                        <span class="pname">Prime</span>
+                                        <span class="pprice">KSh500</span>
+                                        <span class="pbadge pbadge-prime">Popular</span>
+                                    </div>
+                                    <div class="plan-opt" data-plan="prime-vip" onclick="selectPlan('prime-vip')">
+                                        <span class="pname">Prime VIP</span>
+                                        <span class="pprice">KSh600</span>
+                                        <span class="pbadge pbadge-pvip">Best</span>
+                                    </div>
+                                    <div class="plan-opt" data-plan="vip" onclick="selectPlan('vip')">
+                                        <span class="pname">VIP</span>
+                                        <span class="pprice">KSh900</span>
+                                        <span class="pbadge pbadge-vip">Prem</span>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="selectedPlan" value="regular">
+                                
+                                <!-- Duration - COMPACT ROW -->
+                                <div class="duration-row" id="durationOptions">
+                                    <!-- Dynamically generated by JavaScript -->
+                                </div>
+                                <input type="hidden" id="selectedDuration" value="3">
+                                <input type="hidden" id="selectedPrice" value="400">
+                            </td>
+                        </tr>
+                        
+                        <!-- ============================================================
+                             FIXED: SERVICES
+                             ============================================================ -->
+                        <tr>
+                            <th>Services</th>
+                            <td>
+                                <div class="services-grid" id="servicesGrid">
+                                    <div class="svc-item"><input type="checkbox" value="Dinner Date"><label>Dinner Date</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="Travel Companion"><label>Travel Companion</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="Lesbian Show"><label>Lesbian Show</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="Rimming"><label>Rimming</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="Raw BJ"><label>Raw BJ</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="BJ"><label>BJ</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="GFE"><label>GFE</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="COB – Cum On Body"><label>COB</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="CIM – Cum In Mouth"><label>CIM</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="3 Some"><label>3 Some</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="Anal"><label>Anal</label></div>
+                                    <div class="svc-item"><input type="checkbox" value="Massage"><label>Massage</label></div>
+                                </div>
+                                <div style="margin-top:6px;">
+                                    <input type="text" id="profileOtherServices" placeholder="Add other services" style="width:100%; padding:6px 10px; border:1px solid #ddd; border-radius:5px; font-size:12px;">
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- ============================================================
+                             FIXED: RATES
+                             ============================================================ -->
+                        <tr>
+                            <th>Incalls Rate (KSh/hr)</th>
+                            <td><input type="number" id="profileIncallsRate" placeholder="Enter incalls rate" style="width:100%; padding:6px 10px; border:1px solid #ddd; border-radius:5px; font-size:13px;"></td>
+                        </tr>
+                        <tr>
+                            <th>Outcalls Rate (KSh/hr)</th>
+                            <td><input type="number" id="profileOutcallsRate" placeholder="Enter outcalls rate" style="width:100%; padding:6px 10px; border:1px solid #ddd; border-radius:5px; font-size:13px;"></td>
+                        </tr>
+                        
+                        <!-- ============================================================
+                             FIXED: LISTING OPTIONS
+                             ============================================================ -->
+                        <tr>
+                            <th>Listing Options</th>
+                            <td>
+                                <div class="listing-opt">
+                                    <input type="checkbox" id="listOtherCities">
+                                    <label for="listOtherCities">List me in other cities</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-save" id="saveProfileBtn">
+                        <span id="saveBtnText">Save Changes</span>
+                        <span class="loader" id="saveLoader"></span>
+                        <i class="fas fa-save" id="saveIcon"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- About Section -->
+            <div class="about-section">
+                <div class="about-title">More About</div>
+                <div class="about-content" id="aboutContent">
+                    This is <strong id="aboutName">User</strong>, a <span id="aboutAge">18</span> years old <span id="aboutGender">Female</span> escort. 
+                    <span id="aboutName2">User</span> offers the best Escort Services in <span id="aboutLocation">Nairobi</span>. 
+                    To communicate with <span id="aboutName3">User</span> you can Contact through Number to arrange a meetup.
+                </div>
+            </div>
+
+        </div><!-- end profileContent -->
+
+    </div>
+
+    <!-- ============================================================
+         BOTTOM NAVIGATION
+         ============================================================ -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='index.html'">
+            <i class="fas fa-home"></i><span>Home</span>
+        </div>
+        <div class="nav-item active" onclick="window.location.href='myprofile.html'">
+            <i class="fas fa-user"></i><span>Profile</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='#'">
+            <i class="fas fa-heart"></i><span>Favorites</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='login.html'">
+            <i class="fas fa-sign-in-alt"></i><span>Login</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div>
+                <h4>Nairobi Vibe Escorts</h4>
+                <p>Mombasa escorts and call girls from Mombasa Kenya offering hot massage and escorts services.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <a href="#">About Us</a><br>
+                <a href="#">Escort Agencies</a><br>
+                <a href="#">Escorts Blog</a><br>
+                <a href="#">Hookup</a>
+            </div>
+            <div>
+                <h4>More</h4>
+                <a href="#">Kenyan Escorts</a><br>
+                <a href="#">Nairobi Tamu</a><br>
+                <a href="#">Nairobi Raha Videos</a><br>
+                <a href="#">Sexy Nairobi Escorts</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; <span id="currentYear">2024</span> Nairobi Vibe Massage and Escort services. Powered by <span>Nairobi Vibe</span>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+         TOAST NOTIFICATION
+         ============================================================ -->
+    <div class="toast" id="toast">
+        <span class="toast-close" id="toastClose">&times;</span>
+        <span id="toastMessage">Notification</span>
+    </div>
+
+    <!-- ============================================================
+     JAVASCRIPT - MODIFIED WITH WALLET CHECK
+     ============================================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // ============================================================
+            // MEMBERSHIP PLAN DATA
+            // ============================================================
+            const membershipData = {
+                regular: { durations: [{ days: 3, price: 400 }, { days: 7, price: 700 }, { days: 15, price: 1300 }, { days: 30, price: 2000 }] },
+                prime: { durations: [{ days: 3, price: 500 }, { days: 7, price: 950 }, { days: 15, price: 1800 }, { days: 30, price: 3000 }] },
+                'prime-vip': { durations: [{ days: 3, price: 600 }, { days: 7, price: 1250 }, { days: 15, price: 2400 }, { days: 30, price: 4000 }] },
+                vip: { durations: [{ days: 3, price: 900 }, { days: 7, price: 1450 }, { days: 15, price: 2800 }, { days: 30, price: 5000 }] }
+            };
+
+            let currentPlan = 'regular';
+            let currentDuration = 3;
+            let currentPrice = 400;
+            let currentWalletBalance = 0;
+
+            // ============================================================
+            // SELECT PLAN
+            // ============================================================
+            window.selectPlan = function(plan) {
+                currentPlan = plan;
+                document.getElementById('selectedPlan').value = plan;
+                
+                document.querySelectorAll('.plan-opt').forEach(opt => {
+                    opt.classList.remove('active');
+                    if (opt.dataset.plan === plan) opt.classList.add('active');
+                });
+                
+                updateDurations(plan);
+            };
+
+            // ============================================================
+            // UPDATE DURATIONS
+            // ============================================================
+            function updateDurations(plan) {
+                const data = membershipData[plan];
+                if (!data) return;
+                
+                const container = document.getElementById('durationOptions');
+                container.innerHTML = '';
+                
+                data.durations.forEach((d, index) => {
+                    const btn = document.createElement('div');
+                    btn.className = 'dur-btn' + (index === 0 ? ' active' : '');
+                    btn.dataset.days = d.days;
+                    btn.dataset.price = d.price;
+                    btn.innerHTML = `
+                        <div class="dday">${d.days}d</div>
+                        <div class="dprice">KSh${d.price}</div>
+                    `;
+                    btn.onclick = function() { selectDuration(d.days, d.price); };
+                    container.appendChild(btn);
+                });
+                
+                const first = data.durations[0];
+                currentDuration = first.days;
+                currentPrice = first.price;
+                document.getElementById('selectedDuration').value = first.days;
+                document.getElementById('selectedPrice').value = first.price;
+            }
+
+            // ============================================================
+            // SELECT DURATION
+            // ============================================================
+            function selectDuration(days, price) {
+                currentDuration = days;
+                currentPrice = price;
+                document.getElementById('selectedDuration').value = days;
+                document.getElementById('selectedPrice').value = price;
+                
+                document.querySelectorAll('.dur-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (parseInt(btn.dataset.days) === days) btn.classList.add('active');
+                });
+            }
+
+            // ============================================================
+            // PROFILE TYPE SELECTOR
+            // ============================================================
+            window.selectProfileType = function(type) {
+                document.getElementById('profileType').value = type;
+                document.querySelectorAll('.type-opt').forEach(opt => {
+                    opt.classList.remove('active');
+                    if (opt.dataset.type === type) opt.classList.add('active');
+                });
+            };
+
+            // ============================================================
+            // ELEMENTS
+            // ============================================================
+            const profileForm = document.getElementById('profileForm');
+            const saveBtn = document.getElementById('saveProfileBtn');
+            const saveBtnText = document.getElementById('saveBtnText');
+            const saveLoader = document.getElementById('saveLoader');
+            const saveIcon = document.getElementById('saveIcon');
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastClose = document.getElementById('toastClose');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const loginPrompt = document.getElementById('loginPrompt');
+            const profileContent = document.getElementById('profileContent');
+            const activateBtn = document.getElementById('activateBtn');
+            const statusBanner = document.getElementById('statusBanner');
+            const statusText = document.getElementById('statusText');
+            const photoGrid = document.getElementById('photoGrid');
+            const photoInput = document.getElementById('profilePhotoInput');
+            const photoCount = document.getElementById('photoCount');
+            const addFundBtn = document.getElementById('addFundBtn');
+            let uploadedPhotos = [];
+            
+            // ============================================================
+            // CHECK SUPABASE
+            // ============================================================
+            if (typeof window.supabaseFunctions === 'undefined') {
+                showToast('System error. Please refresh the page.', 'error');
+            }
+            
+            // ============================================================
+            // CHECK SESSION
+            // ============================================================
+            let currentUser = null;
+            let profileStatus = 'inactive';
+            
+            function checkSession() {
+                const session = localStorage.getItem('nairobi_vibe_session');
+                if (session) {
+                    currentUser = JSON.parse(session);
+                    loginPrompt.style.display = 'none';
+                    profileContent.style.display = 'block';
+                    loadUserProfile();
+                } else {
+                    currentUser = null;
+                    loginPrompt.style.display = 'block';
+                    profileContent.style.display = 'none';
+                }
+            }
+            
+            // ============================================================
+            // LOAD USER PROFILE
+            // ============================================================
+            async function loadUserProfile() {
+                if (!currentUser) return;
+                
+                document.getElementById('userDisplayName').textContent = currentUser.name || 'User';
+                document.getElementById('profileNameDisplay').textContent = currentUser.name || 'User';
+                document.getElementById('profileName').value = currentUser.name || '';
+                document.getElementById('profilePhone').value = currentUser.phone || '';
+                
+                try {
+                    const { data, error } = await window.supabaseFunctions.supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('user_id', currentUser.id)
+                        .single();
+                    
+                    if (data) {
+                        fillProfileForm(data);
+                        if (data.status === 'approved') {
+                            profileStatus = 'active';
+                            updateStatusBanner('active');
+                        } else if (data.status === 'pending' || data.status === 'pending_review') {
+                            profileStatus = 'pending';
+                            updateStatusBanner('pending');
+                        } else {
+                            profileStatus = 'inactive';
+                            updateStatusBanner('inactive');
+                        }
+                        
+                        // Store wallet balance
+                        currentWalletBalance = data.wallet_balance || 0;
+                        
+                        if (data.profile_type) selectProfileType(data.profile_type);
+                        if (data.membership_plan) {
+                            selectPlan(data.membership_plan);
+                            if (data.membership_days) selectDuration(data.membership_days, data.membership_price || 0);
+                        }
+                        if (data.photos && Array.isArray(data.photos)) {
+                            uploadedPhotos = data.photos;
+                            renderPhotos();
+                        }
+                    } else {
+                        profileStatus = 'inactive';
+                        updateStatusBanner('inactive');
+                    }
+                } catch (error) {
+                    console.log('No existing profile found');
+                    profileStatus = 'inactive';
+                    updateStatusBanner('inactive');
+                }
+            }
+            
+            function fillProfileForm(data) {
+                document.getElementById('profileName').value = data.full_name || '';
+                document.getElementById('profilePhone').value = data.phone_number || '';
+                document.getElementById('profileGender').value = data.gender || 'Female';
+                document.getElementById('profileOrientation').value = data.sexual_orientation || 'Straight';
+                document.getElementById('profileAge').value = data.age || '18';
+                document.getElementById('profileNationality').value = data.nationality || 'Kenyan';
+                document.getElementById('profileCounty').value = data.county || '';
+                document.getElementById('profileCity').value = data.city_town || '';
+                document.getElementById('profileLocation').value = data.location || '';
+                document.getElementById('profileArea').value = data.area || '';
+                document.getElementById('profileNearby').value = data.nearby_places || '';
+                document.getElementById('profileIncallsRate').value = data.incalls_rate || '';
+                document.getElementById('profileOutcallsRate').value = data.outcalls_rate || '';
+                document.getElementById('profileOtherServices').value = data.other_services || '';
+                document.getElementById('listOtherCities').checked = data.list_in_other_cities || false;
+                
+                currentWalletBalance = data.wallet_balance || 0;
+                document.getElementById('walletBalance').textContent = 'KSh' + currentWalletBalance;
+                document.getElementById('totalWalletBalance').textContent = 'KSh' + currentWalletBalance;
+                document.getElementById('availableBalance').textContent = 'KSh' + currentWalletBalance;
+                
+                if (data.profile_type) selectProfileType(data.profile_type);
+                if (data.membership_plan) {
+                    selectPlan(data.membership_plan);
+                    if (data.membership_days) selectDuration(data.membership_days, data.membership_price || 0);
+                }
+                if (data.services) {
+                    const services = Array.isArray(data.services) ? data.services : JSON.parse(data.services || '[]');
+                    document.querySelectorAll('#servicesGrid input[type="checkbox"]').forEach(cb => {
+                        cb.checked = services.includes(cb.value);
+                    });
+                }
+                
+                document.getElementById('bidWager').textContent = 'KSh' + (data.bid_wager || 0);
+                document.getElementById('chatCount').textContent = data.chat_count || 0;
+                updateAboutSection(data);
+            }
+            
+            // ============================================================
+            // PHOTO FUNCTIONS
+            // ============================================================
+            function renderPhotos() {
+                photoGrid.innerHTML = '';
+                uploadedPhotos.forEach((photo, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'photo-item';
+                    div.innerHTML = `
+                        <img src="${photo}" alt="Photo ${index + 1}">
+                        <button class="delete-photo" onclick="removePhoto(${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    photoGrid.appendChild(div);
+                });
+                
+                if (uploadedPhotos.length < 10) {
+                    const addDiv = document.createElement('div');
+                    addDiv.className = 'photo-item';
+                    addDiv.id = 'addPhotoPlaceholder';
+                    addDiv.innerHTML = `
+                        <div class="add-icon">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Photos</span>
+                        </div>
+                    `;
+                    addDiv.onclick = function() { photoInput.click(); };
+                    photoGrid.appendChild(addDiv);
+                }
+                photoCount.textContent = uploadedPhotos.length + ' photos';
+            }
+            
+            window.removePhoto = function(index) {
+                uploadedPhotos.splice(index, 1);
+                renderPhotos();
+                showToast('Photo removed', 'info');
+            };
+            
+            photoInput.addEventListener('change', function(e) {
+                const files = this.files;
+                if (files.length === 0) return;
+                
+                const remainingSlots = 10 - uploadedPhotos.length;
+                if (remainingSlots <= 0) {
+                    showToast('Maximum 10 photos allowed', 'error');
+                    this.value = '';
+                    return;
+                }
+                
+                const filesToUpload = Math.min(files.length, remainingSlots);
+                for (let i = 0; i < filesToUpload; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        uploadedPhotos.push(event.target.result);
+                        if (uploadedPhotos.length >= 10 || i === filesToUpload - 1) {
+                            renderPhotos();
+                            showToast(`${uploadedPhotos.length} photos uploaded`, 'success');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+                this.value = '';
+            });
+            
+            document.getElementById('addPhotoPlaceholder')?.addEventListener('click', function() {
+                photoInput.click();
+            });
+            
+            // ============================================================
+            // UPDATE STATUS BANNER
+            // ============================================================
+            function updateStatusBanner(status) {
+                if (status === 'active') {
+                    statusBanner.className = 'status-banner active';
+                    statusText.innerHTML = '<i class="fas fa-check-circle"></i> Your profile is active and visible online.';
+                    activateBtn.textContent = 'Deactivate';
+                    activateBtn.disabled = false;
+                } else if (status === 'pending') {
+                    statusBanner.className = 'status-banner pending';
+                    statusText.innerHTML = '<i class="fas fa-clock"></i> Profile pending admin approval.';
+                    activateBtn.textContent = 'Pending Approval';
+                    activateBtn.disabled = true;
+                } else {
+                    statusBanner.className = 'status-banner inactive';
+                    statusText.innerHTML = '<i class="fas fa-circle"></i> Your profile is not active.';
+                    activateBtn.textContent = 'Activate Now';
+                    activateBtn.disabled = false;
+                }
+            }
+            
+            // ============================================================
+            // UPDATE ABOUT SECTION
+            // ============================================================
+            function updateAboutSection(data) {
+                const name = data.full_name || currentUser.name || 'User';
+                const age = data.age || '18';
+                const gender = data.gender || 'Female';
+                const location = data.location || 'Nairobi';
+                
+                document.getElementById('aboutName').textContent = name;
+                document.getElementById('aboutName2').textContent = name;
+                document.getElementById('aboutName3').textContent = name;
+                document.getElementById('aboutAge').textContent = age;
+                document.getElementById('aboutGender').textContent = gender;
+                document.getElementById('aboutLocation').textContent = location;
+            }
+            
+            // ============================================================
+            // ACTIVATE BUTTON
+            // ============================================================
+            activateBtn.addEventListener('click', function() {
+                if (this.disabled) return;
+                if (profileStatus === 'active') {
+                    deactivateProfile();
+                } else {
+                    window.location.href = 'activate.html';
+                }
+            });
+            
+            async function deactivateProfile() {
+                if (!currentUser) return;
+                try {
+                    const { error } = await window.supabaseFunctions.supabase
+                        .from('profiles')
+                        .update({ status: 'inactive', is_active: false, updated_at: new Date().toISOString() })
+                        .eq('user_id', currentUser.id);
+                    if (error) throw error;
+                    profileStatus = 'inactive';
+                    updateStatusBanner('inactive');
+                    showToast('Profile deactivated', 'success');
+                } catch (error) {
+                    showToast('Error: ' + error.message, 'error');
+                }
+            }
+
+            // ============================================================
+            // ADD FUND BUTTON - Redirect to payment page
+            // ============================================================
+            addFundBtn.addEventListener('click', function() {
+                // Redirect to payment page with user_id
+                window.location.href = 'checkout-mpesa.html?user_id=' + (currentUser ? currentUser.id : '') + '&from=myprofile';
+            });
+            
+            // ============================================================
+            // SAVE PROFILE - WITH WALLET CHECK
+            // ============================================================
+            profileForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!currentUser) {
+                    showToast('Please login first', 'error');
+                    return;
+                }
+                
+                // ============================================================
+                // CHECK WALLET BALANCE
+                // ============================================================
+                if (currentWalletBalance < currentPrice) {
+                    const shortfall = currentPrice - currentWalletBalance;
+                    showToast(`❌ Insufficient wallet balance! You need KSh${shortfall} more. Please add funds.`, 'error');
+                    
+                    // Highlight the add fund button
+                    addFundBtn.style.animation = 'pulse 0.5s ease 3';
+                    addFundBtn.style.border = '2px solid #E0006C';
+                    
+                    setTimeout(() => {
+                        addFundBtn.style.animation = '';
+                        addFundBtn.style.border = '';
+                    }, 2000);
+                    
+                    return;
+                }
+                
+                // ============================================================
+                // PROCEED WITH SAVING - DEDUCT FROM WALLET
+                // ============================================================
+                saveBtn.disabled = true;
+                saveBtnText.textContent = 'Saving...';
+                saveLoader.classList.add('show');
+                saveIcon.style.display = 'none';
+                
+                const services = [];
+                document.querySelectorAll('#servicesGrid input[type="checkbox"]:checked').forEach(cb => {
+                    services.push(cb.value);
+                });
+                
+                // Calculate new wallet balance
+                const newBalance = currentWalletBalance - currentPrice;
+                
+                const profileData = {
+                    user_id: currentUser.id,
+                    full_name: document.getElementById('profileName').value,
+                    phone_number: document.getElementById('profilePhone').value,
+                    gender: document.getElementById('profileGender').value,
+                    sexual_orientation: document.getElementById('profileOrientation').value,
+                    age: parseInt(document.getElementById('profileAge').value),
+                    nationality: document.getElementById('profileNationality').value,
+                    county: document.getElementById('profileCounty').value,
+                    city_town: document.getElementById('profileCity').value,
+                    location: document.getElementById('profileLocation').value,
+                    area: document.getElementById('profileArea').value,
+                    nearby_places: document.getElementById('profileNearby').value,
+                    services: services,
+                    other_services: document.getElementById('profileOtherServices').value,
+                    incalls_rate: parseInt(document.getElementById('profileIncallsRate').value) || 0,
+                    outcalls_rate: parseInt(document.getElementById('profileOutcallsRate').value) || 0,
+                    list_in_other_cities: document.getElementById('listOtherCities').checked,
+                    profile_type: document.getElementById('profileType').value,
+                    membership_plan: document.getElementById('selectedPlan').value,
+                    membership_days: parseInt(document.getElementById('selectedDuration').value),
+                    membership_price: parseInt(document.getElementById('selectedPrice').value),
+                    photos: uploadedPhotos,
+                    wallet_balance: newBalance, // Deduct amount from wallet
+                    status: 'pending',
+                    is_active: false,
+                    updated_at: new Date().toISOString()
+                };
+                
+                try {
+                    const { data: existing } = await window.supabaseFunctions.supabase
+                        .from('profiles')
+                        .select('id')
+                        .eq('user_id', currentUser.id)
+                        .single();
+                    
+                    let result;
+                    if (existing) {
+                        result = await window.supabaseFunctions.supabase
+                            .from('profiles')
+                            .update(profileData)
+                            .eq('user_id', currentUser.id);
+                    } else {
+                        profileData.created_at = new Date().toISOString();
+                        result = await window.supabaseFunctions.supabase
+                            .from('profiles')
+                            .insert([profileData]);
+                    }
+                    
+                    if (result.error) throw result.error;
+                    
+                    // Update local wallet balance
+                    currentWalletBalance = newBalance;
+                    document.getElementById('walletBalance').textContent = 'KSh' + newBalance;
+                    document.getElementById('totalWalletBalance').textContent = 'KSh' + newBalance;
+                    document.getElementById('availableBalance').textContent = 'KSh' + newBalance;
+                    
+                    profileStatus = 'pending';
+                    updateStatusBanner('pending');
+                    showToast(`✅ Profile saved! KSh${currentPrice} deducted from wallet. Pending admin approval.`, 'success');
+                    updateAboutSection(profileData);
+                    
+                    await window.supabaseFunctions.logActivity(
+                        currentUser.id,
+                        'profile_submitted',
+                        `User ${profileData.full_name} submitted ${profileData.profile_type.toUpperCase()} profile with ${profileData.membership_plan.toUpperCase()} plan (${profileData.membership_days} days - KSh${profileData.membership_price}) - Wallet: KSh${newBalance}`
+                    );
+                    
+                } catch (error) {
+                    showToast('Error: ' + error.message, 'error');
+                }
+                
+                saveBtn.disabled = false;
+                saveBtnText.textContent = 'Save Changes';
+                saveLoader.classList.remove('show');
+                saveIcon.style.display = 'inline-block';
+            });
+            
+            // ============================================================
+            // OTHER BUTTONS
+            // ============================================================
+            document.getElementById('activateChatBtn').addEventListener('click', function() {
+                showToast('💬 Chat feature coming soon!', 'info');
+            });
+            document.getElementById('verifyBtn').addEventListener('click', function() {
+                showToast('✅ Verification feature coming soon!', 'info');
+            });
+            
+            // ============================================================
+            // LOGOUT
+            // ============================================================
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('nairobi_vibe_session');
+                localStorage.removeItem('nairobi_vibe_admin_session');
+                showToast('Logged out', 'success');
+                setTimeout(function() { location.reload(); }, 800);
+            });
+            
+            // ============================================================
+            // TOAST
+            // ============================================================
+            function showToast(message, type = 'info') {
+                toastMessage.textContent = message;
+                toast.className = 'toast ' + type;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+            }
+            toastClose.addEventListener('click', () => toast.classList.remove('show'));
+            
+            // ============================================================
+            // SET CURRENT YEAR
+            // ============================================================
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // ============================================================
+            // INIT
+            // ============================================================
+            checkSession();
+            updateDurations('regular');
+            
+            console.log('✅ My Profile - With Wallet Check Loaded!');
+            console.log('📸 Multiple photo upload (10 max)');
+            console.log('👤 Profile Type: Regular or VIP');
+            console.log('📋 Membership Plans: Regular, Prime, Prime VIP, VIP');
+            console.log('💰 Wallet balance checked before saving');
+            console.log('💳 Add Fund button redirects to payment page');
+            
+        });
+    </script>
+
+</body>
+</html>
