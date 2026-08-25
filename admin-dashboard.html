@@ -18,19 +18,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- ============================================================
-         SUPABASE CONFIG - CLEAN VERSION
+         SUPABASE CONFIG
          ============================================================ -->
     <script>
-        // ============================================================
-        // YOUR SUPABASE KEYS
-        // ============================================================
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
-        // Initialize Supabase client - ONLY ONCE
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // Make it available globally
         window.supabaseFunctions = {
             supabase: supabaseClient,
             logActivity: async (userId, action, details) => {
@@ -68,14 +63,9 @@
         };
         
         console.log('✅ Supabase initialized with NEW keys!');
-        console.log('🔗 URL:', SUPABASE_URL);
     </script>
 
     <style>
-        /* ============================================================
-             ADMIN DASHBOARD - FULLY WORKING
-             ============================================================ */
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -85,7 +75,6 @@
             padding-bottom: 60px;
         }
         
-        /* ---------- HEADER ---------- */
         .admin-header {
             background: linear-gradient(135deg, #1a0528, #2f074e);
             padding: 8px 16px;
@@ -142,10 +131,6 @@
             font-size: 18px;
             cursor: pointer;
             transition: all 0.3s ease;
-        }
-        
-        .admin-header .header-right .notification:hover {
-            color: #FE5ACB;
         }
         
         .admin-header .header-right .notification .badge {
@@ -218,7 +203,6 @@
             background: rgba(255,255,255,0.25);
         }
         
-        /* ---------- SIDEBAR TOGGLE ---------- */
         .sidebar-toggle {
             display: block !important;
             color: #fff;
@@ -240,13 +224,11 @@
             transform: scale(0.95);
         }
         
-        /* ---------- CONTAINER ---------- */
         .admin-container {
             display: flex;
             min-height: calc(100vh - 56px);
         }
         
-        /* ---------- SIDEBAR ---------- */
         .admin-sidebar {
             width: 260px;
             background: #fff;
@@ -307,11 +289,6 @@
             animation: pulse 1s ease-in-out infinite;
         }
         
-        .admin-sidebar .sidebar-menu li a .badge.green {
-            background: #27ae60;
-            animation: none;
-        }
-        
         .admin-sidebar .sidebar-menu .menu-divider {
             height: 1px;
             background: #e8e8e8;
@@ -327,7 +304,6 @@
             letter-spacing: 0.5px;
         }
         
-        /* ---------- CONTENT ---------- */
         .admin-content {
             flex: 1;
             padding: 16px;
@@ -335,7 +311,6 @@
             max-width: 100%;
         }
         
-        /* ---------- PAGE TITLE ---------- */
         .page-title {
             display: flex;
             justify-content: space-between;
@@ -360,7 +335,6 @@
             font-size: 12px;
         }
         
-        /* ---------- STATS CARDS ---------- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -415,7 +389,6 @@
             letter-spacing: 0.3px;
         }
         
-        /* ---------- SECTION CARD ---------- */
         .section-card {
             background: #fff;
             border-radius: 12px;
@@ -457,7 +430,6 @@
             background: #27ae60;
         }
         
-        /* ---------- FILTERS ---------- */
         .filters {
             display: flex;
             gap: 8px;
@@ -487,7 +459,6 @@
         .filters input { min-width: 140px; }
         .filters select { min-width: 120px; }
         
-        /* ---------- TABLE ---------- */
         .table-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -521,10 +492,6 @@
             border-bottom: 1px solid #f0f0f0;
             color: #333;
             vertical-align: middle;
-        }
-        
-        .member-table tbody tr:active {
-            background: #fafafa;
         }
         
         .member-table .user-cell {
@@ -620,7 +587,6 @@
         .action-buttons .btn-edit { background: #f39c12; color: #fff; }
         .action-buttons .btn-delete { background: #e74c3c; color: #fff; }
         
-        /* ---------- PAGINATION ---------- */
         .pagination {
             display: flex;
             justify-content: space-between;
@@ -727,9 +693,6 @@
             padding: 0 4px;
         }
         
-        .modal-header .close:hover { color: #333; }
-        .modal-header .close:active { transform: scale(0.8); }
-        
         .modal-body { margin-bottom: 12px; }
         
         .modal-body .detail-row {
@@ -756,7 +719,6 @@
             flex: 1;
         }
         
-        /* ----- PHOTO GALLERY IN MODAL ----- */
         .photo-gallery {
             margin: 10px 0;
             padding: 10px;
@@ -790,10 +752,6 @@
             transition: all 0.3s ease;
             border: 2px solid #e8e8e8;
             background: #f0f0f0;
-        }
-        
-        .photo-gallery .gallery-grid .gallery-img:active {
-            transform: scale(0.95);
         }
         
         .photo-gallery .gallery-grid .gallery-img img {
@@ -842,7 +800,6 @@
         .modal-footer .btn-danger { background: #e74c3c; color: #fff; }
         .modal-footer .btn-warning { background: #f39c12; color: #fff; }
         
-        /* ---------- IMAGE VIEWER ---------- */
         .image-viewer {
             display: none;
             position: fixed;
@@ -877,9 +834,6 @@
             transition: all 0.3s ease;
         }
         
-        .image-viewer .close-viewer:active { color: #E0006C; }
-        
-        /* ---------- EMPTY STATE ---------- */
         .empty-state {
             text-align: center;
             padding: 30px 20px;
@@ -900,7 +854,6 @@
         
         .empty-state p { font-size: 11px; }
         
-        /* ---------- TOAST ---------- */
         .toast {
             position: fixed;
             top: 15px;
@@ -931,7 +884,6 @@
             font-size: 14px;
         }
         
-        /* ---------- BOTTOM NAV ---------- */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -982,7 +934,6 @@
             animation: pulse 1s ease-in-out infinite;
         }
         
-        /* ---------- LOADER ---------- */
         .loader {
             display: none;
             width: 18px;
@@ -996,6 +947,29 @@
         .loader.show { display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
+        /* ---------- REFRESH INDICATOR ---------- */
+        .refresh-indicator {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 9px;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .refresh-indicator i { animation: spin 3s linear infinite; }
+        .refresh-indicator:hover { opacity: 1; }
+        
         /* ---------- RESPONSIVE ---------- */
         @media (min-width: 600px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -1007,6 +981,7 @@
             .admin-content { padding: 24px; }
             .admin-sidebar { display: block !important; }
             .modal { max-width: 500px; padding: 24px; }
+            .refresh-indicator { bottom: 30px; right: 30px; }
         }
         
         @media (max-width: 992px) {
@@ -1076,7 +1051,6 @@
             .member-table { font-size: 9px; min-width: 400px; }
         }
         
-        /* ---------- SCROLLBAR ---------- */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #E0006C; border-radius: 10px; }
@@ -1088,6 +1062,14 @@
      SIDEBAR OVERLAY (for mobile)
      ============================================================ -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ============================================================
+     REFRESH INDICATOR
+     ============================================================ -->
+<div class="refresh-indicator" id="refreshIndicator">
+    <i class="fas fa-sync-alt"></i>
+    <span id="refreshCountdown">30s</span>
+</div>
 
 <!-- ============================================================
      ADMIN SESSION CHECK
@@ -1177,7 +1159,6 @@
                 <span class="date" id="currentDate"></span>
             </div>
             
-            <!-- Stats Cards -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="icon pink"><i class="fas fa-users"></i></div>
@@ -1216,7 +1197,6 @@
                 </div>
             </div>
             
-            <!-- Members List -->
             <div class="section-card">
                 <div class="section-header">
                     <h3><i class="fas fa-id-card"></i> Profile Approvals</h3>
@@ -1262,7 +1242,6 @@
                 </div>
             </div>
             
-            <!-- Charts -->
             <div class="section-card">
                 <div class="section-header">
                     <h3><i class="fas fa-chart-line" style="color:#E0006C;"></i> Registration Trends</h3>
@@ -1274,7 +1253,7 @@
         </div>
         
         <!-- ============================================================
-             PAGE: WALLET APPROVALS
+             PAGE: WALLET APPROVALS (SHOWS ALL PAYMENTS)
              ============================================================ -->
         <div id="page-wallet" style="display:none;">
             <div class="page-title">
@@ -1351,7 +1330,7 @@
         </div>
         
         <!-- ============================================================
-             PAGE: MEMBERS (Full Members List with Edit/Delete)
+             PAGE: MEMBERS (ONLY REGULAR MEMBERS - NO WALLET ONLY)
              ============================================================ -->
         <div id="page-members" style="display:none;">
             <div class="page-title">
@@ -1558,13 +1537,13 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - FULLY WORKING ADMIN DASHBOARD WITH EDIT/DELETE
+     JAVASCRIPT - FULLY WORKING WITH AUTO-REFRESH
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
         // ============================================================
-        // SIDEBAR TOGGLE - FIXED FOR MOBILE
+        // SIDEBAR TOGGLE
         // ============================================================
         const sidebarToggle = document.getElementById('sidebarToggle');
         const adminSidebar = document.getElementById('adminSidebar');
@@ -1688,6 +1667,8 @@
         const modalApproveBtn = document.getElementById('modalApproveBtn');
         const modalRejectBtn = document.getElementById('modalRejectBtn');
         const notificationBtn = document.getElementById('notificationBtn');
+        const refreshIndicator = document.getElementById('refreshIndicator');
+        const refreshCountdown = document.getElementById('refreshCountdown');
         
         // Edit Modal Elements
         const editModal = document.getElementById('editModal');
@@ -1715,6 +1696,9 @@
         let chart1 = null;
         let currentPageName = 'dashboard';
         let supabaseChannel = null;
+        let refreshTimer = 30;
+        let autoRefreshInterval = null;
+        let countdownInterval = null;
         
         // ============================================================
         // DATE
@@ -1757,6 +1741,38 @@
             else if (page === 'wallet') renderWalletHistory();
             else if (page === 'members') renderAllMembers();
         };
+        
+        // ============================================================
+        // AUTO-REFRESH FUNCTIONS
+        // ============================================================
+        function startAutoRefresh() {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+            if (countdownInterval) clearInterval(countdownInterval);
+            
+            refreshTimer = 30;
+            updateCountdownDisplay();
+            
+            countdownInterval = setInterval(() => {
+                refreshTimer--;
+                updateCountdownDisplay();
+                if (refreshTimer <= 0) {
+                    refreshTimer = 30;
+                }
+            }, 1000);
+            
+            autoRefreshInterval = setInterval(() => {
+                console.log('🔄 Auto-refreshing admin data...');
+                loadUsers();
+                refreshTimer = 30;
+                updateCountdownDisplay();
+            }, 30000);
+        }
+        
+        function updateCountdownDisplay() {
+            if (refreshCountdown) {
+                refreshCountdown.textContent = refreshTimer + 's';
+            }
+        }
         
         // ============================================================
         // SETUP REALTIME
@@ -1849,112 +1865,6 @@
         }
         
         // ============================================================
-        // LOAD USERS
-        // ============================================================
-        async function loadUsers() {
-            try {
-                console.log('🔍 DEBUG: Loading users...');
-                const { data, error } = await window.supabaseFunctions.supabase
-                    .from('profiles')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                allUsers = data || [];
-                
-                // Log all users with wallet data
-                console.log('🔍 DEBUG: Users with wallet data:');
-                let found = 0;
-                allUsers.forEach(u => {
-                    if (u.wallet_amount > 0 || u.wallet_transaction) {
-                        found++;
-                        console.log(`✅ ${u.full_name || 'Unknown'}: amount=${u.wallet_amount}, status=${u.wallet_approval_status}, trans=${u.wallet_transaction}`);
-                    }
-                });
-                console.log(`📊 Found ${found} users with wallet data out of ${allUsers.length} total users`);
-                
-                updateStats();
-                renderMembers();
-                renderWalletHistory();
-                renderAllMembers();
-                updateBadges();
-                initCharts();
-                
-                console.log(`✅ Loaded ${allUsers.length} users`);
-                
-            } catch (error) {
-                console.error('Error loading users:', error);
-                showToast('Error loading users.', 'error');
-                allUsers = [];
-                updateStats();
-                renderMembers();
-                renderWalletHistory();
-                renderAllMembers();
-            }
-        }
-        
-        // ============================================================
-        // UPDATE STATS
-        // ============================================================
-        function updateStats() {
-            const total = allUsers.length;
-            const pending = allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length;
-            const approved = allUsers.filter(u => u.status === 'approved').length;
-            const rejected = allUsers.filter(u => u.status === 'rejected').length;
-            
-            const today = new Date();
-            const newTodayCount = allUsers.filter(u => {
-                const created = new Date(u.created_at);
-                return created.toDateString() === today.toDateString();
-            }).length;
-            
-            totalUsers.textContent = total;
-            pendingReview.textContent = pending;
-            approvedUsers.textContent = approved;
-            rejectedUsers.textContent = rejected;
-            newToday.textContent = newTodayCount;
-            
-            // Wallet stats - check ALL users
-            const walletPending = allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0);
-            const walletApproved = allUsers.filter(u => u.wallet_approval_status === 'approved');
-            const walletRejected = allUsers.filter(u => u.wallet_approval_status === 'rejected');
-            const totalAmount = allUsers.reduce((sum, u) => sum + (u.wallet_amount || 0), 0);
-            
-            console.log(`💰 Wallet Stats: Pending=${walletPending.length}, Approved=${walletApproved.length}, Rejected=${walletRejected.length}, Total=${totalAmount}`);
-            
-            document.getElementById('walletPendingCount').textContent = walletPending.length;
-            document.getElementById('walletApprovedCount').textContent = walletApproved.length;
-            document.getElementById('walletRejectedCount').textContent = walletRejected.length;
-            document.getElementById('walletTotalAmount').textContent = 'KSh' + totalAmount;
-            document.getElementById('walletHistoryCount').textContent = walletPending.length + walletApproved.length + walletRejected.length + ' Total';
-            
-            document.getElementById('membersTotalCount').textContent = total + ' Total';
-        }
-        
-        // ============================================================
-        // UPDATE BADGES
-        // ============================================================
-        function updateBadges() {
-            const pending = allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length;
-            const walletPending = allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length;
-            
-            pendingBadge.textContent = pending || '';
-            walletBadge.textContent = walletPending || '';
-            profileBadgeCount.textContent = pending + ' Pending';
-            notificationCount.textContent = pending + walletPending;
-            bottomPendingBadge.textContent = pending || '';
-            bottomWalletBadge.textContent = walletPending || '';
-            
-            document.querySelectorAll('.badge').forEach(el => {
-                if (el.textContent === '' || el.textContent === '0') {
-                    el.style.display = 'none';
-                } else {
-                    el.style.display = 'inline-block';
-                }
-            });
-        }
-        
-        // ============================================================
         // BADGE HELPERS
         // ============================================================
         function getMembershipBadge(plan) {
@@ -1994,7 +1904,100 @@
         }
         
         // ============================================================
-        // RENDER FUNCTIONS
+        // LOAD USERS
+        // ============================================================
+        async function loadUsers() {
+            try {
+                console.log('🔍 Loading users...');
+                const { data, error } = await window.supabaseFunctions.supabase
+                    .from('profiles')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                allUsers = data || [];
+                
+                updateStats();
+                renderMembers();
+                renderWalletHistory();
+                renderAllMembers();
+                updateBadges();
+                initCharts();
+                
+                console.log(`✅ Loaded ${allUsers.length} users`);
+                console.log(`💰 Wallet Pending: ${allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length}`);
+                
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showToast('Error loading users.', 'error');
+                allUsers = [];
+                updateStats();
+                renderMembers();
+                renderWalletHistory();
+                renderAllMembers();
+            }
+        }
+        
+        // ============================================================
+        // UPDATE STATS
+        // ============================================================
+        function updateStats() {
+            const total = allUsers.length;
+            const pending = allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length;
+            const approved = allUsers.filter(u => u.status === 'approved').length;
+            const rejected = allUsers.filter(u => u.status === 'rejected').length;
+            
+            const today = new Date();
+            const newTodayCount = allUsers.filter(u => {
+                const created = new Date(u.created_at);
+                return created.toDateString() === today.toDateString();
+            }).length;
+            
+            totalUsers.textContent = total;
+            pendingReview.textContent = pending;
+            approvedUsers.textContent = approved;
+            rejectedUsers.textContent = rejected;
+            newToday.textContent = newTodayCount;
+            
+            const walletPending = allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0);
+            const walletApproved = allUsers.filter(u => u.wallet_approval_status === 'approved');
+            const walletRejected = allUsers.filter(u => u.wallet_approval_status === 'rejected');
+            const totalAmount = allUsers.reduce((sum, u) => sum + (u.wallet_amount || 0), 0);
+            
+            document.getElementById('walletPendingCount').textContent = walletPending.length;
+            document.getElementById('walletApprovedCount').textContent = walletApproved.length;
+            document.getElementById('walletRejectedCount').textContent = walletRejected.length;
+            document.getElementById('walletTotalAmount').textContent = 'KSh' + totalAmount;
+            document.getElementById('walletHistoryCount').textContent = walletPending.length + walletApproved.length + walletRejected.length + ' Total';
+            
+            document.getElementById('membersTotalCount').textContent = total + ' Total';
+        }
+        
+        // ============================================================
+        // UPDATE BADGES
+        // ============================================================
+        function updateBadges() {
+            const pending = allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length;
+            const walletPending = allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length;
+            
+            pendingBadge.textContent = pending || '';
+            walletBadge.textContent = walletPending || '';
+            profileBadgeCount.textContent = pending + ' Pending';
+            notificationCount.textContent = pending + walletPending;
+            bottomPendingBadge.textContent = pending || '';
+            bottomWalletBadge.textContent = walletPending || '';
+            
+            document.querySelectorAll('.badge').forEach(el => {
+                if (el.textContent === '' || el.textContent === '0') {
+                    el.style.display = 'none';
+                } else {
+                    el.style.display = 'inline-block';
+                }
+            });
+        }
+        
+        // ============================================================
+        // RENDER DASHBOARD MEMBERS (Profile Approvals)
         // ============================================================
         function renderMembers() {
             const searchTerm = searchInput.value.toLowerCase();
@@ -2078,15 +2081,15 @@
         };
         
         // ============================================================
-        // RENDER WALLET HISTORY
+        // RENDER WALLET HISTORY (SHOWS ALL PAYMENTS)
         // ============================================================
         function renderWalletHistory() {
             const searchTerm = walletSearchInput.value.toLowerCase();
             const statusFilter = walletFilterStatus.value;
             
             console.log('📊 Rendering wallet history...');
-            console.log('👥 Total users:', allUsers.length);
             
+            // Get ALL users with wallet transactions (including wallet-only)
             let filtered = allUsers.filter(user => {
                 const hasData = (user.wallet_amount && user.wallet_amount > 0) || 
                                 (user.wallet_transaction && user.wallet_transaction.length > 0) || 
@@ -2095,7 +2098,7 @@
                                 user.wallet_approval_status === 'rejected';
                 
                 if (hasData) {
-                    console.log(`✅ FOUND WALLET: ${user.full_name || 'Unknown'} | Amount: ${user.wallet_amount} | Status: ${user.wallet_approval_status} | Trans: ${user.wallet_transaction}`);
+                    console.log(`✅ FOUND: ${user.full_name || 'Unknown (Wallet Only)'} | Amount: ${user.wallet_amount} | Status: ${user.wallet_approval_status}`);
                 }
                 
                 if (!hasData) return false;
@@ -2146,6 +2149,8 @@
                         'none': '<span class="badge-pill status-pending">⏳ Pending</span>'
                     };
                     
+                    const displayName = user.full_name || 'Unknown (Wallet Only)';
+                    
                     const actions = status === 'pending' || status === 'none' ? `
                         <div class="action-buttons">
                             <button class="btn-approve" onclick="approveWallet('${user.id}')"><i class="fas fa-check"></i></button>
@@ -2163,7 +2168,7 @@
                                 <div class="user-cell">
                                     <div class="avatar-sm">${getUserAvatar(user)}</div>
                                     <div>
-                                        <div class="user-name">${user.full_name || 'Unknown'}</div>
+                                        <div class="user-name">${displayName}</div>
                                         <div class="user-email">${user.email || ''}</div>
                                     </div>
                                 </div>
@@ -2192,14 +2197,22 @@
         };
         
         // ============================================================
-        // RENDER ALL MEMBERS (with Edit and Delete)
+        // RENDER ALL MEMBERS (ONLY REGULAR MEMBERS - NO WALLET ONLY)
         // ============================================================
         function renderAllMembers() {
             const searchTerm = membersSearchInput.value.toLowerCase();
             const statusFilter = membersFilterStatus.value;
             const roleFilter = membersFilterRole.value;
             
+            // EXCLUDE wallet-only users from Members page
             let filtered = allUsers.filter(user => {
+                // Check if this is a wallet-only user (has wallet data but no proper profile)
+                const isWalletOnly = (user.wallet_amount > 0 || user.wallet_transaction) && 
+                                     (!user.full_name || user.full_name === '' || user.full_name === 'User');
+                
+                // Exclude wallet-only users from Members page
+                if (isWalletOnly) return false;
+                
                 const matchesSearch = 
                     (user.full_name || '').toLowerCase().includes(searchTerm) ||
                     (user.email || '').toLowerCase().includes(searchTerm) ||
@@ -2393,7 +2406,6 @@
                 updated_at: new Date().toISOString()
             };
             
-            // Validate
             if (!updatedData.full_name) {
                 showToast('Full name is required.', 'error');
                 editFullName.focus();
@@ -2416,7 +2428,6 @@
                 
                 if (error) throw error;
                 
-                // Log activity
                 await window.supabaseFunctions.logActivity(
                     currentEditUserId,
                     'profile_updated',
@@ -2502,7 +2513,6 @@
                     .eq('id', userId);
                 if (error) throw error;
                 
-                // Log activity
                 await window.supabaseFunctions.logActivity(
                     userId,
                     'profile_deleted',
@@ -2740,14 +2750,21 @@
             await loadUsers();
             setupRealtime();
             
+            // Start auto-refresh
+            setTimeout(() => {
+                startAutoRefresh();
+            }, 500);
+            
             console.log('✅ Admin Dashboard Loaded Successfully!');
             console.log('👥 Total Users:', allUsers.length);
             console.log('⏳ Pending Review:', allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length);
             console.log('💰 Wallet Pending:', allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length);
             console.log('📡 Realtime: ACTIVE');
-            console.log('🔔 Notifications: ACTIVE');
+            console.log('🔄 Auto-refresh: ACTIVE (30s)');
             console.log('📱 Sidebar toggle: FIXED for mobile');
             console.log('✏️ Edit/Delete: ENABLED for members');
+            console.log('💳 Wallet Approvals: ONLY shows payments');
+            console.log('👥 Members: ONLY shows regular members');
         }
         
         // Call the async function
