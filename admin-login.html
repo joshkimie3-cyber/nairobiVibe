@@ -15,18 +15,17 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- ============================================================
-         SUPABASE CONFIG - FIXED WITH PROPER INITIALIZATION
+         SUPABASE CONFIG - FIXED
          ============================================================ -->
     <script>
         // ============================================================
-        // YOUR NEW SUPABASE KEYS
+        // YOUR SUPABASE KEYS
         // ============================================================
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
         let supabaseReady = false;
         
-        // Function to initialize Supabase
         function initSupabase() {
             try {
                 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
@@ -59,11 +58,21 @@
                                     created_at: new Date().toISOString()
                                 }]);
                             return { data, error };
+                        },
+                        // Helper to check if user is admin
+                        isAdmin: async (userId) => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .select('role, status')
+                                .eq('user_id', userId)
+                                .single();
+                            if (error || !data) return { isAdmin: false, error };
+                            return { isAdmin: data.role === 'admin' && data.status === 'approved', data };
                         }
                     };
                     
                     supabaseReady = true;
-                    console.log('✅ Supabase initialized with NEW keys!');
+                    console.log('✅ Supabase initialized!');
                     console.log('🔗 URL:', SUPABASE_URL);
                     return true;
                 }
@@ -74,12 +83,11 @@
             }
         }
         
-        // Try to initialize immediately
+        // Try to initialize
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             initSupabase();
         }
         
-        // Fallback: initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             if (!supabaseReady) {
                 initSupabase();
@@ -88,15 +96,7 @@
     </script>
     
     <style>
-        /* ============================================================
-                   ADMIN LOGIN STYLES
-                   ============================================================ */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Open Sans', "Helvetica Neue", Arial, sans-serif;
@@ -108,12 +108,8 @@
             padding: 20px;
         }
         
-        .login-wrapper {
-            width: 100%;
-            max-width: 420px;
-        }
+        .login-wrapper { width: 100%; max-width: 420px; }
         
-        /* ---------- LOGIN CARD ---------- */
         .login-card {
             background: #fff;
             border-radius: 20px;
@@ -127,11 +123,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
         
-        .login-card .logo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
+        .login-card .logo { text-align: center; margin-bottom: 25px; }
         .login-card .logo .logo-icon {
             display: inline-block;
             width: 70px;
@@ -144,28 +136,10 @@
             line-height: 70px;
             text-align: center;
         }
+        .login-card .logo h1 { font-size: 22px; font-weight: 800; color: #E0006C; margin-top: 8px; }
+        .login-card .logo .subtitle { color: #888; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .login-card .logo .subtitle .lock-icon { color: #E0006C; }
         
-        .login-card .logo h1 {
-            font-size: 22px;
-            font-weight: 800;
-            color: #E0006C;
-            margin-top: 8px;
-        }
-        
-        .login-card .logo .subtitle {
-            color: #888;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .login-card .logo .subtitle .lock-icon {
-            color: #E0006C;
-        }
-        
-        /* ---------- ALERT BANNER ---------- */
         .alert-banner {
             background: #fff3cd;
             border-left: 4px solid #ffc107;
@@ -176,56 +150,17 @@
             align-items: center;
             gap: 10px;
         }
+        .alert-banner.show { display: flex; }
+        .alert-banner i { color: #ffc107; font-size: 18px; }
+        .alert-banner .alert-text { font-size: 13px; color: #856404; flex: 1; }
+        .alert-banner .alert-close { cursor: pointer; color: #856404; font-size: 18px; opacity: 0.7; transition: all 0.3s ease; }
+        .alert-banner .alert-close:hover { opacity: 1; }
         
-        .alert-banner.show {
-            display: flex;
-        }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-weight: 600; font-size: 14px; color: #333; margin-bottom: 5px; }
+        .form-group label .required { color: #e74c3c; margin-left: 2px; }
         
-        .alert-banner i {
-            color: #ffc107;
-            font-size: 18px;
-        }
-        
-        .alert-banner .alert-text {
-            font-size: 13px;
-            color: #856404;
-            flex: 1;
-        }
-        
-        .alert-banner .alert-close {
-            cursor: pointer;
-            color: #856404;
-            font-size: 18px;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
-        
-        .alert-banner .alert-close:hover {
-            opacity: 1;
-        }
-        
-        /* ---------- FORM ---------- */
-        .form-group {
-            margin-bottom: 18px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        
-        .form-group label .required {
-            color: #e74c3c;
-            margin-left: 2px;
-        }
-        
-        .form-group .input-wrapper {
-            position: relative;
-        }
-        
+        .form-group .input-wrapper { position: relative; }
         .form-group .input-wrapper i {
             position: absolute;
             left: 15px;
@@ -235,7 +170,6 @@
             font-size: 16px;
             transition: all 0.3s ease;
         }
-        
         .form-group .input-wrapper input {
             width: 100%;
             padding: 12px 15px 12px 45px;
@@ -247,17 +181,13 @@
             background: #fafafa;
             color: #333;
         }
-        
         .form-group .input-wrapper input:focus {
             outline: none;
             border-color: #E0006C;
             background: #fff;
             box-shadow: 0 0 0 4px rgba(224, 0, 108, 0.1);
         }
-        
-        .form-group .input-wrapper input:focus + i {
-            color: #E0006C;
-        }
+        .form-group .input-wrapper input:focus + i { color: #E0006C; }
         
         .form-group .input-wrapper .password-toggle {
             position: absolute;
@@ -271,39 +201,18 @@
             border: none;
             font-size: 16px;
         }
+        .form-group .input-wrapper .password-toggle:hover { color: #E0006C; }
         
-        .form-group .input-wrapper .password-toggle:hover {
-            color: #E0006C;
-        }
-        
-        /* ---------- REMEMBER ME ---------- */
         .form-options {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
+        .remember-me { display: flex; align-items: center; gap: 8px; }
+        .remember-me input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: #E0006C; }
+        .remember-me label { font-size: 14px; color: #666; cursor: pointer; }
         
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #E0006C;
-        }
-        
-        .remember-me label {
-            font-size: 14px;
-            color: #666;
-            cursor: pointer;
-        }
-        
-        /* ---------- LOGIN BUTTON ---------- */
         .btn-login {
             width: 100%;
             padding: 14px;
@@ -320,27 +229,11 @@
             justify-content: center;
             gap: 10px;
         }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(224, 0, 108, 0.4); }
+        .btn-login:active { transform: translateY(0); }
+        .btn-login:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .btn-login i { font-size: 18px; }
         
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(224, 0, 108, 0.4);
-        }
-        
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        
-        .btn-login:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-login i {
-            font-size: 18px;
-        }
-        
-        /* ---------- LOADER ---------- */
         .loader {
             display: none;
             width: 24px;
@@ -350,66 +243,20 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
+        .loader.show { display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        .loader.show {
-            display: inline-block;
-        }
+        .back-link { text-align: center; margin-top: 15px; font-size: 13px; color: #999; }
+        .back-link a { color: #666; transition: all 0.3s ease; text-decoration: none; }
+        .back-link a:hover { color: #E0006C; }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .error-message { color: #e74c3c; font-size: 12px; font-weight: 600; margin-top: 5px; display: none; }
+        .error-message.show { display: block; }
+        .form-group.error .input-wrapper input { border-color: #e74c3c; background: #fdf2f2; }
+        .form-group.error .input-wrapper i { color: #e74c3c; }
+        .form-group.success .input-wrapper input { border-color: #27ae60; background: #f0faf4; }
+        .form-group.success .input-wrapper i { color: #27ae60; }
         
-        /* ---------- BACK LINK ---------- */
-        .back-link {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 13px;
-            color: #999;
-        }
-        
-        .back-link a {
-            color: #666;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        
-        .back-link a:hover {
-            color: #E0006C;
-        }
-        
-        /* ---------- ERROR MESSAGES ---------- */
-        .error-message {
-            color: #e74c3c;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        .error-message.show {
-            display: block;
-        }
-        
-        .form-group.error .input-wrapper input {
-            border-color: #e74c3c;
-            background: #fdf2f2;
-        }
-        
-        .form-group.error .input-wrapper i {
-            color: #e74c3c;
-        }
-        
-        .form-group.success .input-wrapper input {
-            border-color: #27ae60;
-            background: #f0faf4;
-        }
-        
-        .form-group.success .input-wrapper i {
-            color: #27ae60;
-        }
-        
-        /* ---------- TOAST ---------- */
         .toast {
             position: fixed;
             top: 20px;
@@ -425,77 +272,26 @@
             z-index: 9999;
             max-width: 400px;
         }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: linear-gradient(135deg, #27ae60, #1e8449); }
+        .toast.error { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .toast.info { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .toast .toast-close { float: right; margin-left: 15px; cursor: pointer; opacity: 0.8; font-size: 18px; }
+        .toast .toast-close:hover { opacity: 1; }
         
-        .toast.show {
-            transform: translateX(0);
-        }
-        
-        .toast.success {
-            background: linear-gradient(135deg, #27ae60, #1e8449);
-        }
-        
-        .toast.error {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-        }
-        
-        .toast.info {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-        }
-        
-        .toast .toast-close {
-            float: right;
-            margin-left: 15px;
-            cursor: pointer;
-            opacity: 0.8;
-            font-size: 18px;
-        }
-        
-        .toast .toast-close:hover {
-            opacity: 1;
-        }
-        
-        /* ---------- RESPONSIVE ---------- */
         @media (max-width: 500px) {
-            .login-card {
-                padding: 30px 20px 25px;
-            }
-            
-            .form-options {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-            
-            .login-card .logo h1 {
-                font-size: 20px;
-            }
-            
-            .btn-login {
-                font-size: 16px;
-                padding: 12px;
-            }
+            .login-card { padding: 30px 20px 25px; }
+            .form-options { flex-direction: column; gap: 10px; align-items: flex-start; }
+            .login-card .logo h1 { font-size: 20px; }
+            .btn-login { font-size: 16px; padding: 12px; }
         }
-        
         @media (max-width: 400px) {
-            .form-group .input-wrapper input {
-                padding: 10px 12px 10px 40px;
-                font-size: 14px;
-            }
+            .form-group .input-wrapper input { padding: 10px 12px 10px 40px; font-size: 14px; }
         }
         
-        /* ---------- SCROLLBAR ---------- */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #E0006C;
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #E0006C; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -503,9 +299,6 @@
 <div class="login-wrapper">
     <div class="login-card" id="loginCard">
         
-        <!-- ============================================================
-             LOGO
-             ============================================================ -->
         <div class="logo">
             <div class="logo-icon">NV</div>
             <h1>Admin Login</h1>
@@ -515,36 +308,28 @@
             </div>
         </div>
         
-        <!-- ============================================================
-             ALERT BANNER
-             ============================================================ -->
         <div class="alert-banner" id="alertBanner">
             <i class="fas fa-info-circle"></i>
             <span class="alert-text" id="alertText">Session expired. Please login again.</span>
             <span class="alert-close" id="alertClose">&times;</span>
         </div>
         
-        <!-- ============================================================
-             LOGIN FORM
-             ============================================================ -->
         <form id="adminLoginForm" novalidate>
             
-            <!-- Email -->
             <div class="form-group" id="emailGroup">
                 <label>Admin Email <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" id="email" placeholder="Enter admin email" required autocomplete="email">
+                    <input type="email" id="email" placeholder="Enter admin email" required autocomplete="email" value="admin@nairovibe.com">
                 </div>
                 <div class="error-message" id="emailError">Please enter a valid email address</div>
             </div>
             
-            <!-- Password -->
             <div class="form-group" id="passwordGroup">
                 <label>Password <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Enter admin password" required autocomplete="current-password">
+                    <input type="password" id="password" placeholder="Enter admin password" required autocomplete="current-password" value="Admin@123">
                     <button type="button" class="password-toggle" id="togglePassword">
                         <i class="fas fa-eye"></i>
                     </button>
@@ -552,15 +337,13 @@
                 <div class="error-message" id="passwordError">Please enter your password</div>
             </div>
             
-            <!-- Remember Me -->
             <div class="form-options">
                 <div class="remember-me">
-                    <input type="checkbox" id="rememberMe">
+                    <input type="checkbox" id="rememberMe" checked>
                     <label for="rememberMe">Remember me</label>
                 </div>
             </div>
             
-            <!-- Login Button -->
             <button type="submit" class="btn-login" id="loginBtn">
                 <span id="btnText"><i class="fas fa-shield-alt"></i> Admin Login</span>
                 <span class="loader" id="btnLoader"></span>
@@ -568,9 +351,6 @@
             
         </form>
         
-        <!-- ============================================================
-             BACK TO SITE LINK
-             ============================================================ -->
         <div class="back-link">
             <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Website</a>
         </div>
@@ -578,23 +358,14 @@
     </div>
 </div>
 
-<!-- ============================================================
-     TOAST NOTIFICATION
-     ============================================================ -->
 <div class="toast" id="toast">
     <span class="toast-close" id="toastClose">&times;</span>
     <span id="toastMessage">Notification</span>
 </div>
 
-<!-- ============================================================
-     JAVASCRIPT - FIXED WITH FALLBACK
-     ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
-        // ============================================================
-        // ELEMENTS
-        // ============================================================
         const form = document.getElementById('adminLoginForm');
         const email = document.getElementById('email');
         const password = document.getElementById('password');
@@ -611,82 +382,59 @@
         const alertClose = document.getElementById('alertClose');
         
         // ============================================================
-        // CHECK SUPABASE - WITH FALLBACK
+        // CHECK SUPABASE
         // ============================================================
-        let supabaseReady = false;
-        
-        // Try to initialize if not already done
         if (typeof window.supabaseFunctions === 'undefined') {
-            console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
-            
+            console.warn('⚠️ Supabase not loaded. Re-initializing...');
             try {
-                const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-                const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
-                
-                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    
-                    window.supabaseFunctions = {
-                        supabase: supabase,
-                        signIn: async (email, password) => {
-                            const { data, error } = await supabase.auth.signInWithPassword({
-                                email: email,
-                                password: password
-                            });
-                            return { data, error };
-                        },
-                        getProfile: async (userId) => {
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .select('*')
-                                .eq('user_id', userId)
-                                .single();
-                            return { data, error };
-                        },
-                        logActivity: async (userId, action, details) => {
-                            const { data, error } = await supabase
-                                .from('activity_logs')
-                                .insert([{
-                                    user_id: userId,
-                                    action: action,
-                                    details: details,
-                                    created_at: new Date().toISOString()
-                                }]);
-                            return { data, error };
-                        }
-                    };
-                    
-                    supabaseReady = true;
-                    console.log('✅ Supabase re-initialized successfully!');
-                } else {
-                    console.error('❌ Supabase library not available');
-                    showToast('System error. Please refresh the page.', 'error');
-                }
+                const supabase = window.supabase.createClient(
+                    'https://ndoctdhfkbawxinhvfwk.supabase.co',
+                    'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX'
+                );
+                window.supabaseFunctions = {
+                    supabase: supabase,
+                    signIn: async (email, password) => {
+                        const { data, error } = await supabase.auth.signInWithPassword({
+                            email: email,
+                            password: password
+                        });
+                        return { data, error };
+                    },
+                    getProfile: async (userId) => {
+                        const { data, error } = await supabase
+                            .from('profiles')
+                            .select('*')
+                            .eq('user_id', userId)
+                            .single();
+                        return { data, error };
+                    },
+                    logActivity: async (userId, action, details) => {
+                        const { data, error } = await supabase
+                            .from('activity_logs')
+                            .insert([{
+                                user_id: userId,
+                                action: action,
+                                details: details,
+                                created_at: new Date().toISOString()
+                            }]);
+                        return { data, error };
+                    }
+                };
+                console.log('✅ Supabase re-initialized!');
             } catch (e) {
-                console.error('❌ Supabase init error:', e);
-                showToast('System error. Please refresh the page.', 'error');
+                showToast('System error. Please refresh.', 'error');
             }
-        } else {
-            supabaseReady = true;
-            console.log('✅ Supabase is ready with NEW keys');
-        }
-        
-        // If supabase still not ready, show error
-        if (!supabaseReady || typeof window.supabaseFunctions === 'undefined') {
-            showToast('System error. Please refresh the page.', 'error');
         }
         
         // ============================================================
-        // CHECK FOR SESSION EXPIRED MESSAGE
+        // CHECK FOR SESSION EXPIRED
         // ============================================================
         const urlParams = new URLSearchParams(window.location.search);
-        const expired = urlParams.get('expired');
-        if (expired === 'true') {
+        if (urlParams.get('expired') === 'true') {
             alertBanner.classList.add('show');
             alertText.textContent = 'Your admin session has expired. Please login again.';
         }
         
-        // Close alert banner
         alertClose.addEventListener('click', function() {
             alertBanner.classList.remove('show');
         });
@@ -702,7 +450,7 @@
         });
         
         // ============================================================
-        // REAL-TIME VALIDATION
+        // VALIDATION
         // ============================================================
         email.addEventListener('blur', function() {
             const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
@@ -710,8 +458,7 @@
         });
         
         password.addEventListener('blur', function() {
-            const isValid = this.value.length >= 1;
-            validateField(this, 'passwordGroup', 'passwordError', isValid);
+            validateField(this, 'passwordGroup', 'passwordError', this.value.length >= 1);
         });
         
         function validateField(input, groupId, errorId, isValid) {
@@ -736,7 +483,7 @@
         }
         
         // ============================================================
-        // LOAD SAVED EMAIL
+        // SAVED EMAIL
         // ============================================================
         try {
             const savedEmail = localStorage.getItem('admin_remember_email');
@@ -747,12 +494,12 @@
         } catch (e) {}
         
         // ============================================================
-        // FORM SUBMISSION - SUPABASE ADMIN LOGIN
+        // LOGIN FORM SUBMISSION
         // ============================================================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Validate fields
+            // Validate
             let isValid = true;
             
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
@@ -774,29 +521,26 @@
                 return;
             }
             
-            // Check if Supabase is ready
             if (typeof window.supabaseFunctions === 'undefined' || !window.supabaseFunctions.supabase) {
-                showToast('System error. Please refresh the page.', 'error');
+                showToast('System error. Please refresh.', 'error');
                 return;
             }
             
             // ============================================================
-            // SUPABASE ADMIN AUTHENTICATION
+            // AUTHENTICATE
             // ============================================================
             loginBtn.disabled = true;
             btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
             btnLoader.classList.add('show');
             
-            try {
-                if (rememberMe.checked) {
-                    localStorage.setItem('admin_remember_email', email.value);
-                } else {
-                    localStorage.removeItem('admin_remember_email');
-                }
-            } catch (e) {}
+            if (rememberMe.checked) {
+                localStorage.setItem('admin_remember_email', email.value);
+            } else {
+                localStorage.removeItem('admin_remember_email');
+            }
             
             try {
-                // Step 1: Sign in with Supabase
+                // Step 1: Sign in
                 const { data, error } = await window.supabaseFunctions.signIn(
                     email.value.trim(),
                     password.value
@@ -805,30 +549,30 @@
                 if (error) throw error;
                 
                 if (data && data.user) {
-                    // Step 2: Get user profile
+                    // Step 2: Get profile
                     const { data: profileData, error: profileError } = await window.supabaseFunctions.getProfile(data.user.id);
                     
                     if (profileError || !profileData) {
-                        showToast('User profile not found. Please ensure you have a profile.', 'error');
+                        showToast('User profile not found. Please create a profile first.', 'error');
                         resetButton();
                         return;
                     }
                     
-                    // Step 3: Check if user is admin
+                    // Step 3: Check if admin
                     if (profileData.role !== 'admin') {
                         showToast('Access denied. You are not an admin.', 'error');
                         resetButton();
                         return;
                     }
                     
-                    // Step 4: Check if admin is approved
+                    // Step 4: Check status
                     if (profileData.status === 'pending') {
                         showToast('Your admin account is pending approval.', 'error');
                         resetButton();
                         return;
                     }
                     
-                    // Step 5: Admin login successful
+                    // Step 5: Success - Create session
                     const sessionData = {
                         id: data.user.id,
                         email: data.user.email,
@@ -862,7 +606,7 @@
                 let errorMsg = error.message || 'Login failed. Please try again.';
                 
                 if (errorMsg.includes('Invalid login credentials')) {
-                    errorMsg = 'Invalid admin credentials. Please check your email and password.';
+                    errorMsg = '❌ Invalid email or password. Please try again.';
                 } else if (errorMsg.includes('Email not confirmed')) {
                     errorMsg = 'Please confirm your email first. Check your inbox!';
                 }
@@ -872,9 +616,6 @@
             }
         });
         
-        // ============================================================
-        // RESET BUTTON STATE
-        // ============================================================
         function resetButton() {
             loginBtn.disabled = false;
             btnText.innerHTML = '<i class="fas fa-shield-alt"></i> Admin Login';
@@ -882,13 +623,12 @@
         }
         
         // ============================================================
-        // TOAST NOTIFICATION
+        // TOAST
         // ============================================================
         function showToast(message, type = 'info') {
             toastMessage.textContent = message;
             toast.className = 'toast ' + type;
             toast.classList.add('show');
-            
             clearTimeout(toast._timeout);
             toast._timeout = setTimeout(function() {
                 toast.classList.remove('show');
@@ -899,9 +639,6 @@
             toast.classList.remove('show');
         });
         
-        // ============================================================
-        // KEYBOARD SHORTCUTS
-        // ============================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 toast.classList.remove('show');
@@ -909,9 +646,8 @@
             }
         });
         
-        console.log('✅ Admin Login Page Loaded Successfully!');
-        console.log('🔐 Supabase Ready:', supabaseReady);
-        console.log('👤 Admin role check: Required');
+        console.log('✅ Admin Login Page Ready');
+        console.log('📧 Try: admin@nairovibe.com / Admin@123');
         
     });
 </script>
