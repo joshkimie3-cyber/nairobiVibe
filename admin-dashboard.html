@@ -2062,6 +2062,10 @@
                                     <button class="btn-approve" onclick="approveUser('${user.id}')"><i class="fas fa-check"></i></button>
                                     <button class="btn-reject" onclick="rejectUser('${user.id}')"><i class="fas fa-times"></i></button>
                                 ` : ''}
+                                <button class="btn-edit" onclick="openEditModal('${user.id}')"><i class="fas fa-edit"></i></button>
+                                ${user.role !== 'admin' ? `
+                                    <button class="btn-delete" onclick="deleteUser('${user.id}')"><i class="fas fa-trash"></i></button>
+                                ` : ''}
                             </div>
                         </td>
                     </tr>
