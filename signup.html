@@ -691,7 +691,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT
+     JAVASCRIPT - SUPABASE INTEGRATION
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -721,14 +721,37 @@
         const passwordHint = document.getElementById('passwordHint');
         
         // ============================================================
-        // CHECK SUPABASE
+        // CHECK SUPABASE - FIXED
         // ============================================================
         if (typeof window.supabaseFunctions === 'undefined') {
-            showToast('System error. Please refresh the page.', 'error');
-            console.error('❌ Supabase not loaded properly');
+            console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
+            // Re-initialize if not loaded
+            const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+            
+            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                window.supabaseFunctions = {
+                    supabase: supabase,
+                    signUp: async (email, password, userData) => {
+                        const { data, error } = await supabase.auth.signUp({
+                            email: email,
+                            password: password,
+                            options: {
+                                data: userData
+                            }
+                        });
+                        return { data, error };
+                    }
+                };
+                console.log('✅ Supabase re-initialized successfully!');
+            } else {
+                showToast('System error. Please refresh the page.', 'error');
+                console.error('❌ Supabase failed to load');
+                return;
+            }
         } else {
-            console.log('✅ Supabase is ready with NEW keys');
-            console.log('🔗 URL:', SUPABASE_URL);
+            console.log('✅ Supabase is ready');
         }
         
         // ============================================================
@@ -833,7 +856,7 @@
         }
         
         // ============================================================
-        // FORM SUBMISSION - SUPABASE INTEGRATION
+        // FORM SUBMISSION - SUPABASE REGISTRATION
         // ============================================================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -910,7 +933,7 @@
                     full_name: fullName.value.trim(),
                     phone: phone.value.trim(),
                     location: location.value || '',
-                    role: 'user' // Default role
+                    role: 'user'
                 };
                 
                 console.log('📝 Registering with Supabase...', {
@@ -978,8 +1001,7 @@
         });
         
         console.log('✅ Registration Page Loaded Successfully!');
-        console.log('🔐 Supabase Integration: Active with NEW keys');
-        console.log('🎨 Design: Clean, Professional, Responsive');
+        console.log('🔐 Supabase Integration: Active');
         console.log('📧 Email confirmation: Required');
         
     });
