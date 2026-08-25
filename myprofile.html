@@ -14,8 +14,44 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Supabase Config -->
-    <script src="supabase-config.js"></script>
+    <!-- SUPABASE CONFIG - EMBEDDED WITH NEW KEYS -->
+    <script>
+        // ============================================================
+        // SUPABASE CONFIG - NEW KEYS
+        // ============================================================
+        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Make it available globally
+        window.supabaseFunctions = {
+            supabase: supabase,
+            signOut: async () => {
+                const { error } = await supabase.auth.signOut();
+                return { error };
+            },
+            getSession: async () => {
+                const { data, error } = await supabase.auth.getSession();
+                return { data, error };
+            },
+            logActivity: async (userId, action, details) => {
+                const { data, error } = await supabase
+                    .from('activity_logs')
+                    .insert([{
+                        user_id: userId,
+                        action: action,
+                        details: details,
+                        created_at: new Date().toISOString()
+                    }]);
+                return { data, error };
+            }
+        };
+        
+        console.log('✅ Supabase initialized with NEW keys!');
+        console.log('🔗 URL:', SUPABASE_URL);
+    </script>
     
     <style>
         /* ============================================================
@@ -184,6 +220,17 @@
         }
         .wallet-header .btn-add-fund:hover { background: #1e7e34; }
         
+        /* Pulse animation for wallet warning */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); background: #dc3545; color: #fff; }
+            100% { transform: scale(1); }
+        }
+        .wallet-warning {
+            animation: pulse 0.5s ease 3;
+            border: 2px solid #dc3545 !important;
+        }
+        
         .wallet-stats {
             display: flex;
             flex-direction: row;
@@ -270,6 +317,11 @@
         }
         .photo-section .photo-upload .btn-upload:hover { background: #b30057; }
         .photo-section .photo-upload .file-name { font-size: 11px; color: #999; }
+        .photo-section .photo-required {
+            font-size: 11px;
+            color: #dc3545;
+            font-weight: 600;
+        }
         
         .photo-section .photo-grid {
             display: grid;
@@ -313,6 +365,12 @@
         .photo-section .photo-grid .photo-item .add-icon { display: flex; flex-direction: column; align-items: center; color: #ccc; }
         .photo-section .photo-grid .photo-item .add-icon i { font-size: 24px; }
         .photo-section .photo-grid .photo-item .add-icon span { font-size: 9px; margin-top: 4px; }
+        
+        /* Highlight photo grid if no photos */
+        .photo-section .photo-grid.no-photos .photo-item {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
         
         .photo-section .video-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
         .photo-section .video-section .verify-notice {
@@ -896,6 +954,7 @@
                         <input type="file" id="profilePhotoInput" accept="image/*" multiple>
                     </div>
                     <span style="font-size:11px; color:#999;" id="photoCount">0 photos</span>
+                    <span class="photo-required" id="photoRequired" style="display:none;">⚠️ At least 1 photo required</span>
                 </div>
                 <div class="photo-grid" id="photoGrid">
                     <div class="photo-item" id="addPhotoPlaceholder">
@@ -1066,7 +1125,7 @@
                         </tr>
                         
                         <!-- ============================================================
-                             FIXED: PROFILE TYPE - COMPACT
+                             PROFILE TYPE - COMPACT
                              ============================================================ -->
                         <tr>
                             <th>Profile Type <span class="required">*</span></th>
@@ -1086,7 +1145,7 @@
                         </tr>
                         
                         <!-- ============================================================
-                             FIXED: MEMBERSHIP PLAN - COMPACT GRID
+                             MEMBERSHIP PLAN - COMPACT GRID
                              ============================================================ -->
                         <tr>
                             <th>Membership Plan <span class="required">*</span></th>
@@ -1125,7 +1184,7 @@
                         </tr>
                         
                         <!-- ============================================================
-                             FIXED: SERVICES
+                             SERVICES
                              ============================================================ -->
                         <tr>
                             <th>Services</th>
@@ -1151,7 +1210,7 @@
                         </tr>
                         
                         <!-- ============================================================
-                             FIXED: RATES
+                             RATES
                              ============================================================ -->
                         <tr>
                             <th>Incalls Rate (KSh/hr)</th>
@@ -1163,7 +1222,7 @@
                         </tr>
                         
                         <!-- ============================================================
-                             FIXED: LISTING OPTIONS
+                             LISTING OPTIONS
                              ============================================================ -->
                         <tr>
                             <th>Listing Options</th>
@@ -1256,7 +1315,7 @@
     </div>
 
     <!-- ============================================================
-     JAVASCRIPT - MODIFIED WITH WALLET CHECK
+     JAVASCRIPT - WITH PHOTO REQUIRED & WALLET CHECK
      ============================================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1275,6 +1334,10 @@
             let currentDuration = 3;
             let currentPrice = 400;
             let currentWalletBalance = 0;
+            let uploadedPhotos = [];
+            let currentUser = null;
+            let profileStatus = 'inactive';
+            let existingProfileId = null;
 
             // ============================================================
             // SELECT PLAN
@@ -1367,8 +1430,8 @@
             const photoGrid = document.getElementById('photoGrid');
             const photoInput = document.getElementById('profilePhotoInput');
             const photoCount = document.getElementById('photoCount');
+            const photoRequired = document.getElementById('photoRequired');
             const addFundBtn = document.getElementById('addFundBtn');
-            let uploadedPhotos = [];
             
             // ============================================================
             // CHECK SUPABASE
@@ -1380,9 +1443,6 @@
             // ============================================================
             // CHECK SESSION
             // ============================================================
-            let currentUser = null;
-            let profileStatus = 'inactive';
-            
             function checkSession() {
                 const session = localStorage.getItem('nairobi_vibe_session');
                 if (session) {
@@ -1416,38 +1476,43 @@
                         .single();
                     
                     if (data) {
+                        existingProfileId = data.id;
                         fillProfileForm(data);
-                        if (data.status === 'approved') {
+                        
+                        // Check profile status
+                        if (data.status === 'approved' && data.is_active === true) {
                             profileStatus = 'active';
                             updateStatusBanner('active');
                         } else if (data.status === 'pending' || data.status === 'pending_review') {
                             profileStatus = 'pending';
                             updateStatusBanner('pending');
+                        } else if (data.status === 'approved' && data.is_active === false) {
+                            profileStatus = 'inactive';
+                            updateStatusBanner('inactive');
                         } else {
                             profileStatus = 'inactive';
                             updateStatusBanner('inactive');
                         }
                         
-                        // Store wallet balance
-                        currentWalletBalance = data.wallet_balance || 0;
-                        
-                        if (data.profile_type) selectProfileType(data.profile_type);
-                        if (data.membership_plan) {
-                            selectPlan(data.membership_plan);
-                            if (data.membership_days) selectDuration(data.membership_days, data.membership_price || 0);
-                        }
-                        if (data.photos && Array.isArray(data.photos)) {
+                        // Load photos
+                        if (data.photos && Array.isArray(data.photos) && data.photos.length > 0) {
                             uploadedPhotos = data.photos;
                             renderPhotos();
+                        } else {
+                            uploadedPhotos = [];
+                            renderPhotos();
                         }
+                        
                     } else {
                         profileStatus = 'inactive';
                         updateStatusBanner('inactive');
+                        renderPhotos();
                     }
                 } catch (error) {
                     console.log('No existing profile found');
                     profileStatus = 'inactive';
                     updateStatusBanner('inactive');
+                    renderPhotos();
                 }
             }
             
@@ -1468,16 +1533,31 @@
                 document.getElementById('profileOtherServices').value = data.other_services || '';
                 document.getElementById('listOtherCities').checked = data.list_in_other_cities || false;
                 
+                // Wallet balance
                 currentWalletBalance = data.wallet_balance || 0;
                 document.getElementById('walletBalance').textContent = 'KSh' + currentWalletBalance;
                 document.getElementById('totalWalletBalance').textContent = 'KSh' + currentWalletBalance;
                 document.getElementById('availableBalance').textContent = 'KSh' + currentWalletBalance;
                 
+                // Profile type
                 if (data.profile_type) selectProfileType(data.profile_type);
+                
+                // Membership plan
                 if (data.membership_plan) {
                     selectPlan(data.membership_plan);
-                    if (data.membership_days) selectDuration(data.membership_days, data.membership_price || 0);
+                    if (data.membership_days) {
+                        // Find the price for this duration
+                        const planData = membershipData[data.membership_plan];
+                        if (planData) {
+                            const found = planData.durations.find(d => d.days === data.membership_days);
+                            if (found) {
+                                selectDuration(data.membership_days, found.price);
+                            }
+                        }
+                    }
                 }
+                
+                // Services
                 if (data.services) {
                     const services = Array.isArray(data.services) ? data.services : JSON.parse(data.services || '[]');
                     document.querySelectorAll('#servicesGrid input[type="checkbox"]').forEach(cb => {
@@ -1495,6 +1575,7 @@
             // ============================================================
             function renderPhotos() {
                 photoGrid.innerHTML = '';
+                
                 uploadedPhotos.forEach((photo, index) => {
                     const div = document.createElement('div');
                     div.className = 'photo-item';
@@ -1520,7 +1601,18 @@
                     addDiv.onclick = function() { photoInput.click(); };
                     photoGrid.appendChild(addDiv);
                 }
+                
+                // Update photo count
                 photoCount.textContent = uploadedPhotos.length + ' photos';
+                
+                // Show/hide photo required warning
+                if (uploadedPhotos.length === 0) {
+                    photoRequired.style.display = 'inline-block';
+                    photoGrid.classList.add('no-photos');
+                } else {
+                    photoRequired.style.display = 'none';
+                    photoGrid.classList.remove('no-photos');
+                }
             }
             
             window.removePhoto = function(index) {
@@ -1541,12 +1633,15 @@
                 }
                 
                 const filesToUpload = Math.min(files.length, remainingSlots);
+                let loaded = 0;
+                
                 for (let i = 0; i < filesToUpload; i++) {
                     const file = files[i];
                     const reader = new FileReader();
                     reader.onload = function(event) {
                         uploadedPhotos.push(event.target.result);
-                        if (uploadedPhotos.length >= 10 || i === filesToUpload - 1) {
+                        loaded++;
+                        if (loaded === filesToUpload || uploadedPhotos.length >= 10) {
                             renderPhotos();
                             showToast(`${uploadedPhotos.length} photos uploaded`, 'success');
                         }
@@ -1554,10 +1649,6 @@
                     reader.readAsDataURL(file);
                 }
                 this.value = '';
-            });
-            
-            document.getElementById('addPhotoPlaceholder')?.addEventListener('click', function() {
-                photoInput.click();
             });
             
             // ============================================================
@@ -1607,7 +1698,7 @@
                 if (profileStatus === 'active') {
                     deactivateProfile();
                 } else {
-                    window.location.href = 'activate.html';
+                    showToast('Your profile will be activated after admin approval.', 'info');
                 }
             });
             
@@ -1628,21 +1719,36 @@
             }
 
             // ============================================================
-            // ADD FUND BUTTON - Redirect to payment page
+            // ADD FUND BUTTON - Redirect to checkout-mpesa
             // ============================================================
             addFundBtn.addEventListener('click', function() {
-                // Redirect to payment page with user_id
-                window.location.href = 'checkout-mpesa.html?user_id=' + (currentUser ? currentUser.id : '') + '&from=myprofile';
+                if (!currentUser) {
+                    showToast('Please login first', 'error');
+                    return;
+                }
+                // Redirect to checkout-mpesa with user_id
+                window.location.href = 'checkout-mpesa.html?user_id=' + currentUser.id;
             });
             
             // ============================================================
-            // SAVE PROFILE - WITH WALLET CHECK
+            // SAVE PROFILE - WITH PHOTO & WALLET CHECK
             // ============================================================
             profileForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 if (!currentUser) {
                     showToast('Please login first', 'error');
+                    return;
+                }
+                
+                // ============================================================
+                // CHECK PHOTOS - REQUIRED
+                // ============================================================
+                if (uploadedPhotos.length === 0) {
+                    showToast('❌ Please upload at least 1 photo before saving your profile!', 'error');
+                    photoRequired.style.display = 'inline-block';
+                    photoGrid.classList.add('no-photos');
+                    photoGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     return;
                 }
                 
@@ -1654,13 +1760,10 @@
                     showToast(`❌ Insufficient wallet balance! You need KSh${shortfall} more. Please add funds.`, 'error');
                     
                     // Highlight the add fund button
-                    addFundBtn.style.animation = 'pulse 0.5s ease 3';
-                    addFundBtn.style.border = '2px solid #E0006C';
-                    
+                    addFundBtn.classList.add('wallet-warning');
                     setTimeout(() => {
-                        addFundBtn.style.animation = '';
-                        addFundBtn.style.border = '';
-                    }, 2000);
+                        addFundBtn.classList.remove('wallet-warning');
+                    }, 3000);
                     
                     return;
                 }
@@ -1687,7 +1790,7 @@
                     phone_number: document.getElementById('profilePhone').value,
                     gender: document.getElementById('profileGender').value,
                     sexual_orientation: document.getElementById('profileOrientation').value,
-                    age: parseInt(document.getElementById('profileAge').value),
+                    age: parseInt(document.getElementById('profileAge').value) || 18,
                     nationality: document.getElementById('profileNationality').value,
                     county: document.getElementById('profileCounty').value,
                     city_town: document.getElementById('profileCity').value,
@@ -1704,26 +1807,22 @@
                     membership_days: parseInt(document.getElementById('selectedDuration').value),
                     membership_price: parseInt(document.getElementById('selectedPrice').value),
                     photos: uploadedPhotos,
-                    wallet_balance: newBalance, // Deduct amount from wallet
+                    wallet_balance: newBalance,
                     status: 'pending',
                     is_active: false,
                     updated_at: new Date().toISOString()
                 };
                 
                 try {
-                    const { data: existing } = await window.supabaseFunctions.supabase
-                        .from('profiles')
-                        .select('id')
-                        .eq('user_id', currentUser.id)
-                        .single();
-                    
                     let result;
-                    if (existing) {
+                    if (existingProfileId) {
+                        // Update existing profile
                         result = await window.supabaseFunctions.supabase
                             .from('profiles')
                             .update(profileData)
-                            .eq('user_id', currentUser.id);
+                            .eq('id', existingProfileId);
                     } else {
+                        // Create new profile
                         profileData.created_at = new Date().toISOString();
                         result = await window.supabaseFunctions.supabase
                             .from('profiles')
@@ -1738,25 +1837,38 @@
                     document.getElementById('totalWalletBalance').textContent = 'KSh' + newBalance;
                     document.getElementById('availableBalance').textContent = 'KSh' + newBalance;
                     
+                    // Update status
                     profileStatus = 'pending';
                     updateStatusBanner('pending');
-                    showToast(`✅ Profile saved! KSh${currentPrice} deducted from wallet. Pending admin approval.`, 'success');
-                    updateAboutSection(profileData);
                     
+                    // Log activity for admin
                     await window.supabaseFunctions.logActivity(
                         currentUser.id,
                         'profile_submitted',
-                        `User ${profileData.full_name} submitted ${profileData.profile_type.toUpperCase()} profile with ${profileData.membership_plan.toUpperCase()} plan (${profileData.membership_days} days - KSh${profileData.membership_price}) - Wallet: KSh${newBalance}`
+                        `User ${profileData.full_name} submitted ${profileData.profile_type.toUpperCase()} profile with ${profileData.membership_plan.toUpperCase()} plan (${profileData.membership_days} days - KSh${profileData.membership_price}) - Wallet: KSh${newBalance} - Photos: ${uploadedPhotos.length}`
                     );
+                    
+                    showToast(`✅ Profile submitted for admin approval! KSh${currentPrice} deducted from wallet.`, 'success');
+                    updateAboutSection(profileData);
+                    
+                    // Reset button
+                    saveBtn.disabled = false;
+                    saveBtnText.textContent = 'Save Changes';
+                    saveLoader.classList.remove('show');
+                    saveIcon.style.display = 'inline-block';
+                    
+                    // Refresh to show updated status
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
                     
                 } catch (error) {
                     showToast('Error: ' + error.message, 'error');
+                    saveBtn.disabled = false;
+                    saveBtnText.textContent = 'Save Changes';
+                    saveLoader.classList.remove('show');
+                    saveIcon.style.display = 'inline-block';
                 }
-                
-                saveBtn.disabled = false;
-                saveBtnText.textContent = 'Save Changes';
-                saveLoader.classList.remove('show');
-                saveIcon.style.display = 'inline-block';
             });
             
             // ============================================================
@@ -1772,7 +1884,10 @@
             // ============================================================
             // LOGOUT
             // ============================================================
-            logoutBtn.addEventListener('click', function() {
+            logoutBtn.addEventListener('click', async function() {
+                try {
+                    await window.supabaseFunctions.signOut();
+                } catch(e) {}
                 localStorage.removeItem('nairobi_vibe_session');
                 localStorage.removeItem('nairobi_vibe_admin_session');
                 showToast('Logged out', 'success');
@@ -1787,7 +1902,7 @@
                 toast.className = 'toast ' + type;
                 toast.classList.add('show');
                 clearTimeout(toast._timeout);
-                toast._timeout = setTimeout(() => toast.classList.remove('show'), 4000);
+                toast._timeout = setTimeout(() => toast.classList.remove('show'), 5000);
             }
             toastClose.addEventListener('click', () => toast.classList.remove('show'));
             
@@ -1802,12 +1917,11 @@
             checkSession();
             updateDurations('regular');
             
-            console.log('✅ My Profile - With Wallet Check Loaded!');
-            console.log('📸 Multiple photo upload (10 max)');
-            console.log('👤 Profile Type: Regular or VIP');
-            console.log('📋 Membership Plans: Regular, Prime, Prime VIP, VIP');
+            console.log('✅ My Profile - With Photo & Wallet Check Loaded!');
+            console.log('📸 Photo required: At least 1 photo before saving');
             console.log('💰 Wallet balance checked before saving');
-            console.log('💳 Add Fund button redirects to payment page');
+            console.log('📤 Profile submitted to admin for approval');
+            console.log('💳 Add Fund redirects to checkout-mpesa');
             
         });
     </script>
