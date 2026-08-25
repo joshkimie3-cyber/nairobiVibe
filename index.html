@@ -6,6 +6,12 @@
     <meta name="description" content="Find Kenyan Escorts Near You | Escorts in Nairobi County on Nairobi Vibe">
     <title>Nairobi Vibe - Find Kenyan Escorts Near You | Escorts in Nairobi County</title>
     
+    <!-- Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://ndoctdhfkbawxinhvfwk.supabase.co">
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -15,10 +21,10 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Supabase Config - USING YOUR NEW KEYS -->
+    <!-- SUPABASE CONFIG - EMBEDDED WITH YOUR NEW KEYS -->
     <script>
         // ============================================================
-        // SUPABASE CONFIG - NEW KEYS
+        // YOUR NEW SUPABASE KEYS
         // ============================================================
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
@@ -55,33 +61,35 @@
                 const { data, error } = await supabase.auth.getSession();
                 return { data, error };
             },
-            // Profile functions
-            getProfile: async (userId) => {
+            // Profile functions - OPTIMIZED with limit
+            getApprovedProfiles: async (limit = 20) => {
                 const { data, error } = await supabase
                     .from('profiles')
-                    .select('*')
-                    .eq('user_id', userId)
-                    .single();
-                return { data, error };
-            },
-            getApprovedProfiles: async () => {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
+                    .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
                     .eq('status', 'approved')
                     .eq('is_active', true)
-                    .order('created_at', { ascending: false });
+                    .order('created_at', { ascending: false })
+                    .limit(limit);
                 return { data, error };
             },
-            searchProfiles: async (searchTerm) => {
+            searchProfiles: async (searchTerm, limit = 20) => {
                 const { data, error } = await supabase
                     .from('profiles')
-                    .select('*')
+                    .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
                     .eq('status', 'approved')
                     .eq('is_active', true)
                     .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
-                    .order('created_at', { ascending: false });
+                    .order('created_at', { ascending: false })
+                    .limit(limit);
                 return { data, error };
+            },
+            getProfileCount: async () => {
+                const { count, error } = await supabase
+                    .from('profiles')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'approved')
+                    .eq('is_active', true);
+                return { count, error };
             }
         };
         
@@ -476,6 +484,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            loading: lazy;
         }
         .escort-card-full .card-image .placeholder-icon {
             font-size: 60px;
@@ -572,6 +581,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            loading: lazy;
         }
         .escort-card-small .card-image .placeholder-icon {
             font-size: 40px;
@@ -967,7 +977,7 @@
     </section>
 
     <!-- ============================================================
-         POPULAR COUNTIES - SQUEEZED (updated)
+         POPULAR COUNTIES - SQUEEZED
          ============================================================ -->
     <section class="section-box">
         <div class="section-header">
@@ -986,7 +996,7 @@
     </section>
 
     <!-- ============================================================
-         ESCORTS FROM OTHER TOWNS - SQUEEZED (updated)
+         ESCORTS FROM OTHER TOWNS - SQUEEZED
          ============================================================ -->
     <section class="section-box">
         <div class="section-header">
@@ -1132,7 +1142,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - USING NEW SUPABASE KEYS
+     JAVASCRIPT - OPTIMIZED WITH NEW SUPABASE KEYS
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1237,28 +1247,32 @@
         }
         
         // ============================================================
-        // LOAD ESCORTS - USING NEW SUPABASE
+        // LOAD ESCORTS - OPTIMIZED WITH LIMIT
         // ============================================================
         async function loadEscorts(searchTerm = '') {
             try {
-                let query = window.supabaseFunctions.supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('status', 'approved')
-                    .eq('is_active', true)
-                    .order('created_at', { ascending: false });
+                let result;
                 
                 if (searchTerm) {
-                    query = query.or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`);
+                    result = await window.supabaseFunctions.searchProfiles(searchTerm, 30);
+                } else {
+                    result = await window.supabaseFunctions.getApprovedProfiles(30);
                 }
                 
-                const { data, error } = await query;
+                if (result.error) throw result.error;
                 
-                if (error) throw error;
-                
-                const escorts = data || [];
+                const escorts = result.data || [];
                 renderEscorts(escorts);
-                if (statEscorts) statEscorts.textContent = escorts.length + '+';
+                
+                // Get count for stats
+                try {
+                    const countResult = await window.supabaseFunctions.getProfileCount();
+                    if (!countResult.error && countResult.count !== null) {
+                        statEscorts.textContent = countResult.count + '+';
+                    }
+                } catch (e) {
+                    statEscorts.textContent = escorts.length + '+';
+                }
                 
                 console.log(`✅ Loaded ${escorts.length} approved escorts`);
                 return escorts;
@@ -1320,7 +1334,7 @@
         function renderFullCard(escort) {
             let photoHtml = '';
             if (escort.photos && escort.photos.length > 0) {
-                photoHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}">`;
+                photoHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}" loading="lazy">`;
             } else {
                 photoHtml = `<div class="placeholder-icon"><i class="fas fa-user"></i></div>`;
             }
@@ -1356,7 +1370,7 @@
         function renderSmallCard(escort) {
             let photoHtml = '';
             if (escort.photos && escort.photos.length > 0) {
-                photoHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}">`;
+                photoHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}" loading="lazy">`;
             } else {
                 photoHtml = `<div class="placeholder-icon"><i class="fas fa-user"></i></div>`;
             }
@@ -1417,22 +1431,18 @@
                 e.preventDefault();
                 
                 try {
-                    // Sign out from Supabase
                     await window.supabaseFunctions.signOut();
                 } catch (e) {
                     console.log('Supabase signout error:', e);
                 }
                 
-                // Clear local storage
                 try {
                     localStorage.removeItem('nairobi_vibe_session');
                     localStorage.removeItem('nairobi_vibe_admin_session');
                 } catch (e) {}
                 
                 showToast('Logged out successfully', 'success');
-                setTimeout(function() { 
-                    location.reload(); 
-                }, 1000);
+                setTimeout(function() { location.reload(); }, 1000);
             });
         }
         
@@ -1516,18 +1526,20 @@
         }
         
         // ============================================================
-        // INIT
+        // INIT - LOAD ESCORTS AFTER PAGE LOADS
         // ============================================================
         checkSession();
-        loadEscorts();
-        setTimeout(animateStats, 400);
         
-        console.log('🔥 Nairobi Vibe - Homepage Loaded!');
+        // Load escorts with slight delay for faster initial render
+        setTimeout(() => {
+            loadEscorts();
+            animateStats();
+        }, 100);
+        
+        console.log('🔥 Nairobi Vibe - Optimized Homepage Loaded!');
         console.log('🔑 Using NEW Supabase Keys');
+        console.log('⚡ Performance optimized with lazy loading and limited queries');
         console.log('📱 1 Full + 2 Small cards pattern');
-        console.log('📸 Clean images - NO badges on photos');
-        console.log('📞 Call button on every card');
-        console.log('📍 Squeezed location tags, counties, and towns');
         console.log('✅ All integrations updated with NEW keys');
         
     });
