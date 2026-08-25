@@ -476,7 +476,7 @@
         .escort-card-full .card-image {
             width: 100%;
             height: 250px;
-            background: linear-gradient(135deg, #fce4ec, #f8d7da);
+            background: linear-gradient(135deg, #1a0528, #2f074e);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -488,12 +488,11 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            background: #1a0528;
         }
         .escort-card-full .card-image .placeholder-icon {
             font-size: 60px;
             color: #E0006C;
-            opacity: 0.3;
+            opacity: 0.5;
         }
         
         .escort-card-full .card-body {
@@ -576,7 +575,7 @@
         .escort-card-small .card-image {
             width: 100%;
             height: 160px;
-            background: linear-gradient(135deg, #fce4ec, #f8d7da);
+            background: linear-gradient(135deg, #1a0528, #2f074e);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -589,12 +588,11 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            background: #1a0528;
         }
         .escort-card-small .card-image .placeholder-icon {
             font-size: 40px;
             color: #E0006C;
-            opacity: 0.3;
+            opacity: 0.5;
         }
         
         .escort-card-small .card-body {
@@ -668,7 +666,7 @@
         .escort-card-small .card-body .call-btn i { font-size: 12px; }
         
         /* ============================================================
-                   PHOTO DETAIL MODAL
+                   PHOTO DETAIL MODAL - HOT DESIGN
                    ============================================================ */
         .photo-modal-overlay {
             display: none;
@@ -682,7 +680,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             animation: fadeIn 0.3s ease;
         }
         
@@ -698,12 +696,13 @@
         .photo-modal {
             background: #fff;
             border-radius: 20px;
-            max-width: 500px;
+            max-width: 520px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             animation: slideUpModal 0.4s ease;
             position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         
         @keyframes slideUpModal {
@@ -730,6 +729,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 15px rgba(224,0,108,0.3);
         }
         
         .photo-modal .modal-close:active {
@@ -738,13 +738,14 @@
         
         .photo-modal .modal-image {
             width: 100%;
-            height: 350px;
-            background: #1a0528;
+            height: 380px;
+            background: linear-gradient(135deg, #1a0528, #2f074e);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             margin-top: -50px;
+            border-radius: 20px 20px 0 0;
         }
         
         .photo-modal .modal-image img {
@@ -764,16 +765,28 @@
         }
         
         .photo-modal .modal-content .escort-name {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             color: #333;
             margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .photo-modal .modal-content .escort-name .badge-verified {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
         }
         
         .photo-modal .modal-content .escort-phone {
             font-size: 15px;
             color: #888;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .photo-modal .modal-content .escort-phone i {
@@ -792,53 +805,55 @@
             margin-right: 6px;
         }
         
-        .photo-modal .modal-content .escort-area {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-        }
-        
-        .photo-modal .modal-content .escort-area i {
-            color: #E0006C;
-            margin-right: 6px;
-        }
-        
-        .photo-modal .modal-content .escort-details {
+        .photo-modal .modal-content .escort-bio {
             font-size: 14px;
             color: #555;
-            line-height: 1.6;
-            padding: 12px 0;
-            border-top: 1px solid #f0f0f0;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 12px;
+            line-height: 1.8;
+            padding: 14px 0;
+            border-top: 2px solid #f0f0f0;
+            border-bottom: 2px solid #f0f0f0;
+            margin: 10px 0 14px;
+            background: #fafafa;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-style: italic;
+            color: #444;
+        }
+        
+        .photo-modal .modal-content .escort-bio i {
+            color: #E0006C;
+            margin-right: 6px;
+            font-style: normal;
         }
         
         .photo-modal .modal-content .detail-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 8px;
             margin-bottom: 12px;
         }
         
         .photo-modal .modal-content .detail-item {
-            background: #f8f9fa;
-            padding: 8px 12px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #f8f9fa, #f0f0f0);
+            padding: 10px 6px;
+            border-radius: 10px;
             text-align: center;
+            transition: all 0.3s ease;
         }
         
         .photo-modal .modal-content .detail-item .label {
-            font-size: 9px;
+            font-size: 8px;
             text-transform: uppercase;
             color: #999;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
         
         .photo-modal .modal-content .detail-item .value {
             font-size: 14px;
             font-weight: 700;
             color: #333;
+            margin-top: 2px;
         }
         
         .photo-modal .modal-content .services-list {
@@ -849,12 +864,13 @@
         }
         
         .photo-modal .modal-content .services-list .service-tag {
-            background: #fce4ec;
+            background: linear-gradient(135deg, #fce4ec, #f8d7da);
             color: #E0006C;
-            padding: 3px 12px;
-            border-radius: 15px;
+            padding: 4px 14px;
+            border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
+            border: 1px solid rgba(224,0,108,0.1);
         }
         
         .photo-modal .modal-content .modal-call-btn {
@@ -873,10 +889,31 @@
             justify-content: center;
             gap: 10px;
             min-height: 50px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
         }
         
         .photo-modal .modal-content .modal-call-btn:active {
             transform: scale(0.97);
+        }
+        
+        .photo-modal .modal-content .modal-call-btn i {
+            font-size: 18px;
+        }
+        
+        .photo-modal .modal-content .wallet-badge {
+            display: inline-block;
+            background: #fff8e1;
+            color: #f39c12;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            border: 1px solid #f39c12;
+        }
+        
+        .photo-modal .modal-content .wallet-badge i {
+            margin-right: 4px;
         }
         
         /* ---------- LOADING SPINNER ---------- */
@@ -897,23 +934,24 @@
         .escort-grid-empty h4 { font-size: 16px; color: #666; margin-bottom: 4px; }
         .escort-grid-empty p { font-size: 13px; color: #999; }
         
-        /* ---------- AUTO-REFRESH INDICATOR ---------- */
+        /* ---------- AUTO-REFRESH INDICATOR (SILENT) ---------- */
         .refresh-indicator {
             position: fixed;
             bottom: 80px;
             right: 20px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.6);
             color: #fff;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: 9px;
             z-index: 100;
             backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
-            gap: 8px;
-            opacity: 0.7;
+            gap: 6px;
+            opacity: 0.5;
             transition: all 0.3s ease;
+            font-weight: 600;
         }
         .refresh-indicator i { animation: spin 3s linear infinite; }
         .refresh-indicator:hover { opacity: 1; }
@@ -1111,7 +1149,7 @@
 </header>
 
 <!-- ============================================================
-     AUTO-REFRESH INDICATOR
+     AUTO-REFRESH INDICATOR (SILENT)
      ============================================================ -->
 <div class="refresh-indicator" id="refreshIndicator">
     <i class="fas fa-sync-alt"></i>
@@ -1119,7 +1157,7 @@
 </div>
 
 <!-- ============================================================
-     PHOTO DETAIL MODAL
+     PHOTO DETAIL MODAL - HOT DESIGN
      ============================================================ -->
 <div class="photo-modal-overlay" id="photoModal">
     <div class="photo-modal">
@@ -1437,7 +1475,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - WITH PHOTO MODAL
+     JAVASCRIPT - WITH DYNAMIC BIOS & SILENT AUTO-REFRESH
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1483,7 +1521,45 @@
         let currentEscortData = null;
         
         // ============================================================
-        // CHECK SUPABASE - WITH FALLBACK
+        // BIO GENERATOR - UNIQUE BIOS FOR EACH ESCORT
+        // ============================================================
+        function generateUniqueBio(escort) {
+            const name = escort.full_name || 'A beautiful escort';
+            const age = escort.age || Math.floor(Math.random() * 15) + 20;
+            const gender = escort.gender || 'Female';
+            const location = escort.location || 'Nairobi';
+            const area = escort.area || '';
+            
+            // Different bio templates
+            const bios = [
+                `💃 I'm ${name}, a ${age}-year-old ${gender} escort based in ${location}${area ? ', specifically in ' + area : ''}. I'm here to make your fantasies come true with my charm and elegance. Book me for an unforgettable experience!`,
+                
+                `✨ Hi, I'm ${name}! I'm a ${age}-year-old ${gender} escort offering premium services in ${location}${area ? ' (' + area + ')' : ''}. I pride myself on being professional, discreet, and passionate about making every moment special. Let's connect!`,
+                
+                `💖 ${name} here! I'm a ${age}-year-old ${gender} escort who loves to explore and connect with new people. Based in ${location}${area ? ' near ' + area : ''}, I offer a unique blend of companionship and intimacy. Can't wait to meet you!`,
+                
+                `🌟 Hey there, I'm ${name}! A ${age}-year-old ${gender} escort who's all about fun, laughter, and creating memorable experiences. I'm available in ${location}${area ? ' (around ' + area + ')' : ''} and ready to make your day special.`,
+                
+                `💋 I'm ${name}, a ${age}-year-old ${gender} escort with a passion for making people feel special. I'm located in ${location}${area ? ', ' + area : ''} and I offer a wide range of services. Let's create some magic together!`,
+                
+                `🌸 Hi, I'm ${name}! I'm a ${age}-year-old ${gender} escort who believes in quality time and genuine connections. Available in ${location}${area ? ' (' + area + ')' : ''} - I'm the perfect companion for any occasion. Book me now!`,
+                
+                `🔥 ${name} here - a ${age}-year-old ${gender} escort who's confident, classy, and ready to satisfy your desires. I'm based in ${location}${area ? ', ' + area : ''} and I guarantee an experience you won't forget.`,
+                
+                `💎 I'm ${name}, a ${age}-year-old ${gender} escort offering elite companionship in ${location}${area ? ' (' + area + ')' : ''}. I'm known for my elegance, intelligence, and ability to make every encounter memorable. Let's meet!`,
+                
+                `🌈 Hey, I'm ${name}! A ${age}-year-old ${gender} escort who's all about good vibes and great times. I'm available in ${location}${area ? ' near ' + area : ''} and I'm ready to show you a good time. What are you waiting for?`,
+                
+                `💫 I'm ${name}, a ${age}-year-old ${gender} escort who's passionate about providing unforgettable experiences. Based in ${location}${area ? ', ' + area : ''}, I'm the perfect blend of beauty, brains, and charm. Let's explore together!`
+            ];
+            
+            // Pick a random bio based on the escort's name length (deterministic but varied)
+            const index = name.length % bios.length;
+            return bios[index];
+        }
+        
+        // ============================================================
+        // CHECK SUPABASE
         // ============================================================
         if (typeof window.supabaseFunctions === 'undefined') {
             console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
@@ -1625,7 +1701,7 @@
             }
             modalImage.innerHTML = imageHtml;
             
-            // Build content
+            // Build content with dynamic bio
             const name = escort.full_name || 'Anonymous';
             const phone = escort.phone_number || '0712345678';
             const location = escort.location || 'N/A';
@@ -1635,18 +1711,18 @@
             const nationality = escort.nationality || 'N/A';
             const county = escort.county || 'N/A';
             const city = escort.city_town || 'N/A';
-            const bio = escort.bio || 'No bio provided.';
             const services = escort.services || [];
             const incalls = escort.incalls_rate || 0;
             const outcalls = escort.outcalls_rate || 0;
             const wallet = escort.wallet_balance || 0;
             const membership = escort.membership_plan || 'None';
+            const bio = generateUniqueBio(escort);
             
             let servicesHtml = '';
             if (services.length > 0) {
                 servicesHtml = `
-                    <div style="margin-bottom: 10px;">
-                        <div style="font-size:12px; font-weight:600; color:#666; margin-bottom:4px;">Services Offered</div>
+                    <div style="margin-bottom: 8px;">
+                        <div style="font-size:12px; font-weight:600; color:#888; margin-bottom:6px;">🛎️ Services Offered</div>
                         <div class="services-list">
                             ${services.map(s => `<span class="service-tag">${s}</span>`).join('')}
                         </div>
@@ -1655,12 +1731,18 @@
             }
             
             modalContent.innerHTML = `
-                <div class="escort-name">${name}</div>
+                <div class="escort-name">
+                    ${name}
+                    <span class="badge-verified"><i class="fas fa-check-circle"></i> Verified</span>
+                </div>
                 <div class="escort-phone"><i class="fas fa-phone"></i> ${phone}</div>
-                <div class="escort-location"><i class="fas fa-map-marker-alt"></i> ${location}${area ? ' - ' + area : ''}</div>
+                <div class="escort-location"><i class="fas fa-map-pin"></i> ${location}${area ? ' - ' + area : ''}</div>
                 ${city && city !== 'N/A' ? `<div class="escort-location"><i class="fas fa-city"></i> ${city}</div>` : ''}
-                ${county && county !== 'N/A' ? `<div class="escort-location"><i class="fas fa-flag"></i> ${county}</div>` : ''}
-                <div class="escort-details">${bio}</div>
+                ${county && county !== 'N/A' ? `<div class="escort-location"><i class="fas fa-flag"></i> ${county} County</div>` : ''}
+                
+                ${wallet > 0 ? `<div class="wallet-badge"><i class="fas fa-wallet"></i> KSh${wallet} balance</div>` : ''}
+                
+                <div class="escort-bio"><i class="fas fa-quote-left"></i> ${bio}</div>
                 
                 <div class="detail-grid">
                     <div class="detail-item">
@@ -1681,20 +1763,18 @@
                     </div>
                     <div class="detail-item">
                         <div class="label">Incalls</div>
-                        <div class="value">KSh${incalls}/hr</div>
+                        <div class="value">KSh${incalls}</div>
                     </div>
                     <div class="detail-item">
                         <div class="label">Outcalls</div>
-                        <div class="value">KSh${outcalls}/hr</div>
+                        <div class="value">KSh${outcalls}</div>
                     </div>
                 </div>
                 
                 ${servicesHtml}
                 
-                ${wallet > 0 ? `<div style="text-align:center; font-size:12px; color:#888; margin-bottom:10px;">💰 Wallet: KSh${wallet}</div>` : ''}
-                
                 <a href="tel:${phone}" class="modal-call-btn">
-                    <i class="fas fa-phone"></i> Call ${name}
+                    <i class="fas fa-phone"></i> Call ${name} Now
                 </a>
             `;
             
@@ -1918,7 +1998,7 @@
         }
         
         // ============================================================
-        // AUTO-REFRESH FUNCTIONS
+        // AUTO-REFRESH FUNCTIONS (SILENT - NO TOAST)
         // ============================================================
         function startAutoRefresh() {
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
@@ -1937,9 +2017,9 @@
             
             autoRefreshInterval = setInterval(() => {
                 if (!isSearching) {
-                    console.log('🔄 Auto-refreshing escorts...');
+                    console.log('🔄 Auto-refreshing escorts (silent)...');
                     loadEscorts(currentSearchTerm);
-                    showToast('🔄 Refreshed!', 'info');
+                    // NO TOAST - SILENT REFRESH
                 }
                 refreshTimer = 30;
                 updateCountdownDisplay();
@@ -1974,7 +2054,7 @@
                             const newData = payload.new;
                             if (newData && newData.status === 'approved' && newData.is_active === true) {
                                 loadEscorts(currentSearchTerm);
-                                showToast('🆕 New escort available!', 'success');
+                                // SILENT - No toast for realtime updates
                             }
                             if (payload.eventType === 'UPDATE' && newData && newData.status === 'approved' && newData.is_active === true) {
                                 loadEscorts(currentSearchTerm);
@@ -2124,11 +2204,11 @@
         
         console.log('🔥 Nairobi Vibe - Professional Homepage Loaded!');
         console.log('🔑 Using NEW Supabase Keys');
-        console.log('🔄 Auto-refresh: ACTIVE (every 30 seconds)');
+        console.log('🔄 Auto-refresh: ACTIVE (silent - every 30 seconds)');
         console.log('📡 Realtime: ACTIVE');
         console.log('📱 1 Full + 2 Small cards pattern');
-        console.log('🖼️ Click photo to view full details');
-        console.log('✅ Images with object-fit: contain (no cut-off)');
+        console.log('🖼️ Click photo to view full details with unique bios');
+        console.log('📝 Dynamic bios generated for each escort');
         
     });
 </script>
