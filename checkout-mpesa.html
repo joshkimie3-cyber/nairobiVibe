@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Complete Payment - Nairobi Vibe Escorts</title>
+    <title>Add Funds - Nairobi Vibe Escorts</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -14,12 +14,40 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Supabase Config -->
-    <script src="supabase-config.js"></script>
+    <!-- SUPABASE CONFIG - EMBEDDED WITH NEW KEYS -->
+    <script>
+        // ============================================================
+        // SUPABASE CONFIG - NEW KEYS
+        // ============================================================
+        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Make it available globally
+        window.supabaseFunctions = {
+            supabase: supabase,
+            logActivity: async (userId, action, details) => {
+                const { data, error } = await supabase
+                    .from('activity_logs')
+                    .insert([{
+                        user_id: userId,
+                        action: action,
+                        details: details,
+                        created_at: new Date().toISOString()
+                    }]);
+                return { data, error };
+            }
+        };
+        
+        console.log('✅ Supabase initialized with NEW keys!');
+        console.log('🔗 URL:', SUPABASE_URL);
+    </script>
 
     <style>
         /* ============================================================
-                   PAYMENT PAGE STYLES
+                   PAYMENT PAGE - MOBILE FIRST
                    ============================================================ */
         
         * {
@@ -30,19 +58,21 @@
         
         body {
             font-family: 'Open Sans', "Helvetica Neue", Arial, sans-serif;
-            background: #f5f5f5;
+            background: #f0f2f5;
             color: #333;
             overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 20px;
         }
         
         /* ---------- HEADER ---------- */
         .header {
-            background: linear-gradient(135deg, #f7053e, #d60435);
-            padding: 10px 15px;
+            background: linear-gradient(135deg, #E0006C, #b30057);
+            padding: 12px 16px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
         }
         
         .header-inner {
@@ -69,14 +99,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             color: #E0006C;
         }
         
         .logo-text {
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
         }
         
@@ -86,44 +116,39 @@
         
         .back-link {
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            padding: 6px 15px;
+            padding: 6px 14px;
             background: rgba(255,255,255,0.15);
             border-radius: 20px;
             transition: all 0.3s ease;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         
-        .back-link:hover {
-            background: rgba(255,255,255,0.25);
-        }
-        
-        .back-link i {
-            margin-right: 6px;
+        .back-link:active {
+            transform: scale(0.95);
         }
         
         /* ---------- MAIN CONTENT ---------- */
         .main-content {
             max-width: 700px;
             margin: 0 auto;
-            padding: 20px 15px;
+            padding: 16px 14px;
         }
         
         /* ---------- BREADCRUMB ---------- */
         .breadcrumb {
-            font-size: 13px;
+            font-size: 12px;
             color: #999;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
         
         .breadcrumb a {
             color: #E0006C;
             text-decoration: none;
-        }
-        
-        .breadcrumb a:hover {
-            text-decoration: underline;
         }
         
         .breadcrumb span {
@@ -132,24 +157,27 @@
         
         /* ---------- CONTACT BANNER ---------- */
         .contact-banner {
-            background: #fff3cd;
-            border-radius: 12px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
-            border-left: 4px solid #ffc107;
+            border-left: 4px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(243, 156, 18, 0.15);
         }
         
         .contact-banner i {
-            color: #ffc107;
-            font-size: 20px;
+            color: #f39c12;
+            font-size: 22px;
+            flex-shrink: 0;
         }
         
         .contact-banner .contact-text {
-            font-size: 14px;
+            font-size: 13px;
             color: #856404;
+            line-height: 1.5;
         }
         
         .contact-banner .contact-text strong {
@@ -159,121 +187,212 @@
         .contact-banner .contact-text a {
             color: #E0006C;
             font-weight: 700;
+            text-decoration: none;
+        }
+        
+        .contact-banner .contact-text a:active {
+            opacity: 0.7;
         }
         
         /* ---------- PAYMENT CARD ---------- */
         .payment-card {
             background: #fff;
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            border-radius: 18px;
+            padding: 24px 20px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.08);
             border: 1px solid #eee;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(224, 0, 108, 0.04);
+            border-radius: 50%;
         }
         
         .payment-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: #E0006C;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         
         .payment-title i {
-            color: #6fcf97;
+            color: #27ae60;
             margin-right: 8px;
         }
         
         .payment-subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: #999;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
         
         /* ---------- TILL DETAILS ---------- */
         .till-details {
-            background: linear-gradient(135deg, #fce4ec, #f8d7da);
+            background: linear-gradient(145deg, #fce4ec, #f8d7da);
             border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
+            padding: 22px 20px;
+            margin-bottom: 20px;
             text-align: center;
             border: 2px dashed #E0006C;
+            position: relative;
+            z-index: 1;
         }
         
         .till-details .till-icon {
-            font-size: 48px;
+            font-size: 40px;
             color: #E0006C;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             display: block;
+        }
+        
+        .till-details .till-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
         .till-details .till-number {
             font-size: 32px;
             font-weight: 800;
             color: #E0006C;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             background: #fff;
-            padding: 8px 20px;
+            padding: 6px 20px;
             border-radius: 10px;
             display: inline-block;
-            margin-bottom: 5px;
+            margin: 4px 0;
+            box-shadow: 0 2px 10px rgba(224, 0, 108, 0.15);
         }
         
         .till-details .till-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: #333;
         }
         
-        .till-details .till-label {
-            font-size: 13px;
+        .till-details .till-amount-label {
+            font-size: 12px;
             color: #888;
-            margin-top: 5px;
+            margin-top: 10px;
+            font-weight: 600;
         }
         
-        .till-details .till-amount {
-            font-size: 20px;
+        .till-details .amount-input-wrap {
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .till-details .amount-input-wrap input {
+            width: 100%;
+            max-width: 220px;
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 18px;
             font-weight: 700;
-            color: #E0006C;
-            margin-top: 10px;
-            padding: 8px 20px;
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
             background: #fff;
-            border-radius: 10px;
-            display: inline-block;
+            transition: all 0.3s ease;
+            color: #E0006C;
+        }
+        
+        .till-details .amount-input-wrap input:focus {
+            outline: none;
+            border-color: #E0006C;
+            box-shadow: 0 0 0 4px rgba(224, 0, 108, 0.1);
+        }
+        
+        .till-details .amount-input-wrap input::placeholder {
+            color: #ccc;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        
+        /* ---------- QUICK AMOUNT BUTTONS ---------- */
+        .quick-amounts {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-amounts .qa-btn {
+            padding: 6px 16px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: #fafafa;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 36px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        .quick-amounts .qa-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .quick-amounts .qa-btn.active {
+            border-color: #E0006C;
+            background: #fce4ec;
+            color: #E0006C;
         }
         
         /* ---------- INSTRUCTIONS ---------- */
         .instructions {
-            background: #f0f7ff;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
+            background: linear-gradient(135deg, #f0f7ff, #e3eef9);
+            border-radius: 14px;
+            padding: 18px 18px 12px 18px;
+            margin-bottom: 20px;
             border-left: 4px solid #3498db;
+            position: relative;
+            z-index: 1;
         }
         
         .instructions .step {
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            padding: 6px 0;
-            font-size: 14px;
+            padding: 5px 0;
+            font-size: 13px;
             color: #555;
             line-height: 1.5;
         }
         
         .instructions .step .step-num {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             background: #3498db;
             color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             flex-shrink: 0;
-            margin-top: 2px;
+            margin-top: 1px;
         }
         
         .instructions .step .step-text {
@@ -291,33 +410,35 @@
         
         /* ---------- PAYMENT FORM ---------- */
         .payment-form {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .payment-form .form-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
         .payment-form .form-title i {
-            color: #6fcf97;
+            color: #27ae60;
         }
         
         .payment-form .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
         
         .payment-form .form-group label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #555;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
         
         .payment-form .form-group label .required {
@@ -334,19 +455,21 @@
             top: 50%;
             transform: translateY(-50%);
             color: #6fcf97;
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .payment-form .form-group .input-wrapper input {
             width: 100%;
-            padding: 14px 14px 14px 48px;
+            padding: 13px 14px 13px 46px;
             border: 2px solid #e8e8e8;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 15px;
             font-family: 'Open Sans', sans-serif;
             transition: all 0.3s ease;
             background: #fafafa;
             color: #333;
+            -webkit-appearance: none;
+            appearance: none;
         }
         
         .payment-form .form-group .input-wrapper input:focus {
@@ -356,21 +479,21 @@
             box-shadow: 0 0 0 4px rgba(224, 0, 108, 0.1);
         }
         
-        .payment-form .form-group .input-wrapper .phone-prefix-text {
+        .payment-form .form-group .input-wrapper .phone-prefix {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: #999;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             background: #f0f0f0;
-            padding: 6px 10px 6px 14px;
+            padding: 5px 10px 5px 12px;
             border-radius: 8px 0 0 8px;
         }
         
-        .payment-form .form-group .input-wrapper input.phone-input-with-prefix {
-            padding-left: 75px;
+        .payment-form .form-group .input-wrapper input.phone-with-prefix {
+            padding-left: 72px;
         }
         
         /* ---------- CONFIRM BUTTON ---------- */
@@ -380,20 +503,23 @@
             background: linear-gradient(135deg, #6fcf97, #27ae60);
             color: #fff;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            min-height: 56px;
         }
         
-        .btn-confirm:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
+        .btn-confirm:active {
+            transform: scale(0.97);
         }
         
         .btn-confirm:disabled {
@@ -431,23 +557,31 @@
             display: none;
             text-align: center;
             padding: 20px 0;
+            position: relative;
+            z-index: 1;
         }
         
         .pending-state.show {
             display: block;
+            animation: fadeUp 0.6s ease;
+        }
+        
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         
         .pending-state .pending-icon {
-            font-size: 72px;
+            font-size: 64px;
             color: #f39c12;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .pending-state h3 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: #f39c12;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .pending-state p {
@@ -458,26 +592,54 @@
         
         .pending-state .btn-dashboard {
             display: inline-block;
-            margin-top: 18px;
+            margin-top: 16px;
             padding: 12px 35px;
             background: linear-gradient(135deg, #E0006C, #b30057);
             color: #fff;
             border-radius: 12px;
             font-weight: 700;
+            font-size: 15px;
             text-decoration: none;
             transition: all 0.3s ease;
         }
         
-        .pending-state .btn-dashboard:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(224, 0, 108, 0.3);
+        .pending-state .btn-dashboard:active {
+            transform: scale(0.95);
         }
+        
+        /* ---------- TOAST ---------- */
+        .toast {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            padding: 14px 24px;
+            border-radius: 14px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 9999;
+            max-width: 92%;
+            text-align: center;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast.success { background: linear-gradient(135deg, #27ae60, #1e8449); }
+        .toast.error { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .toast.info { background: linear-gradient(135deg, #3498db, #2980b9); }
         
         /* ---------- FOOTER ---------- */
         .footer {
             background: #1a0528;
             color: #ccc;
-            padding: 30px 15px 15px;
+            padding: 25px 15px 15px;
             margin-top: 30px;
         }
         
@@ -485,32 +647,32 @@
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
         
         .footer-col h4 {
             color: #FE5ACB;
-            font-size: 15px;
-            margin-bottom: 8px;
+            font-size: 14px;
+            margin-bottom: 6px;
         }
         
         .footer-col p {
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.6;
             color: #aaa;
         }
         
         .footer-col a {
             color: #FE5ACB;
-            font-size: 13px;
+            font-size: 12px;
             text-decoration: none;
         }
         
         .footer-bottom {
             max-width: 1200px;
-            margin: 20px auto 0;
-            padding-top: 15px;
+            margin: 15px auto 0;
+            padding-top: 12px;
             border-top: 1px solid #2a1a3a;
             text-align: center;
             font-size: 11px;
@@ -521,59 +683,32 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .footer-bottom .social-icons a {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #2a1a3a;
             color: #FE5ACB;
-            font-size: 16px;
+            font-size: 15px;
             transition: all 0.3s ease;
         }
         
-        .footer-bottom .social-icons a:hover {
+        .footer-bottom .social-icons a:active {
             background: #FE5ACB;
             color: #1a0528;
         }
         
-        /* ---------- TOAST ---------- */
-        .toast {
-            position: fixed;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            padding: 12px 24px;
-            border-radius: 12px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            opacity: 0;
-            transition: all 0.4s ease;
-            z-index: 9999;
-            max-width: 90%;
-            text-align: center;
-        }
-        
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-        
-        .toast.success { background: #27ae60; }
-        .toast.error { background: #e74c3c; }
-        .toast.info { background: #3498db; }
-        
         /* ---------- RESPONSIVE ---------- */
         @media (max-width: 600px) {
             .payment-card {
-                padding: 20px;
+                padding: 18px 14px;
+                border-radius: 14px;
             }
             
             .payment-title {
@@ -583,19 +718,75 @@
             .contact-banner {
                 flex-direction: column;
                 text-align: center;
-            }
-            
-            .header-inner {
-                flex-direction: column;
-                text-align: center;
+                padding: 12px 14px;
             }
             
             .till-details .till-number {
-                font-size: 24px;
+                font-size: 26px;
+                padding: 4px 14px;
             }
             
-            .till-details .till-name {
-                font-size: 15px;
+            .till-details {
+                padding: 18px 14px;
+            }
+            
+            .instructions .step {
+                font-size: 12px;
+                padding: 4px 0;
+            }
+            
+            .header-inner {
+                flex-wrap: nowrap;
+            }
+            
+            .logo-text {
+                font-size: 14px;
+            }
+            
+            .back-link {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .quick-amounts .qa-btn {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            
+            .btn-confirm {
+                font-size: 16px;
+                padding: 14px;
+                min-height: 48px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .payment-title {
+                font-size: 18px;
+            }
+            
+            .till-details .till-number {
+                font-size: 22px;
+                letter-spacing: 2px;
+            }
+            
+            .till-details .amount-input-wrap input {
+                font-size: 16px;
+                padding: 10px 12px;
+                max-width: 180px;
+            }
+            
+            .main-content {
+                padding: 12px 10px;
+            }
+            
+            .payment-card {
+                padding: 14px 12px;
             }
         }
         
@@ -626,7 +817,7 @@
                 <span class="logo-text">Nairobi <span>Vibe</span></span>
             </div>
             <a href="myprofile.html" class="back-link">
-                <i class="fas fa-arrow-left"></i> Back to Profile
+                <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>
     </header>
@@ -643,20 +834,19 @@
             <span>Add Funds</span>
         </div>
 
-        <!-- Contact Banner -->
+        <!-- Contact Banner - UPDATED PHONE NUMBER -->
         <div class="contact-banner">
             <i class="fas fa-phone-alt"></i>
             <div class="contact-text">
-                If you have a problem with payment kindly contact admin via Call or WhatsApp on this number. 
-                <strong><a href="tel:0703206765"><i class="fas fa-phone"></i> 0703 206 765</a></strong>
+                <strong>Need help?</strong> Contact admin via <a href="tel:0712831606"><i class="fas fa-phone"></i> 0712 831 606</a> or WhatsApp
             </div>
         </div>
 
         <!-- Payment Card -->
         <div class="payment-card" id="paymentCard">
 
-            <h1 class="payment-title"><i class="fas fa-money-bill-wave"></i> Add Funds</h1>
-            <p class="payment-subtitle">Pay via M-Pesa Till Number to add funds to your wallet</p>
+            <h1 class="payment-title"><i class="fas fa-wallet"></i> Add Funds</h1>
+            <p class="payment-subtitle">Pay via M-PESA Till to top up your wallet</p>
 
             <!-- TILL DETAILS -->
             <div class="till-details">
@@ -664,10 +854,18 @@
                 <div class="till-label">M-PESA TILL NUMBER</div>
                 <div class="till-number">4159500</div>
                 <div class="till-name">Mercy Chepkemoi</div>
-                <div class="till-label" style="margin-top:8px;">Enter Amount to Pay</div>
-                <div style="margin-top:8px;">
-                    <input type="number" id="paymentAmount" placeholder="Enter amount (e.g., 1000)" 
-                           style="width:100%; padding:12px 16px; border:2px solid #ddd; border-radius:10px; font-size:16px; text-align:center; max-width:200px; margin:0 auto; display:block; font-family:'Open Sans',sans-serif;">
+                
+                <div class="till-amount-label">💵 Enter Amount</div>
+                <div class="amount-input-wrap">
+                    <input type="number" id="paymentAmount" placeholder="e.g., 1000" min="100" step="100">
+                </div>
+                
+                <div class="quick-amounts">
+                    <button class="qa-btn" onclick="setAmount(500)">KSh 500</button>
+                    <button class="qa-btn" onclick="setAmount(1000)">KSh 1,000</button>
+                    <button class="qa-btn" onclick="setAmount(1500)">KSh 1,500</button>
+                    <button class="qa-btn" onclick="setAmount(2000)">KSh 2,000</button>
+                    <button class="qa-btn" onclick="setAmount(3000)">KSh 3,000</button>
                 </div>
             </div>
 
@@ -706,7 +904,7 @@
                 <div class="step">
                     <span class="step-num">6</span>
                     <span class="step-text">
-                        After payment, enter your details below and click <strong>"CONFIRM PAYMENT"</strong>
+                        After payment, confirm below with your <strong>Transaction Code</strong>
                     </span>
                 </div>
             </div>
@@ -714,16 +912,15 @@
             <!-- Payment Form -->
             <div class="payment-form" id="paymentForm">
                 <div class="form-title">
-                    <i class="fas fa-user"></i> Confirm Your Payment
+                    <i class="fas fa-check-circle"></i> Confirm Payment
                 </div>
 
                 <div class="form-group">
                     <label>Phone Number <span class="required">*</span></label>
                     <div class="input-wrapper">
-                        <i class="fas fa-phone"></i>
-                        <span class="phone-prefix-text">+254</span>
-                        <input type="tel" id="phoneNumber" class="phone-input-with-prefix" 
-                               placeholder="722xxxxxx" maxlength="9" required>
+                        <span class="phone-prefix">+254</span>
+                        <input type="tel" id="phoneNumber" class="phone-with-prefix" 
+                               placeholder="722xxxxxx" maxlength="9" inputmode="numeric">
                     </div>
                 </div>
 
@@ -732,16 +929,16 @@
                     <div class="input-wrapper">
                         <i class="fas fa-receipt"></i>
                         <input type="text" id="transactionCode" 
-                               placeholder="e.g., QWERTY123" required>
+                               placeholder="e.g., QWERTY123" autocomplete="off">
                     </div>
                 </div>
             </div>
 
             <!-- Confirm Button -->
             <button class="btn-confirm" id="confirmBtn">
-                <span id="confirmBtnText">CONFIRM PAYMENT ✓</span>
+                <span id="confirmBtnText"><i class="fas fa-check-circle"></i> Confirm Payment</span>
                 <span class="loader" id="confirmLoader"></span>
-                <i class="fas fa-check-circle" id="confirmIcon"></i>
+                <i class="fas fa-arrow-right" id="confirmIcon"></i>
             </button>
 
             <!-- Pending State (shown after confirmation) -->
@@ -749,9 +946,9 @@
                 <div class="pending-icon"><i class="fas fa-clock"></i></div>
                 <h3>Payment Sent for Approval! 🕐</h3>
                 <p>Your payment has been recorded and sent to admin for approval.</p>
-                <p style="font-size:13px; color:#999; margin-top:5px;">You will be notified once approved by admin.</p>
+                <p style="font-size:13px; color:#999; margin-top:4px;">You'll be notified once approved.</p>
                 <a href="myprofile.html" class="btn-dashboard">
-                    <i class="fas fa-user"></i> Go to My Profile
+                    <i class="fas fa-user"></i> Go to Profile
                 </a>
             </div>
 
@@ -765,22 +962,15 @@
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-col">
-                <h4>Nairobi Vibe Escorts</h4>
-                <p>Mombasa escorts and call girls from Mombasa Kenya offering hot massage and escorts services at very affordable rates. Tomba malaya wa mombasa leo.</p>
+                <h4>Nairobi Vibe</h4>
+                <p>Find verified escorts across Nairobi and Kenya. Available 24/7.</p>
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
-                <a href="#">About Us</a><br>
-                <a href="#">Escort Agencies</a><br>
-                <a href="#">Escorts Blog</a><br>
-                <a href="#">Hookup</a>
-            </div>
-            <div class="footer-col">
-                <h4>More</h4>
-                <a href="#">Kenyan Escorts</a><br>
-                <a href="#">Nairobi Tamu</a><br>
-                <a href="#">Nairobi Raha Videos</a><br>
-                <a href="#">Sexy Nairobi Escorts</a>
+                <a href="#">Home</a><br>
+                <a href="#">Escorts</a><br>
+                <a href="#">Reviews</a><br>
+                <a href="#">Contact</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -790,7 +980,7 @@
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
-            <p>&copy; 2026 Nairobi Vibe Massage and Escort services. Powered by <span style="color:#FE5ACB;">Nairobi Vibe</span></p>
+            <p>&copy; 2026 Nairobi Vibe. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -802,7 +992,7 @@
     </div>
 
     <!-- ============================================================
-     JAVASCRIPT - FIXED WITH USER NAME
+     JAVASCRIPT - FULLY INTEGRATED
      ============================================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -825,43 +1015,46 @@
             const instructions = document.getElementById('instructions');
 
             // ============================================================
-            // GET USER DATA FROM URL AND SESSION
+            // QUICK AMOUNT SETTER
             // ============================================================
+            window.setAmount = function(amount) {
+                amountInput.value = amount;
+                amountInput.focus();
+                
+                // Highlight active button
+                document.querySelectorAll('.qa-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (parseInt(btn.textContent.replace(/[^0-9]/g, '')) === amount) {
+                        btn.classList.add('active');
+                    }
+                });
+            };
+
+            // ============================================================
+            // GET USER DATA FROM SESSION
+            // ============================================================
+            function getUserData() {
+                const session = localStorage.getItem('nairobi_vibe_session');
+                if (session) {
+                    try {
+                        return JSON.parse(session);
+                    } catch (e) {
+                        return null;
+                    }
+                }
+                return null;
+            }
+
             function getUserIdFromURL() {
                 const urlParams = new URLSearchParams(window.location.search);
                 return urlParams.get('user_id') || '';
             }
 
-            function getUserNameFromSession() {
-                const session = localStorage.getItem('nairobi_vibe_session');
-                if (session) {
-                    try {
-                        const userData = JSON.parse(session);
-                        return userData.name || userData.full_name || '';
-                    } catch (e) {
-                        return '';
-                    }
-                }
-                return '';
-            }
+            const userData = getUserData();
+            const userId = getUserIdFromURL() || (userData ? userData.id : '');
+            const userName = userData ? (userData.name || userData.full_name || 'User') : 'User';
+            const userEmail = userData ? (userData.email || '') : '';
 
-            function getUserEmailFromSession() {
-                const session = localStorage.getItem('nairobi_vibe_session');
-                if (session) {
-                    try {
-                        const userData = JSON.parse(session);
-                        return userData.email || '';
-                    } catch (e) {
-                        return '';
-                    }
-                }
-                return '';
-            }
-
-            const userId = getUserIdFromURL();
-            const userName = getUserNameFromSession();
-            const userEmail = getUserEmailFromSession();
-            
             console.log('👤 User ID:', userId);
             console.log('👤 User Name:', userName);
             console.log('📧 User Email:', userEmail);
@@ -883,17 +1076,36 @@
             });
 
             // ============================================================
-            // SEND PAYMENT TO ADMIN FOR APPROVAL - WITH USER NAME
+            // AMOUNT INPUT VALIDATION
+            // ============================================================
+            amountInput.addEventListener('input', function() {
+                if (this.value < 0) this.value = '';
+                // Remove leading zeros
+                if (this.value.length > 1 && this.value.startsWith('0')) {
+                    this.value = this.value.replace(/^0+/, '');
+                }
+            });
+
+            // ============================================================
+            // SEND PAYMENT TO ADMIN FOR APPROVAL
             // ============================================================
             async function sendPaymentToAdmin(userId, phone, transactionCode, amount) {
                 try {
                     console.log('📤 Sending payment to admin...');
                     console.log('👤 User Name:', userName);
-                    
+                    console.log('💰 Amount:', amount);
+                    console.log('📱 Phone:', phone);
+                    console.log('🔑 Transaction:', transactionCode);
+
+                    // Check if user is logged in
+                    if (!userId) {
+                        return { success: false, error: 'User not logged in. Please login again.' };
+                    }
+
                     // First, check if profile exists for this user
                     const { data: profileData, error: fetchError } = await window.supabaseFunctions.supabase
                         .from('profiles')
-                        .select('id, full_name, wallet_balance, wallet_approval_status')
+                        .select('id, full_name, wallet_balance, wallet_approval_status, email')
                         .eq('user_id', userId);
 
                     if (fetchError) {
@@ -917,7 +1129,7 @@
                                 pending_wallet_balance: parseInt(amount),
                                 wallet_amount: parseInt(amount),
                                 wallet_phone: '+254' + phone,
-                                wallet_transaction: transactionCode,
+                                wallet_transaction: transactionCode.toUpperCase(),
                                 wallet_approval_date: new Date().toISOString(),
                                 status: 'pending',
                                 is_active: false,
@@ -943,16 +1155,16 @@
                         return { success: true };
                     }
 
-                    // Profile exists - update it with name if missing
+                    // Profile exists - update it
                     const profile = profileData[0];
                     console.log('✅ Profile found for user:', profile.id);
                     
-                    // If profile has no name, update it
+                    // Update profile with payment details
                     const updateData = {
                         wallet_approval_status: 'pending',
                         pending_wallet_balance: parseInt(amount),
                         wallet_phone: '+254' + phone,
-                        wallet_transaction: transactionCode,
+                        wallet_transaction: transactionCode.toUpperCase(),
                         wallet_amount: parseInt(amount),
                         wallet_approval_date: new Date().toISOString(),
                         updated_at: new Date().toISOString()
@@ -987,8 +1199,22 @@
                         `${userName || 'User'} requested wallet top-up of KSh${amount} - Transaction: ${transactionCode}`
                     );
 
-                    // Notify admin
-                    console.log('📧 Admin notification: New wallet payment pending!');
+                    // Also create a notification for admin
+                    await window.supabaseFunctions.supabase
+                        .from('admin_notifications')
+                        .insert([{
+                            type: 'wallet_payment',
+                            user_id: userId,
+                            user_name: userName || 'User',
+                            amount: parseInt(amount),
+                            transaction_code: transactionCode.toUpperCase(),
+                            phone: '+254' + phone,
+                            status: 'pending',
+                            created_at: new Date().toISOString(),
+                            read: false
+                        }]);
+
+                    console.log('📧 Admin notification created!');
                     console.log('👤 User:', userName || 'User');
                     console.log('💰 Amount: KSh' + amount);
                     console.log('📱 Phone: +254' + phone);
@@ -1005,7 +1231,7 @@
             // ============================================================
             // CONFIRM BUTTON - SEND TO ADMIN
             // ============================================================
-            confirmBtn.addEventListener('click', function() {
+            confirmBtn.addEventListener('click', async function() {
                 const phone = phoneInput.value.trim();
                 const transactionCode = transactionInput.value.trim();
                 const amount = amountInput.value.trim();
@@ -1014,6 +1240,7 @@
                 if (!amount || parseInt(amount) < 100) {
                     showToast('Please enter a valid amount (minimum KSh100)', 'error');
                     amountInput.focus();
+                    amountInput.scrollIntoView({ behavior: 'smooth' });
                     return;
                 }
 
@@ -1021,6 +1248,7 @@
                 if (phone.length < 9) {
                     showToast('Please enter a valid phone number (e.g., 722xxxxxx)', 'error');
                     phoneInput.focus();
+                    phoneInput.scrollIntoView({ behavior: 'smooth' });
                     return;
                 }
 
@@ -1028,6 +1256,7 @@
                 if (transactionCode.length < 5) {
                     showToast('Please enter your M-PESA transaction code', 'error');
                     transactionInput.focus();
+                    transactionInput.scrollIntoView({ behavior: 'smooth' });
                     return;
                 }
 
@@ -1036,77 +1265,81 @@
                 if (!session) {
                     showToast('Please login to continue', 'error');
                     setTimeout(function() {
-                        window.location.href = 'login.html?redirect=payment.html';
+                        window.location.href = 'login.html?redirect=checkout-mpesa.html';
                     }, 1500);
                     return;
                 }
 
                 // Show loading
                 confirmBtn.disabled = true;
-                confirmBtnText.textContent = 'Processing...';
+                confirmBtnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
                 confirmLoader.classList.add('show');
                 confirmIcon.style.display = 'none';
 
-                // Process payment confirmation
-                setTimeout(async function() {
-                    try {
-                        // Get user ID from URL or session
-                        let userId = getUserIdFromURL();
+                try {
+                    // Get user ID
+                    let userId = getUserIdFromURL();
+                    
+                    if (!userId && userData) {
+                        userId = userData.id;
+                    }
+
+                    if (!userId) {
+                        showToast('User not found. Please login again.', 'error');
+                        confirmBtn.disabled = false;
+                        confirmBtnText.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Payment';
+                        confirmLoader.classList.remove('show');
+                        confirmIcon.style.display = 'inline-block';
+                        return;
+                    }
+
+                    console.log('📝 Processing payment for user:', userId);
+
+                    // Send payment to admin for approval
+                    const result = await sendPaymentToAdmin(
+                        userId,
+                        phone,
+                        transactionCode,
+                        amount
+                    );
+
+                    if (result.success) {
+                        // Hide form and instructions, show pending state
+                        paymentForm.style.display = 'none';
+                        instructions.style.display = 'none';
+                        pendingState.classList.add('show');
                         
-                        if (!userId) {
-                            const sessionData = JSON.parse(session);
-                            userId = sessionData.id;
-                        }
+                        showToast('✅ Payment sent for admin approval!', 'success');
 
-                        console.log('📝 Processing payment for user:', userId);
+                        // Reset button
+                        confirmBtn.disabled = false;
+                        confirmBtnText.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Payment';
+                        confirmLoader.classList.remove('show');
+                        confirmIcon.style.display = 'inline-block';
 
-                        // Send payment to admin for approval
-                        const result = await sendPaymentToAdmin(
-                            userId,
-                            phone,
-                            transactionCode,
-                            amount
-                        );
+                        // Redirect to profile after 3 seconds
+                        setTimeout(function() {
+                            window.location.href = 'myprofile.html';
+                        }, 3000);
 
-                        if (result.success) {
-                            // Hide form and instructions, show pending state
-                            paymentForm.style.display = 'none';
-                            instructions.style.display = 'none';
-                            pendingState.classList.add('show');
-                            
-                            showToast('✅ Payment sent for admin approval!', 'success');
-
-                            // Reset button
-                            confirmBtn.disabled = false;
-                            confirmBtnText.textContent = 'CONFIRM PAYMENT ✓';
-                            confirmLoader.classList.remove('show');
-                            confirmIcon.style.display = 'inline-block';
-
-                            // Redirect to profile after 3 seconds
-                            setTimeout(function() {
-                                window.location.href = 'myprofile.html';
-                            }, 3000);
-
-                        } else {
-                            showToast('❌ Payment failed: ' + result.error, 'error');
-                            
-                            confirmBtn.disabled = false;
-                            confirmBtnText.textContent = 'CONFIRM PAYMENT ✓';
-                            confirmLoader.classList.remove('show');
-                            confirmIcon.style.display = 'inline-block';
-                        }
-
-                    } catch (error) {
-                        console.error('❌ Payment error:', error);
-                        showToast('An error occurred. Please try again.', 'error');
+                    } else {
+                        showToast('❌ Payment failed: ' + result.error, 'error');
                         
                         confirmBtn.disabled = false;
-                        confirmBtnText.textContent = 'CONFIRM PAYMENT ✓';
+                        confirmBtnText.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Payment';
                         confirmLoader.classList.remove('show');
                         confirmIcon.style.display = 'inline-block';
                     }
 
-                }, 1500);
+                } catch (error) {
+                    console.error('❌ Payment error:', error);
+                    showToast('An error occurred. Please try again.', 'error');
+                    
+                    confirmBtn.disabled = false;
+                    confirmBtnText.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Payment';
+                    confirmLoader.classList.remove('show');
+                    confirmIcon.style.display = 'inline-block';
+                }
             });
 
             // ============================================================
@@ -1117,7 +1350,7 @@
                 if (!session) {
                     showToast('Please login to continue', 'error');
                     setTimeout(function() {
-                        window.location.href = 'login.html?redirect=payment.html';
+                        window.location.href = 'login.html?redirect=checkout-mpesa.html';
                     }, 1500);
                 }
             }
@@ -1155,10 +1388,19 @@
                 }
             });
 
+            amountInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    phoneInput.focus();
+                }
+            });
+
             console.log('✅ Payment Page Loaded Successfully!');
             console.log('📋 Till Number: 4159500');
             console.log('👤 Account Name: Mercy Chepkemoi');
+            console.log('📞 Admin Contact: 0712831606');
             console.log('🔄 Payment sent to admin for approval');
+            console.log('📱 Mobile-first design optimized');
 
         });
     </script>
