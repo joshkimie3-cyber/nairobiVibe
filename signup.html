@@ -14,8 +14,71 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Supabase Config -->
-    <script src="supabase-config.js"></script>
+    <!-- SUPABASE CONFIG - EMBEDDED WITH NEW KEYS -->
+    <script>
+        // ============================================================
+        // SUPABASE CONFIG - NEW KEYS
+        // ============================================================
+        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Make it available globally
+        window.supabaseFunctions = {
+            supabase: supabase,
+            signUp: async (email, password, userData) => {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: userData
+                    }
+                });
+                return { data, error };
+            },
+            signIn: async (email, password) => {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                return { data, error };
+            },
+            signOut: async () => {
+                const { error } = await supabase.auth.signOut();
+                return { error };
+            },
+            getSession: async () => {
+                const { data, error } = await supabase.auth.getSession();
+                return { data, error };
+            },
+            createProfile: async (profileData) => {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .insert([profileData]);
+                return { data, error };
+            },
+            getProfile: async (userId) => {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .single();
+                return { data, error };
+            },
+            updateProfile: async (userId, updates) => {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .update(updates)
+                    .eq('user_id', userId);
+                return { data, error };
+            }
+        };
+        
+        console.log('✅ Supabase initialized with NEW keys!');
+        console.log('🔗 URL:', SUPABASE_URL);
+    </script>
     
     <style>
         /* ============================================================
@@ -664,7 +727,8 @@
             showToast('System error. Please refresh the page.', 'error');
             console.error('❌ Supabase not loaded properly');
         } else {
-            console.log('✅ Supabase is ready');
+            console.log('✅ Supabase is ready with NEW keys');
+            console.log('🔗 URL:', SUPABASE_URL);
         }
         
         // ============================================================
@@ -914,7 +978,7 @@
         });
         
         console.log('✅ Registration Page Loaded Successfully!');
-        console.log('🔐 Supabase Integration: Active');
+        console.log('🔐 Supabase Integration: Active with NEW keys');
         console.log('🎨 Design: Clean, Professional, Responsive');
         console.log('📧 Email confirmation: Required');
         
