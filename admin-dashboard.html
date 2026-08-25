@@ -617,6 +617,7 @@
         .action-buttons .btn-view { background: #3498db; color: #fff; }
         .action-buttons .btn-approve { background: #27ae60; color: #fff; }
         .action-buttons .btn-reject { background: #e74c3c; color: #fff; }
+        .action-buttons .btn-edit { background: #f39c12; color: #fff; }
         .action-buttons .btn-delete { background: #e74c3c; color: #fff; }
         
         /* ---------- PAGINATION ---------- */
@@ -839,6 +840,7 @@
         .modal-footer .btn-secondary { background: #e8e8e8; color: #666; }
         .modal-footer .btn-primary { background: #27ae60; color: #fff; }
         .modal-footer .btn-danger { background: #e74c3c; color: #fff; }
+        .modal-footer .btn-warning { background: #f39c12; color: #fff; }
         
         /* ---------- IMAGE VIEWER ---------- */
         .image-viewer {
@@ -1349,7 +1351,7 @@
         </div>
         
         <!-- ============================================================
-             PAGE: MEMBERS
+             PAGE: MEMBERS (Full Members List with Edit/Delete)
              ============================================================ -->
         <div id="page-members" style="display:none;">
             <div class="page-title">
@@ -1407,7 +1409,98 @@
 </div>
 
 <!-- ============================================================
-     MODAL
+     EDIT USER MODAL
+     ============================================================ -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-edit" style="color:#f39c12;"></i> Edit Member</h3>
+            <span class="close" id="editModalClose">&times;</span>
+        </div>
+        <div class="modal-body" id="editModalBody">
+            <form id="editForm">
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" id="editFullName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Email <span class="required">*</span></label>
+                    <input type="email" id="editEmail" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" id="editPhone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="editLocation" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="editRole" class="form-control">
+                        <option value="client">Client</option>
+                        <option value="escort">Escort</option>
+                        <option value="agency">Agency</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="editStatus" class="form-control">
+                        <option value="pending">Pending</option>
+                        <option value="pending_review">Pending Review</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Wallet Balance</label>
+                    <input type="number" id="editWalletBalance" class="form-control">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="editModalCloseBtn">Cancel</button>
+            <button class="btn-primary" id="editSaveBtn"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 12px;
+    }
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 12px;
+        color: #555;
+        margin-bottom: 4px;
+    }
+    .form-group .required {
+        color: #e74c3c;
+    }
+    .form-control {
+        width: 100%;
+        padding: 8px 12px;
+        border: 2px solid #e8e8e8;
+        border-radius: 8px;
+        font-size: 13px;
+        font-family: 'Open Sans', sans-serif;
+        transition: all 0.3s ease;
+        background: #fafafa;
+        color: #333;
+    }
+    .form-control:focus {
+        outline: none;
+        border-color: #E0006C;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(224,0,108,0.1);
+    }
+</style>
+
+<!-- ============================================================
+     MODAL (View User)
      ============================================================ -->
 <div class="modal-overlay" id="userModal">
     <div class="modal">
@@ -1465,7 +1558,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - FULLY WORKING ADMIN DASHBOARD
+     JAVASCRIPT - FULLY WORKING ADMIN DASHBOARD WITH EDIT/DELETE
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1595,6 +1688,20 @@
         const modalApproveBtn = document.getElementById('modalApproveBtn');
         const modalRejectBtn = document.getElementById('modalRejectBtn');
         const notificationBtn = document.getElementById('notificationBtn');
+        
+        // Edit Modal Elements
+        const editModal = document.getElementById('editModal');
+        const editModalClose = document.getElementById('editModalClose');
+        const editModalCloseBtn = document.getElementById('editModalCloseBtn');
+        const editSaveBtn = document.getElementById('editSaveBtn');
+        const editFullName = document.getElementById('editFullName');
+        const editEmail = document.getElementById('editEmail');
+        const editPhone = document.getElementById('editPhone');
+        const editLocation = document.getElementById('editLocation');
+        const editRole = document.getElementById('editRole');
+        const editStatus = document.getElementById('editStatus');
+        const editWalletBalance = document.getElementById('editWalletBalance');
+        let currentEditUserId = null;
         
         // ============================================================
         // STATE
@@ -1742,7 +1849,7 @@
         }
         
         // ============================================================
-        // LOAD USERS - FIXED
+        // LOAD USERS
         // ============================================================
         async function loadUsers() {
             try {
@@ -1971,7 +2078,7 @@
         };
         
         // ============================================================
-        // RENDER WALLET HISTORY - FIXED
+        // RENDER WALLET HISTORY
         // ============================================================
         function renderWalletHistory() {
             const searchTerm = walletSearchInput.value.toLowerCase();
@@ -1980,7 +2087,6 @@
             console.log('📊 Rendering wallet history...');
             console.log('👥 Total users:', allUsers.length);
             
-            // Get ALL users that have ANY wallet data
             let filtered = allUsers.filter(user => {
                 const hasData = (user.wallet_amount && user.wallet_amount > 0) || 
                                 (user.wallet_transaction && user.wallet_transaction.length > 0) || 
@@ -2026,7 +2132,6 @@
                                 <i class="fas fa-wallet"></i>
                                 <h4>No payment records found</h4>
                                 <p>Total users: ${allUsers.length}</p>
-                                <p style="font-size:10px; color:#999; margin-top:4px;">Check console for debug logs.</p>
                             </div>
                         </td>
                     </tr>
@@ -2087,7 +2192,7 @@
         };
         
         // ============================================================
-        // RENDER ALL MEMBERS
+        // RENDER ALL MEMBERS (with Edit and Delete)
         // ============================================================
         function renderAllMembers() {
             const searchTerm = membersSearchInput.value.toLowerCase();
@@ -2148,10 +2253,7 @@
                         <td>
                             <div class="action-buttons">
                                 <button class="btn-view" onclick="viewUser('${user.id}')"><i class="fas fa-eye"></i></button>
-                                ${(user.status === 'pending_review' || user.status === 'pending') ? `
-                                    <button class="btn-approve" onclick="approveUser('${user.id}')"><i class="fas fa-check"></i></button>
-                                    <button class="btn-reject" onclick="rejectUser('${user.id}')"><i class="fas fa-times"></i></button>
-                                ` : ''}
+                                <button class="btn-edit" onclick="openEditModal('${user.id}')"><i class="fas fa-edit"></i></button>
                                 ${user.role !== 'admin' ? `
                                     <button class="btn-delete" onclick="deleteUser('${user.id}')"><i class="fas fa-trash"></i></button>
                                 ` : ''}
@@ -2239,6 +2341,102 @@
         };
         
         // ============================================================
+        // OPEN EDIT MODAL
+        // ============================================================
+        window.openEditModal = function(userId) {
+            const user = allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            currentEditUserId = userId;
+            editFullName.value = user.full_name || '';
+            editEmail.value = user.email || '';
+            editPhone.value = user.phone || user.phone_number || '';
+            editLocation.value = user.location || '';
+            editRole.value = user.role || 'client';
+            editStatus.value = user.status || 'pending';
+            editWalletBalance.value = user.wallet_balance || 0;
+            
+            editModal.classList.add('show');
+        };
+        
+        // ============================================================
+        // CLOSE EDIT MODAL
+        // ============================================================
+        function closeEditModal() {
+            editModal.classList.remove('show');
+            currentEditUserId = null;
+        }
+        
+        editModalClose.addEventListener('click', closeEditModal);
+        editModalCloseBtn.addEventListener('click', closeEditModal);
+        editModal.addEventListener('click', function(e) {
+            if (e.target === editModal) closeEditModal();
+        });
+        
+        // ============================================================
+        // SAVE EDITED USER
+        // ============================================================
+        editSaveBtn.addEventListener('click', async function() {
+            if (!currentEditUserId) {
+                showToast('No user selected to edit.', 'error');
+                return;
+            }
+            
+            const updatedData = {
+                full_name: editFullName.value.trim(),
+                email: editEmail.value.trim(),
+                phone: editPhone.value.trim(),
+                location: editLocation.value.trim(),
+                role: editRole.value,
+                status: editStatus.value,
+                wallet_balance: parseInt(editWalletBalance.value) || 0,
+                updated_at: new Date().toISOString()
+            };
+            
+            // Validate
+            if (!updatedData.full_name) {
+                showToast('Full name is required.', 'error');
+                editFullName.focus();
+                return;
+            }
+            if (!updatedData.email) {
+                showToast('Email is required.', 'error');
+                editEmail.focus();
+                return;
+            }
+            
+            try {
+                editSaveBtn.disabled = true;
+                editSaveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                
+                const { error } = await window.supabaseFunctions.supabase
+                    .from('profiles')
+                    .update(updatedData)
+                    .eq('id', currentEditUserId);
+                
+                if (error) throw error;
+                
+                // Log activity
+                await window.supabaseFunctions.logActivity(
+                    currentEditUserId,
+                    'profile_updated',
+                    `Admin updated profile for ${updatedData.full_name}`
+                );
+                
+                showToast(`✅ ${updatedData.full_name} updated successfully!`, 'success');
+                closeEditModal();
+                await loadUsers();
+                
+            } catch (error) {
+                console.error('❌ Update error:', error);
+                showToast('Error updating user: ' + error.message, 'error');
+            } finally {
+                editSaveBtn.disabled = false;
+                editSaveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            }
+        });
+        
+        // ============================================================
         // APPROVE USER
         // ============================================================
         window.approveUser = async function(userId) {
@@ -2292,10 +2490,10 @@
         window.deleteUser = async function(userId) {
             const user = allUsers.find(u => u.id === userId);
             if (!user || user.role === 'admin') {
-                showToast('Cannot delete admin', 'error');
+                showToast('Cannot delete admin user.', 'error');
                 return;
             }
-            if (!confirm(`Delete ${user.full_name || 'User'} permanently?`)) return;
+            if (!confirm(`Delete ${user.full_name || 'User'} permanently? This action cannot be undone!`)) return;
             
             try {
                 const { error } = await window.supabaseFunctions.supabase
@@ -2304,9 +2502,16 @@
                     .eq('id', userId);
                 if (error) throw error;
                 
+                // Log activity
+                await window.supabaseFunctions.logActivity(
+                    userId,
+                    'profile_deleted',
+                    `Admin deleted profile for ${user.full_name || 'User'}`
+                );
+                
                 allUsers = allUsers.filter(u => u.id !== userId);
                 await loadUsers();
-                showToast(`Deleted.`, 'info');
+                showToast(`🗑️ ${user.full_name || 'User'} deleted successfully.`, 'info');
                 userModal.classList.remove('show');
             } catch (error) {
                 showToast('Error: ' + error.message, 'error');
@@ -2516,6 +2721,7 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 userModal.classList.remove('show');
+                editModal.classList.remove('show');
                 toast.classList.remove('show');
                 closeSidebar();
                 closeImageViewer();
@@ -2528,7 +2734,7 @@
         });
         
         // ============================================================
-        // INIT - FIXED (no top-level await)
+        // INIT
         // ============================================================
         async function initDashboard() {
             await loadUsers();
@@ -2541,6 +2747,7 @@
             console.log('📡 Realtime: ACTIVE');
             console.log('🔔 Notifications: ACTIVE');
             console.log('📱 Sidebar toggle: FIXED for mobile');
+            console.log('✏️ Edit/Delete: ENABLED for members');
         }
         
         // Call the async function
