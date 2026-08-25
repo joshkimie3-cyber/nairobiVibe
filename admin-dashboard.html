@@ -47,7 +47,6 @@
                                 }]);
                             return { data, error };
                         },
-                        // Helper to get all profiles
                         getAllProfiles: async () => {
                             const { data, error } = await supabase
                                 .from('profiles')
@@ -55,7 +54,6 @@
                                 .order('created_at', { ascending: false });
                             return { data, error };
                         },
-                        // Helper to update profile
                         updateProfile: async (id, updates) => {
                             const { data, error } = await supabase
                                 .from('profiles')
@@ -63,7 +61,6 @@
                                 .eq('id', id);
                             return { data, error };
                         },
-                        // Helper to delete profile
                         deleteProfile: async (id) => {
                             const { data, error } = await supabase
                                 .from('profiles')
@@ -71,7 +68,6 @@
                                 .eq('id', id);
                             return { data, error };
                         },
-                        // Helper to get wallet pending payments
                         getWalletPending: async () => {
                             const { data, error } = await supabase
                                 .from('profiles')
@@ -1311,7 +1307,7 @@
         </div>
         
         <!-- ============================================================
-             PAGE: WALLET APPROVALS
+             PAGE: WALLET APPROVALS - FIXED
              ============================================================ -->
         <div id="page-wallet" style="display:none;">
             <div class="page-title">
@@ -1504,7 +1500,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - FULLY CORRECTED ADMIN DASHBOARD
+     JAVASCRIPT - FULLY CORRECTED WITH DEBUG LOGS
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1781,7 +1777,7 @@
         }
         
         // ============================================================
-        // LOAD USERS - CORRECTED
+        // LOAD USERS - WITH DEBUG LOGS
         // ============================================================
         async function loadUsers() {
             try {
@@ -1792,6 +1788,17 @@
                 
                 if (error) throw error;
                 allUsers = data || [];
+                
+                // DEBUG: Log users with wallet data
+                console.log('🔍 DEBUG: Checking for wallet data...');
+                let walletCount = 0;
+                allUsers.forEach(u => {
+                    if (u.wallet_amount > 0 || u.wallet_transaction || u.wallet_approval_status === 'pending') {
+                        walletCount++;
+                        console.log(`✅ Wallet found: ${u.full_name || 'Unknown'}: amount=${u.wallet_amount}, status=${u.wallet_approval_status}, trans=${u.wallet_transaction}`);
+                    }
+                });
+                console.log(`📊 Found ${walletCount} users with wallet data`);
                 
                 updateStats();
                 renderMembers();
@@ -1996,11 +2003,14 @@
         };
         
         // ============================================================
-        // RENDER WALLET HISTORY - FIXED TO SHOW ALL PAYMENTS
+        // RENDER WALLET HISTORY - FIXED WITH DEBUG LOGS
         // ============================================================
         function renderWalletHistory() {
             const searchTerm = walletSearchInput.value.toLowerCase();
             const statusFilter = walletFilterStatus.value;
+            
+            console.log('📊 Rendering wallet history...');
+            console.log('👥 All users count:', allUsers.length);
             
             // Get ALL users with wallet transactions
             let filtered = allUsers.filter(user => {
@@ -2010,6 +2020,10 @@
                                       user.wallet_approval_status === 'approved' ||
                                       user.wallet_approval_status === 'rejected';
                 
+                if (hasTransaction) {
+                    console.log(`✅ Found wallet: ${user.full_name || 'Unknown'}: amount=${user.wallet_amount}, status=${user.wallet_approval_status}`);
+                }
+                
                 if (!hasTransaction) return false;
                 
                 const matchesSearch = 
@@ -2018,6 +2032,8 @@
                 const matchesStatus = statusFilter === 'all' || user.wallet_approval_status === statusFilter;
                 return matchesSearch && matchesStatus;
             });
+            
+            console.log(`📊 Found ${filtered.length} wallet transactions`);
             
             filtered.sort((a, b) => new Date(b.wallet_approval_date || b.created_at) - new Date(a.wallet_approval_date || a.created_at));
             
@@ -2037,7 +2053,7 @@
                             <div class="empty-state">
                                 <i class="fas fa-wallet"></i>
                                 <h4>No payment records</h4>
-                                <p>No wallet transactions found</p>
+                                <p>No wallet transactions found. Check if wallet columns exist.</p>
                             </div>
                         </td>
                     </tr>
