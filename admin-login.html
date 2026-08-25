@@ -58,16 +58,6 @@
                                     created_at: new Date().toISOString()
                                 }]);
                             return { data, error };
-                        },
-                        // Helper to check if user is admin
-                        isAdmin: async (userId) => {
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .select('role, status')
-                                .eq('user_id', userId)
-                                .single();
-                            if (error || !data) return { isAdmin: false, error };
-                            return { isAdmin: data.role === 'admin' && data.status === 'approved', data };
                         }
                     };
                     
@@ -329,7 +319,7 @@
                 <label>Password <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Enter admin password" required autocomplete="current-password" value="Admin@123">
+                    <input type="password" id="password" placeholder="Enter admin password" required autocomplete="current-password" value="Admin@123!">
                     <button type="button" class="password-toggle" id="togglePassword">
                         <i class="fas fa-eye"></i>
                     </button>
@@ -553,21 +543,21 @@
                     const { data: profileData, error: profileError } = await window.supabaseFunctions.getProfile(data.user.id);
                     
                     if (profileError || !profileData) {
-                        showToast('User profile not found. Please create a profile first.', 'error');
+                        showToast('❌ User profile not found. Please create a profile in Supabase first.', 'error');
                         resetButton();
                         return;
                     }
                     
                     // Step 3: Check if admin
                     if (profileData.role !== 'admin') {
-                        showToast('Access denied. You are not an admin.', 'error');
+                        showToast('❌ Access denied. You are not an admin.', 'error');
                         resetButton();
                         return;
                     }
                     
                     // Step 4: Check status
                     if (profileData.status === 'pending') {
-                        showToast('Your admin account is pending approval.', 'error');
+                        showToast('⏳ Your admin account is pending approval.', 'error');
                         resetButton();
                         return;
                     }
@@ -585,7 +575,7 @@
                     
                     localStorage.setItem('nairobi_vibe_admin_session', JSON.stringify(sessionData));
                     
-                    showToast('Welcome Admin! Redirecting... 🎉', 'success');
+                    showToast('🎉 Welcome Admin! Redirecting...', 'success');
                     
                     try {
                         await window.supabaseFunctions.logActivity(
@@ -608,7 +598,7 @@
                 if (errorMsg.includes('Invalid login credentials')) {
                     errorMsg = '❌ Invalid email or password. Please try again.';
                 } else if (errorMsg.includes('Email not confirmed')) {
-                    errorMsg = 'Please confirm your email first. Check your inbox!';
+                    errorMsg = '📧 Please confirm your email first. Check your inbox!';
                 }
                 
                 showToast(errorMsg, 'error');
@@ -647,7 +637,9 @@
         });
         
         console.log('✅ Admin Login Page Ready');
-        console.log('📧 Try: admin@nairovibe.com / Admin@123');
+        console.log('📧 Email: admin@nairovibe.com');
+        console.log('🔑 Password: Admin@123!');
+        console.log('💡 If "profile not found", run the INSERT query in Supabase SQL Editor');
         
     });
 </script>
