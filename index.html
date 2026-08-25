@@ -41,33 +41,10 @@
                     
                     window.supabaseFunctions = {
                         supabase: supabase,
-                        signUp: async (email, password, userData) => {
-                            const { data, error } = await supabase.auth.signUp({
-                                email: email,
-                                password: password,
-                                options: { data: userData }
-                            });
-                            return { data, error };
-                        },
-                        signIn: async (email, password) => {
-                            const { data, error } = await supabase.auth.signInWithPassword({
-                                email: email,
-                                password: password
-                            });
-                            return { data, error };
-                        },
-                        signOut: async () => {
-                            const { error } = await supabase.auth.signOut();
-                            return { error };
-                        },
-                        getSession: async () => {
-                            const { data, error } = await supabase.auth.getSession();
-                            return { data, error };
-                        },
                         getApprovedProfiles: async (limit = 30) => {
                             const { data, error } = await supabase
                                 .from('profiles')
-                                .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                                .select('*')
                                 .eq('status', 'approved')
                                 .eq('is_active', true)
                                 .order('created_at', { ascending: false })
@@ -77,7 +54,7 @@
                         searchProfiles: async (searchTerm, limit = 30) => {
                             const { data, error } = await supabase
                                 .from('profiles')
-                                .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                                .select('*')
                                 .eq('status', 'approved')
                                 .eq('is_active', true)
                                 .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
@@ -93,21 +70,9 @@
                                 .eq('is_active', true);
                             return { count, error };
                         },
-                        subscribeToProfiles: (callback) => {
-                            return supabase
-                                .channel('public:profiles')
-                                .on('postgres_changes', 
-                                    { 
-                                        event: '*', 
-                                        schema: 'public', 
-                                        table: 'profiles' 
-                                    }, 
-                                    (payload) => {
-                                        console.log('🔄 Real-time update:', payload);
-                                        callback(payload);
-                                    }
-                                )
-                                .subscribe();
+                        signOut: async () => {
+                            const { error } = await supabase.auth.signOut();
+                            return { error };
                         }
                     };
                     
@@ -137,7 +102,7 @@
 
     <style>
         /* ============================================================
-                   HOMEPAGE - PROFESSIONAL REDESIGN
+                   HOMEPAGE - PROFESSIONAL WITH PHOTO MODAL
                    ============================================================ */
         
         * {
@@ -373,7 +338,7 @@
         }
         
         /* ============================================================
-                   LOCATION TAGS - SQUEEZED
+                   LOCATION TAGS
                    ============================================================ */
         .location-tags {
             display: flex;
@@ -410,7 +375,7 @@
         }
         
         /* ============================================================
-                   COUNTY GRID - SQUEEZED
+                   COUNTY GRID
                    ============================================================ */
         .county-grid {
             display: flex;
@@ -447,7 +412,7 @@
         }
         
         /* ============================================================
-                   TOWN GRID - SQUEEZED
+                   TOWN GRID
                    ============================================================ */
         .town-grid {
             display: flex;
@@ -484,7 +449,7 @@
         }
         
         /* ============================================================
-                   ESCORT CARD LAYOUT - PROFESSIONAL
+                   ESCORT CARD LAYOUT
                    ============================================================ */
         .escort-grid {
             display: flex;
@@ -510,19 +475,20 @@
         
         .escort-card-full .card-image {
             width: 100%;
-            height: 220px;
+            height: 250px;
             background: linear-gradient(135deg, #fce4ec, #f8d7da);
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
         .escort-card-full .card-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            loading: lazy;
+            object-fit: contain;
+            background: #1a0528;
         }
         .escort-card-full .card-image .placeholder-icon {
             font-size: 60px;
@@ -589,7 +555,7 @@
             margin-right: 3px;
         }
         
-        /* ----- SMALL CARDS (2 in a row) - WITH DETAILS ----- */
+        /* ----- SMALL CARDS (2 in a row) ----- */
         .escort-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -609,7 +575,7 @@
         
         .escort-card-small .card-image {
             width: 100%;
-            height: 140px;
+            height: 160px;
             background: linear-gradient(135deg, #fce4ec, #f8d7da);
             position: relative;
             overflow: hidden;
@@ -617,12 +583,13 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            cursor: pointer;
         }
         .escort-card-small .card-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            loading: lazy;
+            object-fit: contain;
+            background: #1a0528;
         }
         .escort-card-small .card-image .placeholder-icon {
             font-size: 40px;
@@ -699,6 +666,218 @@
         }
         .escort-card-small .card-body .call-btn:active { transform: scale(0.95); }
         .escort-card-small .card-body .call-btn i { font-size: 12px; }
+        
+        /* ============================================================
+                   PHOTO DETAIL MODAL
+                   ============================================================ */
+        .photo-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .photo-modal-overlay.show {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        .photo-modal {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUpModal 0.4s ease;
+            position: relative;
+        }
+        
+        @keyframes slideUpModal {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .photo-modal .modal-close {
+            position: sticky;
+            top: 0;
+            right: 0;
+            float: right;
+            background: rgba(224, 0, 108, 0.9);
+            color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 10px 10px 0 0;
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .photo-modal .modal-close:active {
+            transform: scale(0.9);
+        }
+        
+        .photo-modal .modal-image {
+            width: 100%;
+            height: 350px;
+            background: #1a0528;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: -50px;
+        }
+        
+        .photo-modal .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .photo-modal .modal-image .placeholder-icon {
+            font-size: 80px;
+            color: #E0006C;
+            opacity: 0.3;
+        }
+        
+        .photo-modal .modal-content {
+            padding: 20px 24px 24px;
+        }
+        
+        .photo-modal .modal-content .escort-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        
+        .photo-modal .modal-content .escort-phone {
+            font-size: 15px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        
+        .photo-modal .modal-content .escort-phone i {
+            color: #E0006C;
+            margin-right: 6px;
+        }
+        
+        .photo-modal .modal-content .escort-location {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .photo-modal .modal-content .escort-location i {
+            color: #E0006C;
+            margin-right: 6px;
+        }
+        
+        .photo-modal .modal-content .escort-area {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .photo-modal .modal-content .escort-area i {
+            color: #E0006C;
+            margin-right: 6px;
+        }
+        
+        .photo-modal .modal-content .escort-details {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            padding: 12px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 12px;
+        }
+        
+        .photo-modal .modal-content .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .photo-modal .modal-content .detail-item {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .photo-modal .modal-content .detail-item .label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: #999;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        
+        .photo-modal .modal-content .detail-item .value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .photo-modal .modal-content .services-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0 14px;
+        }
+        
+        .photo-modal .modal-content .services-list .service-tag {
+            background: #fce4ec;
+            color: #E0006C;
+            padding: 3px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .photo-modal .modal-content .modal-call-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #25d366, #1da851);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 50px;
+        }
+        
+        .photo-modal .modal-content .modal-call-btn:active {
+            transform: scale(0.97);
+        }
         
         /* ---------- LOADING SPINNER ---------- */
         .loading-spinner {
@@ -838,11 +1017,12 @@
             .hero-section { padding: 30px 25px; min-height: 220px; }
             .hero-section h1 { font-size: 26px; }
             .hero-section p { font-size: 14px; }
-            .escort-card-full .card-image { height: 280px; }
+            .escort-card-full .card-image { height: 300px; }
             .escort-card-full .card-inner { flex-direction: row; }
-            .escort-card-full .card-image { width: 40%; height: auto; min-height: 250px; }
+            .escort-card-full .card-image { width: 40%; height: auto; min-height: 280px; }
             .escort-card-full .card-body { width: 60%; padding: 20px 24px; }
-            .escort-card-small .card-image { height: 180px; }
+            .escort-card-small .card-image { height: 200px; }
+            .photo-modal .modal-image { height: 400px; }
         }
         
         @media (min-width: 768px) {
@@ -863,9 +1043,11 @@
             body { padding-bottom: 0; }
             .escort-card-full .card-image { width: 35%; }
             .escort-card-full .card-body { width: 65%; }
-            .escort-card-full .card-image { min-height: 300px; }
-            .escort-card-small .card-image { height: 200px; }
+            .escort-card-full .card-image { min-height: 320px; }
+            .escort-card-small .card-image { height: 220px; }
             .refresh-indicator { bottom: 30px; right: 30px; }
+            .photo-modal { max-width: 550px; }
+            .photo-modal .modal-image { height: 450px; }
         }
         
         @media (min-width: 1200px) {
@@ -934,6 +1116,21 @@
 <div class="refresh-indicator" id="refreshIndicator">
     <i class="fas fa-sync-alt"></i>
     <span id="refreshCountdown">30s</span>
+</div>
+
+<!-- ============================================================
+     PHOTO DETAIL MODAL
+     ============================================================ -->
+<div class="photo-modal-overlay" id="photoModal">
+    <div class="photo-modal">
+        <button class="modal-close" id="modalCloseBtn">&times;</button>
+        <div class="modal-image" id="modalImage">
+            <div class="placeholder-icon"><i class="fas fa-user"></i></div>
+        </div>
+        <div class="modal-content" id="modalContent">
+            <!-- Rendered by JavaScript -->
+        </div>
+    </div>
 </div>
 
 <!-- ============================================================
@@ -1147,7 +1344,7 @@
     </section>
 
     <!-- ============================================================
-         ESCORT PROFILES - NEW LAYOUT (1 Full + 2 Small)
+         ESCORT PROFILES
          ============================================================ -->
     <section class="section-box">
         <div class="section-header">
@@ -1240,7 +1437,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - OPTIMIZED WITH AUTO-REFRESH
+     JAVASCRIPT - WITH PHOTO MODAL
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1266,6 +1463,14 @@
         const refreshCountdown = document.getElementById('refreshCountdown');
         
         // ============================================================
+        // MODAL ELEMENTS
+        // ============================================================
+        const photoModal = document.getElementById('photoModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalContent = document.getElementById('modalContent');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        
+        // ============================================================
         // STATE
         // ============================================================
         let currentEscorts = [];
@@ -1275,6 +1480,7 @@
         let supabaseChannel = null;
         let isSearching = false;
         let currentSearchTerm = '';
+        let currentEscortData = null;
         
         // ============================================================
         // CHECK SUPABASE - WITH FALLBACK
@@ -1291,7 +1497,7 @@
                     getApprovedProfiles: async (limit = 30) => {
                         const { data, error } = await supabase
                             .from('profiles')
-                            .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                            .select('*')
                             .eq('status', 'approved')
                             .eq('is_active', true)
                             .order('created_at', { ascending: false })
@@ -1301,7 +1507,7 @@
                     searchProfiles: async (searchTerm, limit = 30) => {
                         const { data, error } = await supabase
                             .from('profiles')
-                            .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                            .select('*')
                             .eq('status', 'approved')
                             .eq('is_active', true)
                             .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
@@ -1404,6 +1610,117 @@
         }
         
         // ============================================================
+        // OPEN PHOTO MODAL
+        // ============================================================
+        function openPhotoModal(escort) {
+            if (!escort) return;
+            currentEscortData = escort;
+            
+            // Set image
+            let imageHtml = '';
+            if (escort.photos && escort.photos.length > 0) {
+                imageHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}">`;
+            } else {
+                imageHtml = `<div class="placeholder-icon"><i class="fas fa-user"></i></div>`;
+            }
+            modalImage.innerHTML = imageHtml;
+            
+            // Build content
+            const name = escort.full_name || 'Anonymous';
+            const phone = escort.phone_number || '0712345678';
+            const location = escort.location || 'N/A';
+            const area = escort.area || '';
+            const age = escort.age || 'N/A';
+            const gender = escort.gender || 'N/A';
+            const nationality = escort.nationality || 'N/A';
+            const county = escort.county || 'N/A';
+            const city = escort.city_town || 'N/A';
+            const bio = escort.bio || 'No bio provided.';
+            const services = escort.services || [];
+            const incalls = escort.incalls_rate || 0;
+            const outcalls = escort.outcalls_rate || 0;
+            const wallet = escort.wallet_balance || 0;
+            const membership = escort.membership_plan || 'None';
+            
+            let servicesHtml = '';
+            if (services.length > 0) {
+                servicesHtml = `
+                    <div style="margin-bottom: 10px;">
+                        <div style="font-size:12px; font-weight:600; color:#666; margin-bottom:4px;">Services Offered</div>
+                        <div class="services-list">
+                            ${services.map(s => `<span class="service-tag">${s}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            modalContent.innerHTML = `
+                <div class="escort-name">${name}</div>
+                <div class="escort-phone"><i class="fas fa-phone"></i> ${phone}</div>
+                <div class="escort-location"><i class="fas fa-map-marker-alt"></i> ${location}${area ? ' - ' + area : ''}</div>
+                ${city && city !== 'N/A' ? `<div class="escort-location"><i class="fas fa-city"></i> ${city}</div>` : ''}
+                ${county && county !== 'N/A' ? `<div class="escort-location"><i class="fas fa-flag"></i> ${county}</div>` : ''}
+                <div class="escort-details">${bio}</div>
+                
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="label">Age</div>
+                        <div class="value">${age}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Gender</div>
+                        <div class="value">${gender}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Nationality</div>
+                        <div class="value">${nationality}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Membership</div>
+                        <div class="value">${membership.toUpperCase()}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Incalls</div>
+                        <div class="value">KSh${incalls}/hr</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="label">Outcalls</div>
+                        <div class="value">KSh${outcalls}/hr</div>
+                    </div>
+                </div>
+                
+                ${servicesHtml}
+                
+                ${wallet > 0 ? `<div style="text-align:center; font-size:12px; color:#888; margin-bottom:10px;">💰 Wallet: KSh${wallet}</div>` : ''}
+                
+                <a href="tel:${phone}" class="modal-call-btn">
+                    <i class="fas fa-phone"></i> Call ${name}
+                </a>
+            `;
+            
+            photoModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // ============================================================
+        // CLOSE PHOTO MODAL
+        // ============================================================
+        function closePhotoModal() {
+            photoModal.classList.remove('show');
+            document.body.style.overflow = '';
+            currentEscortData = null;
+        }
+        
+        modalCloseBtn.addEventListener('click', closePhotoModal);
+        photoModal.addEventListener('click', function(e) {
+            if (e.target === photoModal) closePhotoModal();
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closePhotoModal();
+        });
+        
+        // ============================================================
         // LOAD ESCORTS
         // ============================================================
         async function loadEscorts(searchTerm = '') {
@@ -1433,7 +1750,6 @@
                 currentEscorts = escorts;
                 renderEscorts(escorts);
                 
-                // Update stats
                 try {
                     const countResult = await window.supabaseFunctions.getProfileCount();
                     if (!countResult.error && countResult.count !== null) {
@@ -1458,7 +1774,7 @@
         }
         
         // ============================================================
-        // RENDER ESCORT CARDS - WITH UPDATED SMALL CARDS
+        // RENDER ESCORT CARDS
         // ============================================================
         function renderEscorts(escorts) {
             if (loadingSpinner) loadingSpinner.style.display = 'none';
@@ -1482,7 +1798,6 @@
             
             for (let i = 0; i < escorts.length; i++) {
                 if (i % 3 === 0) {
-                    // Position 0, 3, 6, 9... → FULL CARD
                     const escort = escorts[i];
                     html += renderFullCard(escort);
                 } else {
@@ -1490,7 +1805,6 @@
                         html += `<div class="escort-row">`;
                     }
                     
-                    // Position 1, 2, 4, 5, 7, 8... → SMALL CARD (WITH DETAILS)
                     const escort = escorts[i];
                     html += renderSmallCard(escort);
                     
@@ -1522,7 +1836,7 @@
             return `
                 <div class="escort-card-full">
                     <div class="card-inner">
-                        <div class="card-image">
+                        <div class="card-image" onclick="openPhotoModalFromId('${escort.id}')">
                             ${photoHtml}
                         </div>
                         <div class="card-body">
@@ -1540,7 +1854,7 @@
         }
         
         // ============================================================
-        // RENDER SMALL CARD - WITH DETAILS (FIXED)
+        // RENDER SMALL CARD
         // ============================================================
         function renderSmallCard(escort) {
             let photoHtml = '';
@@ -1557,7 +1871,6 @@
             const age = escort.age || 'young';
             const gender = escort.gender || 'Female';
             
-            // Create short description
             let shortDesc = `Meet ${name}, a ${age} years old ${gender} escort from ${location}`;
             if (area) {
                 shortDesc += ` in ${area}`;
@@ -1565,7 +1878,7 @@
             
             return `
                 <div class="escort-card-small">
-                    <div class="card-image">
+                    <div class="card-image" onclick="openPhotoModalFromId('${escort.id}')">
                         ${photoHtml}
                     </div>
                     <div class="card-body">
@@ -1580,6 +1893,16 @@
                 </div>
             `;
         }
+        
+        // ============================================================
+        // OPEN MODAL FROM ID
+        // ============================================================
+        window.openPhotoModalFromId = function(id) {
+            const escort = currentEscorts.find(e => e.id === id);
+            if (escort) {
+                openPhotoModal(escort);
+            }
+        };
         
         // ============================================================
         // SEARCH
@@ -1598,14 +1921,12 @@
         // AUTO-REFRESH FUNCTIONS
         // ============================================================
         function startAutoRefresh() {
-            // Clear existing intervals
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
             if (countdownInterval) clearInterval(countdownInterval);
             
             refreshTimer = 30;
             updateCountdownDisplay();
             
-            // Countdown timer
             countdownInterval = setInterval(() => {
                 refreshTimer--;
                 updateCountdownDisplay();
@@ -1614,7 +1935,6 @@
                 }
             }, 1000);
             
-            // Auto-refresh every 30 seconds
             autoRefreshInterval = setInterval(() => {
                 if (!isSearching) {
                     console.log('🔄 Auto-refreshing escorts...');
@@ -1633,7 +1953,7 @@
         }
         
         // ============================================================
-        // SETUP REALTIME SUBSCRIPTION
+        // SETUP REALTIME
         // ============================================================
         function setupRealtime() {
             if (supabaseChannel) {
@@ -1651,16 +1971,11 @@
                         }, 
                         (payload) => {
                             console.log('🔄 Real-time update detected:', payload);
-                            
-                            // Check if it's an approved profile
                             const newData = payload.new;
                             if (newData && newData.status === 'approved' && newData.is_active === true) {
-                                // Reload escorts
                                 loadEscorts(currentSearchTerm);
                                 showToast('🆕 New escort available!', 'success');
                             }
-                            
-                            // If a profile was updated to approved
                             if (payload.eventType === 'UPDATE' && newData && newData.status === 'approved' && newData.is_active === true) {
                                 loadEscorts(currentSearchTerm);
                             }
@@ -1794,18 +2109,15 @@
         // ============================================================
         checkSession();
         
-        // Load escorts
         setTimeout(() => {
             loadEscorts();
             animateStats();
         }, 100);
         
-        // Start auto-refresh
         setTimeout(() => {
             startAutoRefresh();
         }, 500);
         
-        // Setup realtime
         setTimeout(() => {
             setupRealtime();
         }, 1000);
@@ -1814,8 +2126,9 @@
         console.log('🔑 Using NEW Supabase Keys');
         console.log('🔄 Auto-refresh: ACTIVE (every 30 seconds)');
         console.log('📡 Realtime: ACTIVE');
-        console.log('📱 1 Full + 2 Small cards pattern (with details)');
-        console.log('✅ All integrations updated with NEW keys');
+        console.log('📱 1 Full + 2 Small cards pattern');
+        console.log('🖼️ Click photo to view full details');
+        console.log('✅ Images with object-fit: contain (no cut-off)');
         
     });
 </script>
