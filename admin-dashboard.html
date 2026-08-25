@@ -18,42 +18,100 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- ============================================================
-         SUPABASE CONFIG - EMBEDDED WITH NEW KEYS
+         SUPABASE CONFIG - FULLY CORRECTED
          ============================================================ -->
     <script>
         // ============================================================
-        // YOUR NEW SUPABASE KEYS
+        // YOUR SUPABASE KEYS
         // ============================================================
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
-        // Initialize Supabase client
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabaseReady = false;
         
-        // Make it available globally
-        window.supabaseFunctions = {
-            supabase: supabase,
-            logActivity: async (userId, action, details) => {
-                const { data, error } = await supabase
-                    .from('activity_logs')
-                    .insert([{
-                        user_id: userId,
-                        action: action,
-                        details: details,
-                        created_at: new Date().toISOString()
-                    }]);
-                return { data, error };
+        function initSupabase() {
+            try {
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    
+                    window.supabaseFunctions = {
+                        supabase: supabase,
+                        logActivity: async (userId, action, details) => {
+                            const { data, error } = await supabase
+                                .from('activity_logs')
+                                .insert([{
+                                    user_id: userId,
+                                    action: action,
+                                    details: details,
+                                    created_at: new Date().toISOString()
+                                }]);
+                            return { data, error };
+                        },
+                        // Helper to get all profiles
+                        getAllProfiles: async () => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .select('*')
+                                .order('created_at', { ascending: false });
+                            return { data, error };
+                        },
+                        // Helper to update profile
+                        updateProfile: async (id, updates) => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .update(updates)
+                                .eq('id', id);
+                            return { data, error };
+                        },
+                        // Helper to delete profile
+                        deleteProfile: async (id) => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .delete()
+                                .eq('id', id);
+                            return { data, error };
+                        },
+                        // Helper to get wallet pending payments
+                        getWalletPending: async () => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .select('*')
+                                .eq('wallet_approval_status', 'pending')
+                                .gt('wallet_amount', 0)
+                                .order('wallet_approval_date', { ascending: false });
+                            return { data, error };
+                        }
+                    };
+                    
+                    supabaseReady = true;
+                    console.log('✅ Supabase initialized with NEW keys!');
+                    console.log('🔗 URL:', SUPABASE_URL);
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.error('❌ Supabase init error:', e);
+                return false;
             }
-        };
+        }
         
-        console.log('✅ Supabase initialized with NEW keys!');
-        console.log('🔗 URL:', SUPABASE_URL);
+        // Try to initialize immediately
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initSupabase();
+        }
+        
+        // Fallback: initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!supabaseReady) {
+                initSupabase();
+            }
+        });
     </script>
 
     <style>
         /* ============================================================
-                   ADMIN DASHBOARD - OPTIMIZED FOR SPEED + MOBILE SIDEBAR FIX
-                   ============================================================ */
+             ADMIN DASHBOARD - OPTIMIZED FOR SPEED + MOBILE
+             ============================================================ */
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -198,7 +256,7 @@
         }
         
         /* ============================================================
-             FIXED: SIDEBAR TOGGLE - ALWAYS VISIBLE ON MOBILE
+             SIDEBAR TOGGLE - ALWAYS VISIBLE ON MOBILE
              ============================================================ */
         .sidebar-toggle {
             display: block !important;
@@ -227,7 +285,7 @@
             min-height: calc(100vh - 56px);
         }
         
-        /* ---------- SIDEBAR - FIXED FOR MOBILE ---------- */
+        /* ---------- SIDEBAR ---------- */
         .admin-sidebar {
             width: 260px;
             background: #fff;
@@ -308,15 +366,6 @@
             letter-spacing: 0.5px;
         }
         
-        .admin-sidebar .sidebar-menu .sidebar-title {
-            padding: 12px 20px 4px;
-            font-size: 11px;
-            color: #999;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
         /* ---------- CONTENT ---------- */
         .admin-content {
             flex: 1;
@@ -350,7 +399,7 @@
             font-size: 12px;
         }
         
-        /* ---------- STATS CARDS - 2 COLUMN ON MOBILE ---------- */
+        /* ---------- STATS CARDS ---------- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -477,7 +526,7 @@
         .filters input { min-width: 140px; }
         .filters select { min-width: 120px; }
         
-        /* ---------- MEMBER TABLE ---------- */
+        /* ---------- TABLE ---------- */
         .table-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -984,9 +1033,7 @@
         .loader.show { display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* ============================================================
-             RESPONSIVE - MOBILE SIDEBAR FIX
-             ============================================================ */
+        /* ---------- RESPONSIVE ---------- */
         @media (min-width: 600px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
             .admin-content { padding: 20px; }
@@ -1015,7 +1062,6 @@
             .admin-sidebar.show { 
                 display: block !important; 
             }
-            /* Overlay when sidebar is open */
             .sidebar-overlay {
                 display: none;
                 position: fixed;
@@ -1458,7 +1504,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - FULL ADMIN DASHBOARD
+     JAVASCRIPT - FULLY CORRECTED ADMIN DASHBOARD
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1470,19 +1516,16 @@
         const adminSidebar = document.getElementById('adminSidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         
-        // Function to open sidebar
         window.openSidebar = function() {
             adminSidebar.classList.add('show');
             sidebarOverlay.classList.add('show');
         };
         
-        // Function to close sidebar
         window.closeSidebar = function() {
             adminSidebar.classList.remove('show');
             sidebarOverlay.classList.remove('show');
         };
         
-        // Toggle sidebar on button click
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1495,14 +1538,12 @@
             });
         }
         
-        // Close sidebar when clicking overlay
         if (sidebarOverlay) {
             sidebarOverlay.addEventListener('click', function() {
                 closeSidebar();
             });
         }
         
-        // Close sidebar on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeSidebar();
@@ -1510,11 +1551,34 @@
         });
         
         // ============================================================
-        // CHECK SUPABASE
+        // CHECK SUPABASE - WITH FALLBACK
         // ============================================================
-        if (typeof window.supabaseFunctions === 'undefined') {
-            showToast('System error. Please refresh.', 'error');
-            return;
+        if (typeof window.supabaseFunctions === 'undefined' || !window.supabaseFunctions.supabase) {
+            console.warn('⚠️ Supabase not loaded properly. Re-initializing...');
+            try {
+                const supabase = window.supabase.createClient(
+                    'https://ndoctdhfkbawxinhvfwk.supabase.co',
+                    'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX'
+                );
+                window.supabaseFunctions = {
+                    supabase: supabase,
+                    logActivity: async (userId, action, details) => {
+                        const { data, error } = await supabase
+                            .from('activity_logs')
+                            .insert([{
+                                user_id: userId,
+                                action: action,
+                                details: details,
+                                created_at: new Date().toISOString()
+                            }]);
+                        return { data, error };
+                    }
+                };
+                console.log('✅ Supabase re-initialized!');
+            } catch (e) {
+                showToast('System error. Please refresh.', 'error');
+                console.error('❌ Supabase init error:', e);
+            }
         }
         
         // ============================================================
@@ -1717,7 +1781,7 @@
         }
         
         // ============================================================
-        // LOAD USERS
+        // LOAD USERS - CORRECTED
         // ============================================================
         async function loadUsers() {
             try {
@@ -1737,6 +1801,7 @@
                 initCharts();
                 
                 console.log(`✅ Loaded ${allUsers.length} users`);
+                console.log(`💰 Wallet Pending: ${allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length}`);
                 
             } catch (error) {
                 console.error('Error loading users:', error);
@@ -1931,14 +1996,20 @@
         };
         
         // ============================================================
-        // RENDER WALLET HISTORY
+        // RENDER WALLET HISTORY - FIXED TO SHOW ALL PAYMENTS
         // ============================================================
         function renderWalletHistory() {
             const searchTerm = walletSearchInput.value.toLowerCase();
             const statusFilter = walletFilterStatus.value;
             
+            // Get ALL users with wallet transactions
             let filtered = allUsers.filter(user => {
-                const hasTransaction = user.wallet_transaction || user.wallet_amount > 0;
+                const hasTransaction = user.wallet_transaction || 
+                                      user.wallet_amount > 0 || 
+                                      user.wallet_approval_status === 'pending' ||
+                                      user.wallet_approval_status === 'approved' ||
+                                      user.wallet_approval_status === 'rejected';
+                
                 if (!hasTransaction) return false;
                 
                 const matchesSearch = 
@@ -2253,7 +2324,7 @@
         };
         
         // ============================================================
-        // APPROVE WALLET
+        // APPROVE WALLET - FIXED
         // ============================================================
         window.approveWallet = async function(userId) {
             const user = allUsers.find(u => u.id === userId);
