@@ -21,7 +21,7 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG - EMBEDDED WITH YOUR NEW KEYS -->
+    <!-- SUPABASE CONFIG - EMBEDDED WITH YOUR NEW KEYS + FALLBACK -->
     <script>
         // ============================================================
         // YOUR NEW SUPABASE KEYS
@@ -30,71 +30,93 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
         // Initialize Supabase client
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabase = null;
+        let supabaseReady = false;
         
-        // Make it available globally
-        window.supabaseFunctions = {
-            supabase: supabase,
-            // Auth functions
-            signUp: async (email, password, userData) => {
-                const { data, error } = await supabase.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        data: userData
-                    }
-                });
-                return { data, error };
-            },
-            signIn: async (email, password) => {
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                return { data, error };
-            },
-            signOut: async () => {
-                const { error } = await supabase.auth.signOut();
-                return { error };
-            },
-            getSession: async () => {
-                const { data, error } = await supabase.auth.getSession();
-                return { data, error };
-            },
-            // Profile functions - OPTIMIZED with limit
-            getApprovedProfiles: async (limit = 20) => {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
-                    .eq('status', 'approved')
-                    .eq('is_active', true)
-                    .order('created_at', { ascending: false })
-                    .limit(limit);
-                return { data, error };
-            },
-            searchProfiles: async (searchTerm, limit = 20) => {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
-                    .eq('status', 'approved')
-                    .eq('is_active', true)
-                    .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
-                    .order('created_at', { ascending: false })
-                    .limit(limit);
-                return { data, error };
-            },
-            getProfileCount: async () => {
-                const { count, error } = await supabase
-                    .from('profiles')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('status', 'approved')
-                    .eq('is_active', true);
-                return { count, error };
+        function initSupabase() {
+            try {
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    supabaseReady = true;
+                    
+                    window.supabaseFunctions = {
+                        supabase: supabase,
+                        signUp: async (email, password, userData) => {
+                            const { data, error } = await supabase.auth.signUp({
+                                email: email,
+                                password: password,
+                                options: { data: userData }
+                            });
+                            return { data, error };
+                        },
+                        signIn: async (email, password) => {
+                            const { data, error } = await supabase.auth.signInWithPassword({
+                                email: email,
+                                password: password
+                            });
+                            return { data, error };
+                        },
+                        signOut: async () => {
+                            const { error } = await supabase.auth.signOut();
+                            return { error };
+                        },
+                        getSession: async () => {
+                            const { data, error } = await supabase.auth.getSession();
+                            return { data, error };
+                        },
+                        getApprovedProfiles: async (limit = 20) => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                                .eq('status', 'approved')
+                                .eq('is_active', true)
+                                .order('created_at', { ascending: false })
+                                .limit(limit);
+                            return { data, error };
+                        },
+                        searchProfiles: async (searchTerm, limit = 20) => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                                .eq('status', 'approved')
+                                .eq('is_active', true)
+                                .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
+                                .order('created_at', { ascending: false })
+                                .limit(limit);
+                            return { data, error };
+                        },
+                        getProfileCount: async () => {
+                            const { count, error } = await supabase
+                                .from('profiles')
+                                .select('*', { count: 'exact', head: true })
+                                .eq('status', 'approved')
+                                .eq('is_active', true);
+                            return { count, error };
+                        }
+                    };
+                    
+                    console.log('✅ Supabase initialized with NEW keys!');
+                    console.log('🔗 URL:', SUPABASE_URL);
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.error('❌ Supabase init error:', e);
+                return false;
             }
-        };
+        }
         
-        console.log('✅ Supabase initialized with NEW keys!');
-        console.log('🔗 URL:', SUPABASE_URL);
+        // Try to initialize immediately
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initSupabase();
+        }
+        
+        // Fallback: initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!supabaseReady) {
+                initSupabase();
+            }
+        });
     </script>
 
     <style>
@@ -1142,7 +1164,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - OPTIMIZED WITH NEW SUPABASE KEYS
+     JAVASCRIPT - OPTIMIZED WITH FALLBACK
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1166,11 +1188,58 @@
         const statEscorts = document.getElementById('statEscorts');
         
         // ============================================================
-        // CHECK SUPABASE
+        // CHECK SUPABASE - WITH FALLBACK
         // ============================================================
         if (typeof window.supabaseFunctions === 'undefined') {
-            console.warn('⚠️ Supabase functions not loaded');
-            showToast('System error. Please refresh.', 'error');
+            console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
+            // Re-initialize if not loaded
+            const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+            
+            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                window.supabaseFunctions = {
+                    supabase: supabase,
+                    getApprovedProfiles: async (limit = 20) => {
+                        const { data, error } = await supabase
+                            .from('profiles')
+                            .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                            .eq('status', 'approved')
+                            .eq('is_active', true)
+                            .order('created_at', { ascending: false })
+                            .limit(limit);
+                        return { data, error };
+                    },
+                    searchProfiles: async (searchTerm, limit = 20) => {
+                        const { data, error } = await supabase
+                            .from('profiles')
+                            .select('id, full_name, phone_number, location, area, photos, age, gender, status, is_active, created_at')
+                            .eq('status', 'approved')
+                            .eq('is_active', true)
+                            .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
+                            .order('created_at', { ascending: false })
+                            .limit(limit);
+                        return { data, error };
+                    },
+                    getProfileCount: async () => {
+                        const { count, error } = await supabase
+                            .from('profiles')
+                            .select('*', { count: 'exact', head: true })
+                            .eq('status', 'approved')
+                            .eq('is_active', true);
+                        return { count, error };
+                    },
+                    signOut: async () => {
+                        const { error } = await supabase.auth.signOut();
+                        return { error };
+                    }
+                };
+                console.log('✅ Supabase re-initialized successfully!');
+            } else {
+                showToast('System error. Please refresh.', 'error');
+                console.error('❌ Supabase failed to load');
+                return;
+            }
         } else {
             console.log('✅ Supabase is loaded with NEW keys');
             console.log('🔗 URL:', SUPABASE_URL);
@@ -1247,7 +1316,7 @@
         }
         
         // ============================================================
-        // LOAD ESCORTS - OPTIMIZED WITH LIMIT
+        // LOAD ESCORTS - OPTIMIZED WITH BETTER ERROR HANDLING
         // ============================================================
         async function loadEscorts(searchTerm = '') {
             try {
@@ -1259,7 +1328,17 @@
                     result = await window.supabaseFunctions.getApprovedProfiles(30);
                 }
                 
-                if (result.error) throw result.error;
+                // Check if there's an error
+                if (result.error) {
+                    console.warn('⚠️ Query returned error:', result.error);
+                    // Don't show error toast for empty results
+                    if (result.error.code === 'PGRST116' || result.error.message?.includes('relation')) {
+                        // Table might not exist yet - show empty state
+                        renderEscorts([]);
+                        return;
+                    }
+                    throw result.error;
+                }
                 
                 const escorts = result.data || [];
                 renderEscorts(escorts);
@@ -1269,6 +1348,8 @@
                     const countResult = await window.supabaseFunctions.getProfileCount();
                     if (!countResult.error && countResult.count !== null) {
                         statEscorts.textContent = countResult.count + '+';
+                    } else {
+                        statEscorts.textContent = escorts.length + '+';
                     }
                 } catch (e) {
                     statEscorts.textContent = escorts.length + '+';
@@ -1279,7 +1360,10 @@
                 
             } catch (error) {
                 console.error('❌ Error loading escorts:', error);
-                showToast('Error loading escorts. Please refresh.', 'error');
+                // Only show error toast if it's not a "no results" case
+                if (error.code !== 'PGRST116' && !error.message?.includes('relation')) {
+                    showToast('Error loading escorts. Please refresh.', 'error');
+                }
                 renderEscorts([]);
             }
         }
@@ -1541,6 +1625,7 @@
         console.log('⚡ Performance optimized with lazy loading and limited queries');
         console.log('📱 1 Full + 2 Small cards pattern');
         console.log('✅ All integrations updated with NEW keys');
+        console.log('💡 If no escorts show, create a profile and get admin approval');
         
     });
 </script>
