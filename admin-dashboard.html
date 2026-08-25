@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- ============================================================
-         SUPABASE CONFIG - FULLY CORRECTED
+         SUPABASE CONFIG - CLEAN VERSION
          ============================================================ -->
     <script>
         // ============================================================
@@ -27,73 +27,48 @@
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
-        let supabase = null;
-        let supabaseReady = false;
+        // Initialize Supabase client - ONLY ONCE
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        function initSupabase() {
-            try {
-                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    
-                    window.supabaseFunctions = {
-                        supabase: supabase,
-                        logActivity: async (userId, action, details) => {
-                            const { data, error } = await supabase
-                                .from('activity_logs')
-                                .insert([{
-                                    user_id: userId,
-                                    action: action,
-                                    details: details,
-                                    created_at: new Date().toISOString()
-                                }]);
-                            return { data, error };
-                        },
-                        getAllProfiles: async () => {
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .select('*')
-                                .order('created_at', { ascending: false });
-                            return { data, error };
-                        },
-                        updateProfile: async (id, updates) => {
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .update(updates)
-                                .eq('id', id);
-                            return { data, error };
-                        },
-                        deleteProfile: async (id) => {
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .delete()
-                                .eq('id', id);
-                            return { data, error };
-                        }
-                    };
-                    
-                    supabaseReady = true;
-                    console.log('✅ Supabase initialized with NEW keys!');
-                    console.log('🔗 URL:', SUPABASE_URL);
-                    return true;
-                }
-                return false;
-            } catch (e) {
-                console.error('❌ Supabase init error:', e);
-                return false;
+        // Make it available globally
+        window.supabaseFunctions = {
+            supabase: supabaseClient,
+            logActivity: async (userId, action, details) => {
+                const { data, error } = await supabaseClient
+                    .from('activity_logs')
+                    .insert([{
+                        user_id: userId,
+                        action: action,
+                        details: details,
+                        created_at: new Date().toISOString()
+                    }]);
+                return { data, error };
+            },
+            getAllProfiles: async () => {
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                return { data, error };
+            },
+            updateProfile: async (id, updates) => {
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .update(updates)
+                    .eq('id', id);
+                return { data, error };
+            },
+            deleteProfile: async (id) => {
+                const { data, error } = await supabaseClient
+                    .from('profiles')
+                    .delete()
+                    .eq('id', id);
+                return { data, error };
             }
-        }
+        };
         
-        // Try to initialize immediately
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            initSupabase();
-        }
-        
-        // Fallback: initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!supabaseReady) {
-                initSupabase();
-            }
-        });
+        console.log('✅ Supabase initialized with NEW keys!');
+        console.log('🔗 URL:', SUPABASE_URL);
     </script>
 
     <style>
@@ -243,9 +218,7 @@
             background: rgba(255,255,255,0.25);
         }
         
-        /* ============================================================
-             SIDEBAR TOGGLE - ALWAYS VISIBLE ON MOBILE
-             ============================================================ */
+        /* ---------- SIDEBAR TOGGLE ---------- */
         .sidebar-toggle {
             display: block !important;
             color: #fff;
@@ -1539,7 +1512,7 @@
         });
         
         // ============================================================
-        // CHECK SUPABASE - WITH FALLBACK
+        // CHECK SUPABASE
         // ============================================================
         if (typeof window.supabaseFunctions === 'undefined' || !window.supabaseFunctions.supabase) {
             console.warn('⚠️ Supabase not loaded properly. Re-initializing...');
@@ -1769,10 +1742,11 @@
         }
         
         // ============================================================
-        // LOAD USERS - WITH DEBUG LOGS
+        // LOAD USERS - FIXED
         // ============================================================
         async function loadUsers() {
             try {
+                console.log('🔍 DEBUG: Loading users...');
                 const { data, error } = await window.supabaseFunctions.supabase
                     .from('profiles')
                     .select('*')
@@ -1781,16 +1755,16 @@
                 if (error) throw error;
                 allUsers = data || [];
                 
-                // DEBUG: Log users with wallet data
-                console.log('🔍 DEBUG: Checking for wallet data...');
-                let walletCount = 0;
+                // Log all users with wallet data
+                console.log('🔍 DEBUG: Users with wallet data:');
+                let found = 0;
                 allUsers.forEach(u => {
-                    if (u.wallet_amount > 0 || u.wallet_transaction || u.wallet_approval_status === 'pending') {
-                        walletCount++;
-                        console.log(`✅ Wallet found: ${u.full_name || 'Unknown'}: amount=${u.wallet_amount}, status=${u.wallet_approval_status}, trans=${u.wallet_transaction}`);
+                    if (u.wallet_amount > 0 || u.wallet_transaction) {
+                        found++;
+                        console.log(`✅ ${u.full_name || 'Unknown'}: amount=${u.wallet_amount}, status=${u.wallet_approval_status}, trans=${u.wallet_transaction}`);
                     }
                 });
-                console.log(`📊 Found ${walletCount} users with wallet data`);
+                console.log(`📊 Found ${found} users with wallet data out of ${allUsers.length} total users`);
                 
                 updateStats();
                 renderMembers();
@@ -1800,7 +1774,6 @@
                 initCharts();
                 
                 console.log(`✅ Loaded ${allUsers.length} users`);
-                console.log(`💰 Wallet Pending: ${allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length}`);
                 
             } catch (error) {
                 console.error('Error loading users:', error);
@@ -1834,10 +1807,13 @@
             rejectedUsers.textContent = rejected;
             newToday.textContent = newTodayCount;
             
+            // Wallet stats - check ALL users
             const walletPending = allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0);
             const walletApproved = allUsers.filter(u => u.wallet_approval_status === 'approved');
             const walletRejected = allUsers.filter(u => u.wallet_approval_status === 'rejected');
             const totalAmount = allUsers.reduce((sum, u) => sum + (u.wallet_amount || 0), 0);
+            
+            console.log(`💰 Wallet Stats: Pending=${walletPending.length}, Approved=${walletApproved.length}, Rejected=${walletRejected.length}, Total=${totalAmount}`);
             
             document.getElementById('walletPendingCount').textContent = walletPending.length;
             document.getElementById('walletApprovedCount').textContent = walletApproved.length;
@@ -2006,16 +1982,14 @@
             
             // Get ALL users that have ANY wallet data
             let filtered = allUsers.filter(user => {
-                // Check if user has any wallet-related data
                 const hasData = (user.wallet_amount && user.wallet_amount > 0) || 
                                 (user.wallet_transaction && user.wallet_transaction.length > 0) || 
                                 user.wallet_approval_status === 'pending' ||
                                 user.wallet_approval_status === 'approved' ||
                                 user.wallet_approval_status === 'rejected';
                 
-                // Log every user with wallet data for debugging
                 if (hasData) {
-                    console.log(`✅ Found: ${user.full_name || 'Unknown'} | Amount: ${user.wallet_amount} | Status: ${user.wallet_approval_status} | Trans: ${user.wallet_transaction}`);
+                    console.log(`✅ FOUND WALLET: ${user.full_name || 'Unknown'} | Amount: ${user.wallet_amount} | Status: ${user.wallet_approval_status} | Trans: ${user.wallet_transaction}`);
                 }
                 
                 if (!hasData) return false;
@@ -2029,7 +2003,6 @@
             
             console.log(`📊 Found ${filtered.length} wallet transactions`);
             
-            // Sort by wallet_approval_date (newest first)
             filtered.sort((a, b) => {
                 const dateA = a.wallet_approval_date || a.created_at || '1970-01-01';
                 const dateB = b.wallet_approval_date || b.created_at || '1970-01-01';
@@ -2051,9 +2024,9 @@
                         <td colspan="7">
                             <div class="empty-state">
                                 <i class="fas fa-wallet"></i>
-                                <h4>No payment records</h4>
-                                <p>No wallet transactions found.</p>
-                                <p style="font-size:10px; color:#999; margin-top:4px;">Check if wallet columns exist in profiles table.</p>
+                                <h4>No payment records found</h4>
+                                <p>Total users: ${allUsers.length}</p>
+                                <p style="font-size:10px; color:#999; margin-top:4px;">Check console for debug logs.</p>
                             </div>
                         </td>
                     </tr>
@@ -2555,18 +2528,23 @@
         });
         
         // ============================================================
-        // INIT
+        // INIT - FIXED (no top-level await)
         // ============================================================
-        await loadUsers();
-        setupRealtime();
+        async function initDashboard() {
+            await loadUsers();
+            setupRealtime();
+            
+            console.log('✅ Admin Dashboard Loaded Successfully!');
+            console.log('👥 Total Users:', allUsers.length);
+            console.log('⏳ Pending Review:', allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length);
+            console.log('💰 Wallet Pending:', allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length);
+            console.log('📡 Realtime: ACTIVE');
+            console.log('🔔 Notifications: ACTIVE');
+            console.log('📱 Sidebar toggle: FIXED for mobile');
+        }
         
-        console.log('✅ Admin Dashboard Loaded Successfully!');
-        console.log('👥 Total Users:', allUsers.length);
-        console.log('⏳ Pending Review:', allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length);
-        console.log('💰 Wallet Pending:', allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length);
-        console.log('📡 Realtime: ACTIVE');
-        console.log('🔔 Notifications: ACTIVE');
-        console.log('📱 Sidebar toggle: FIXED for mobile');
+        // Call the async function
+        initDashboard();
         
     });
 </script>
