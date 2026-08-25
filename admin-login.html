@@ -40,8 +40,10 @@
                             });
                             return { data, error };
                         },
+                        // FIX: This function should be called AFTER sign-in, using the user's session.
                         getProfile: async (userId) => {
-                            const { data, error } = await supabase
+                            // We use the supabase client which now has the user's session
+                            const { data, error } = await window.supabaseFunctions.supabase
                                 .from('profiles')
                                 .select('*')
                                 .eq('user_id', userId)
@@ -49,7 +51,8 @@
                             return { data, error };
                         },
                         logActivity: async (userId, action, details) => {
-                            const { data, error } = await supabase
+                            // Also use the authenticated client
+                            const { data, error } = await window.supabaseFunctions.supabase
                                 .from('activity_logs')
                                 .insert([{
                                     user_id: userId,
@@ -390,8 +393,9 @@
                         });
                         return { data, error };
                     },
+                    // FIX: This function will use the authenticated client session
                     getProfile: async (userId) => {
-                        const { data, error } = await supabase
+                        const { data, error } = await window.supabaseFunctions.supabase
                             .from('profiles')
                             .select('*')
                             .eq('user_id', userId)
@@ -399,7 +403,7 @@
                         return { data, error };
                     },
                     logActivity: async (userId, action, details) => {
-                        const { data, error } = await supabase
+                        const { data, error } = await window.supabaseFunctions.supabase
                             .from('activity_logs')
                             .insert([{
                                 user_id: userId,
@@ -530,7 +534,7 @@
             }
             
             try {
-                // Step 1: Sign in
+                // Step 1: Sign in with Supabase - THIS SETS THE SESSION
                 const { data, error } = await window.supabaseFunctions.signIn(
                     email.value.trim(),
                     password.value
@@ -539,25 +543,29 @@
                 if (error) throw error;
                 
                 if (data && data.user) {
-                    // Step 2: Get profile
+                    // Step 2: Now that we are logged in, fetch the profile using the authenticated client
+                    // The session is now active, so this query should work
                     const { data: profileData, error: profileError } = await window.supabaseFunctions.getProfile(data.user.id);
                     
                     if (profileError || !profileData) {
-                        showToast('❌ User profile not found. Please create a profile in Supabase first.', 'error');
+                        console.error('Profile fetch error:', profileError);
+                        // This could mean the user doesn't have a profile record, or RLS is still blocking.
+                        // We'll provide a clear message to the admin.
+                        showToast('User profile not found. Please create a profile in Supabase first.', 'error');
                         resetButton();
                         return;
                     }
                     
-                    // Step 3: Check if admin
+                    // Step 3: Check if user is admin
                     if (profileData.role !== 'admin') {
-                        showToast('❌ Access denied. You are not an admin.', 'error');
+                        showToast('Access denied. You are not an admin.', 'error');
                         resetButton();
                         return;
                     }
                     
                     // Step 4: Check status
                     if (profileData.status === 'pending') {
-                        showToast('⏳ Your admin account is pending approval.', 'error');
+                        showToast('Your admin account is pending approval.', 'error');
                         resetButton();
                         return;
                     }
@@ -639,7 +647,7 @@
         console.log('✅ Admin Login Page Ready');
         console.log('📧 Email: admin@nairovibe.com');
         console.log('🔑 Password: Admin@123!');
-        console.log('💡 If "profile not found", run the INSERT query in Supabase SQL Editor');
+        console.log('💡 Profile fetch will use the authenticated session.');
         
     });
 </script>
