@@ -15,8 +15,79 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Supabase Config -->
-    <script src="supabase-config.js"></script>
+    <!-- Supabase Config - USING YOUR NEW KEYS -->
+    <script>
+        // ============================================================
+        // SUPABASE CONFIG - NEW KEYS
+        // ============================================================
+        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Make it available globally
+        window.supabaseFunctions = {
+            supabase: supabase,
+            // Auth functions
+            signUp: async (email, password, userData) => {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: userData
+                    }
+                });
+                return { data, error };
+            },
+            signIn: async (email, password) => {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                return { data, error };
+            },
+            signOut: async () => {
+                const { error } = await supabase.auth.signOut();
+                return { error };
+            },
+            getSession: async () => {
+                const { data, error } = await supabase.auth.getSession();
+                return { data, error };
+            },
+            // Profile functions
+            getProfile: async (userId) => {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .single();
+                return { data, error };
+            },
+            getApprovedProfiles: async () => {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('status', 'approved')
+                    .eq('is_active', true)
+                    .order('created_at', { ascending: false });
+                return { data, error };
+            },
+            searchProfiles: async (searchTerm) => {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('status', 'approved')
+                    .eq('is_active', true)
+                    .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
+                    .order('created_at', { ascending: false });
+                return { data, error };
+            }
+        };
+        
+        console.log('✅ Supabase initialized with NEW keys!');
+        console.log('🔗 URL:', SUPABASE_URL);
+    </script>
 
     <style>
         /* ============================================================
@@ -1061,7 +1132,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - NEW CARD LAYOUT
+     JAVASCRIPT - USING NEW SUPABASE KEYS
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1091,35 +1162,40 @@
             console.warn('⚠️ Supabase functions not loaded');
             showToast('System error. Please refresh.', 'error');
         } else {
-            console.log('✅ Supabase is loaded');
+            console.log('✅ Supabase is loaded with NEW keys');
+            console.log('🔗 URL:', SUPABASE_URL);
         }
         
         // ============================================================
         // CHECK SESSION
         // ============================================================
         function checkSession() {
-            const session = localStorage.getItem('nairobi_vibe_session');
-            
-            if (session) {
-                if (registerBtn) registerBtn.style.display = 'none';
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (createProfileBtn) createProfileBtn.style.display = 'inline-block';
-                if (profileBtn) profileBtn.style.display = 'inline-block';
-                if (logoutBtn) logoutBtn.style.display = 'inline-block';
+            try {
+                const session = localStorage.getItem('nairobi_vibe_session');
                 
-                try {
-                    const userData = JSON.parse(session);
-                    if (profileBtn) {
-                        profileBtn.innerHTML = '<i class="fas fa-user"></i> ' + (userData.name || 'My Profile');
-                    }
-                    checkUserProfile(userData.id);
-                } catch (e) { console.log('Session parse error'); }
-            } else {
-                if (registerBtn) registerBtn.style.display = 'inline-block';
-                if (loginBtn) loginBtn.style.display = 'inline-block';
-                if (createProfileBtn) createProfileBtn.style.display = 'none';
-                if (profileBtn) profileBtn.style.display = 'none';
-                if (logoutBtn) logoutBtn.style.display = 'none';
+                if (session) {
+                    if (registerBtn) registerBtn.style.display = 'none';
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (createProfileBtn) createProfileBtn.style.display = 'inline-block';
+                    if (profileBtn) profileBtn.style.display = 'inline-block';
+                    if (logoutBtn) logoutBtn.style.display = 'inline-block';
+                    
+                    try {
+                        const userData = JSON.parse(session);
+                        if (profileBtn) {
+                            profileBtn.innerHTML = '<i class="fas fa-user"></i> ' + (userData.name || 'My Profile');
+                        }
+                        checkUserProfile(userData.id);
+                    } catch (e) { console.log('Session parse error'); }
+                } else {
+                    if (registerBtn) registerBtn.style.display = 'inline-block';
+                    if (loginBtn) loginBtn.style.display = 'inline-block';
+                    if (createProfileBtn) createProfileBtn.style.display = 'none';
+                    if (profileBtn) profileBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                }
+            } catch (e) {
+                console.log('localStorage not available');
             }
         }
         
@@ -1161,7 +1237,7 @@
         }
         
         // ============================================================
-        // LOAD ESCORTS
+        // LOAD ESCORTS - USING NEW SUPABASE
         // ============================================================
         async function loadEscorts(searchTerm = '') {
             try {
@@ -1337,12 +1413,26 @@
         // LOGOUT
         // ============================================================
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
+            logoutBtn.addEventListener('click', async function(e) {
                 e.preventDefault();
-                localStorage.removeItem('nairobi_vibe_session');
-                localStorage.removeItem('nairobi_vibe_admin_session');
+                
+                try {
+                    // Sign out from Supabase
+                    await window.supabaseFunctions.signOut();
+                } catch (e) {
+                    console.log('Supabase signout error:', e);
+                }
+                
+                // Clear local storage
+                try {
+                    localStorage.removeItem('nairobi_vibe_session');
+                    localStorage.removeItem('nairobi_vibe_admin_session');
+                } catch (e) {}
+                
                 showToast('Logged out successfully', 'success');
-                setTimeout(function() { location.reload(); }, 1000);
+                setTimeout(function() { 
+                    location.reload(); 
+                }, 1000);
             });
         }
         
@@ -1432,12 +1522,13 @@
         loadEscorts();
         setTimeout(animateStats, 400);
         
-        console.log('🔥 Nairobi Vibe - New Card Layout Loaded!');
+        console.log('🔥 Nairobi Vibe - Homepage Loaded!');
+        console.log('🔑 Using NEW Supabase Keys');
         console.log('📱 1 Full + 2 Small cards pattern');
         console.log('📸 Clean images - NO badges on photos');
         console.log('📞 Call button on every card');
         console.log('📍 Squeezed location tags, counties, and towns');
-        console.log('❌ WhatsApp button removed');
+        console.log('✅ All integrations updated with NEW keys');
         
     });
 </script>
