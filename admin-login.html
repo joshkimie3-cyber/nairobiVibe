@@ -14,39 +14,77 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG - EMBEDDED WITH NEW KEYS -->
+    <!-- ============================================================
+         SUPABASE CONFIG - FIXED WITH PROPER INITIALIZATION
+         ============================================================ -->
     <script>
         // ============================================================
-        // SUPABASE CONFIG - NEW KEYS
+        // YOUR NEW SUPABASE KEYS
         // ============================================================
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
-        // Initialize Supabase client
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabaseReady = false;
         
-        // Make it available globally
-        window.supabaseFunctions = {
-            supabase: supabase,
-            signIn: async (email, password) => {
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                return { data, error };
-            },
-            getProfile: async (userId) => {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('user_id', userId)
-                    .single();
-                return { data, error };
+        // Function to initialize Supabase
+        function initSupabase() {
+            try {
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    
+                    window.supabaseFunctions = {
+                        supabase: supabase,
+                        signIn: async (email, password) => {
+                            const { data, error } = await supabase.auth.signInWithPassword({
+                                email: email,
+                                password: password
+                            });
+                            return { data, error };
+                        },
+                        getProfile: async (userId) => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .select('*')
+                                .eq('user_id', userId)
+                                .single();
+                            return { data, error };
+                        },
+                        logActivity: async (userId, action, details) => {
+                            const { data, error } = await supabase
+                                .from('activity_logs')
+                                .insert([{
+                                    user_id: userId,
+                                    action: action,
+                                    details: details,
+                                    created_at: new Date().toISOString()
+                                }]);
+                            return { data, error };
+                        }
+                    };
+                    
+                    supabaseReady = true;
+                    console.log('✅ Supabase initialized with NEW keys!');
+                    console.log('🔗 URL:', SUPABASE_URL);
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.error('❌ Supabase init error:', e);
+                return false;
             }
-        };
+        }
         
-        console.log('✅ Supabase initialized with NEW keys!');
-        console.log('🔗 URL:', SUPABASE_URL);
+        // Try to initialize immediately
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initSupabase();
+        }
+        
+        // Fallback: initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!supabaseReady) {
+                initSupabase();
+            }
+        });
     </script>
     
     <style>
@@ -549,7 +587,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - SUPABASE ADMIN LOGIN
+     JAVASCRIPT - FIXED WITH FALLBACK
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -573,13 +611,69 @@
         const alertClose = document.getElementById('alertClose');
         
         // ============================================================
-        // CHECK SUPABASE
+        // CHECK SUPABASE - WITH FALLBACK
         // ============================================================
+        let supabaseReady = false;
+        
+        // Try to initialize if not already done
         if (typeof window.supabaseFunctions === 'undefined') {
-            showToast('System error. Please refresh the page.', 'error');
-            console.error('❌ Supabase not loaded properly');
+            console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
+            
+            try {
+                const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+                const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+                
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    
+                    window.supabaseFunctions = {
+                        supabase: supabase,
+                        signIn: async (email, password) => {
+                            const { data, error } = await supabase.auth.signInWithPassword({
+                                email: email,
+                                password: password
+                            });
+                            return { data, error };
+                        },
+                        getProfile: async (userId) => {
+                            const { data, error } = await supabase
+                                .from('profiles')
+                                .select('*')
+                                .eq('user_id', userId)
+                                .single();
+                            return { data, error };
+                        },
+                        logActivity: async (userId, action, details) => {
+                            const { data, error } = await supabase
+                                .from('activity_logs')
+                                .insert([{
+                                    user_id: userId,
+                                    action: action,
+                                    details: details,
+                                    created_at: new Date().toISOString()
+                                }]);
+                            return { data, error };
+                        }
+                    };
+                    
+                    supabaseReady = true;
+                    console.log('✅ Supabase re-initialized successfully!');
+                } else {
+                    console.error('❌ Supabase library not available');
+                    showToast('System error. Please refresh the page.', 'error');
+                }
+            } catch (e) {
+                console.error('❌ Supabase init error:', e);
+                showToast('System error. Please refresh the page.', 'error');
+            }
         } else {
-            console.log('✅ Supabase is ready');
+            supabaseReady = true;
+            console.log('✅ Supabase is ready with NEW keys');
+        }
+        
+        // If supabase still not ready, show error
+        if (!supabaseReady || typeof window.supabaseFunctions === 'undefined') {
+            showToast('System error. Please refresh the page.', 'error');
         }
         
         // ============================================================
@@ -650,9 +744,7 @@
                 email.value = savedEmail;
                 rememberMe.checked = true;
             }
-        } catch (e) {
-            console.log('localStorage not available');
-        }
+        } catch (e) {}
         
         // ============================================================
         // FORM SUBMISSION - SUPABASE ADMIN LOGIN
@@ -682,6 +774,12 @@
                 return;
             }
             
+            // Check if Supabase is ready
+            if (typeof window.supabaseFunctions === 'undefined' || !window.supabaseFunctions.supabase) {
+                showToast('System error. Please refresh the page.', 'error');
+                return;
+            }
+            
             // ============================================================
             // SUPABASE ADMIN AUTHENTICATION
             // ============================================================
@@ -689,7 +787,6 @@
             btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
             btnLoader.classList.add('show');
             
-            // Save remember me
             try {
                 if (rememberMe.checked) {
                     localStorage.setItem('admin_remember_email', email.value);
@@ -708,10 +805,10 @@
                 if (error) throw error;
                 
                 if (data && data.user) {
-                    // Step 2: Get user profile from profiles table
+                    // Step 2: Get user profile
                     const { data: profileData, error: profileError } = await window.supabaseFunctions.getProfile(data.user.id);
                     
-                    if (profileError) {
+                    if (profileError || !profileData) {
                         showToast('User profile not found. Please ensure you have a profile.', 'error');
                         resetButton();
                         return;
@@ -731,7 +828,7 @@
                         return;
                     }
                     
-                    // Step 5: Admin login successful - create session
+                    // Step 5: Admin login successful
                     const sessionData = {
                         id: data.user.id,
                         email: data.user.email,
@@ -744,9 +841,8 @@
                     
                     localStorage.setItem('nairobi_vibe_admin_session', JSON.stringify(sessionData));
                     
-                    showToast('Welcome Admin! Redirecting to dashboard... 🎉', 'success');
+                    showToast('Welcome Admin! Redirecting... 🎉', 'success');
                     
-                    // Log admin login activity
                     try {
                         await window.supabaseFunctions.logActivity(
                             data.user.id,
@@ -811,27 +907,11 @@
                 toast.classList.remove('show');
                 alertBanner.classList.remove('show');
             }
-            
-            // Ctrl+Shift+U for quick admin login (useful for testing)
-            if (e.key === 'u' && e.ctrlKey && e.shiftKey) {
-                e.preventDefault();
-                email.value = 'admin@nairovibe.com';
-                password.value = 'Admin@123';
-                showToast('Test credentials filled!', 'info');
-            }
         });
         
-        // ============================================================
-        // PREVENT FORM RESUBMISSION
-        // ============================================================
-        if (window.history && window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-        
         console.log('✅ Admin Login Page Loaded Successfully!');
-        console.log('🔐 Supabase Authentication: Active');
+        console.log('🔐 Supabase Ready:', supabaseReady);
         console.log('👤 Admin role check: Required');
-        console.log('📧 Email confirmation: Required');
         
     });
 </script>
