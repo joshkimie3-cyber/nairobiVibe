@@ -27,12 +27,13 @@
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
+        let supabase = null;
         let supabaseReady = false;
         
         function initSupabase() {
             try {
                 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                     
                     window.supabaseFunctions = {
                         supabase: supabase,
@@ -67,15 +68,6 @@
                                 .delete()
                                 .eq('id', id);
                             return { data, error };
-                        },
-                        getWalletPending: async () => {
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .select('*')
-                                .eq('wallet_approval_status', 'pending')
-                                .gt('wallet_amount', 0)
-                                .order('wallet_approval_date', { ascending: false });
-                            return { data, error };
                         }
                     };
                     
@@ -106,7 +98,7 @@
 
     <style>
         /* ============================================================
-             ADMIN DASHBOARD - OPTIMIZED FOR SPEED + MOBILE
+             ADMIN DASHBOARD - FULLY WORKING
              ============================================================ */
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1307,7 +1299,7 @@
         </div>
         
         <!-- ============================================================
-             PAGE: WALLET APPROVALS - FIXED
+             PAGE: WALLET APPROVALS
              ============================================================ -->
         <div id="page-wallet" style="display:none;">
             <div class="page-title">
@@ -1500,7 +1492,7 @@
 </div>
 
 <!-- ============================================================
-     JAVASCRIPT - FULLY CORRECTED WITH DEBUG LOGS
+     JAVASCRIPT - FULLY WORKING ADMIN DASHBOARD
      ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -2003,28 +1995,30 @@
         };
         
         // ============================================================
-        // RENDER WALLET HISTORY - FIXED WITH DEBUG LOGS
+        // RENDER WALLET HISTORY - FIXED
         // ============================================================
         function renderWalletHistory() {
             const searchTerm = walletSearchInput.value.toLowerCase();
             const statusFilter = walletFilterStatus.value;
             
             console.log('📊 Rendering wallet history...');
-            console.log('👥 All users count:', allUsers.length);
+            console.log('👥 Total users:', allUsers.length);
             
-            // Get ALL users with wallet transactions
+            // Get ALL users that have ANY wallet data
             let filtered = allUsers.filter(user => {
-                const hasTransaction = user.wallet_transaction || 
-                                      user.wallet_amount > 0 || 
-                                      user.wallet_approval_status === 'pending' ||
-                                      user.wallet_approval_status === 'approved' ||
-                                      user.wallet_approval_status === 'rejected';
+                // Check if user has any wallet-related data
+                const hasData = (user.wallet_amount && user.wallet_amount > 0) || 
+                                (user.wallet_transaction && user.wallet_transaction.length > 0) || 
+                                user.wallet_approval_status === 'pending' ||
+                                user.wallet_approval_status === 'approved' ||
+                                user.wallet_approval_status === 'rejected';
                 
-                if (hasTransaction) {
-                    console.log(`✅ Found wallet: ${user.full_name || 'Unknown'}: amount=${user.wallet_amount}, status=${user.wallet_approval_status}`);
+                // Log every user with wallet data for debugging
+                if (hasData) {
+                    console.log(`✅ Found: ${user.full_name || 'Unknown'} | Amount: ${user.wallet_amount} | Status: ${user.wallet_approval_status} | Trans: ${user.wallet_transaction}`);
                 }
                 
-                if (!hasTransaction) return false;
+                if (!hasData) return false;
                 
                 const matchesSearch = 
                     (user.full_name || '').toLowerCase().includes(searchTerm) ||
@@ -2035,7 +2029,12 @@
             
             console.log(`📊 Found ${filtered.length} wallet transactions`);
             
-            filtered.sort((a, b) => new Date(b.wallet_approval_date || b.created_at) - new Date(a.wallet_approval_date || a.created_at));
+            // Sort by wallet_approval_date (newest first)
+            filtered.sort((a, b) => {
+                const dateA = a.wallet_approval_date || a.created_at || '1970-01-01';
+                const dateB = b.wallet_approval_date || b.created_at || '1970-01-01';
+                return new Date(dateB) - new Date(dateA);
+            });
             
             const totalItems = filtered.length;
             const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -2053,7 +2052,8 @@
                             <div class="empty-state">
                                 <i class="fas fa-wallet"></i>
                                 <h4>No payment records</h4>
-                                <p>No wallet transactions found. Check if wallet columns exist.</p>
+                                <p>No wallet transactions found.</p>
+                                <p style="font-size:10px; color:#999; margin-top:4px;">Check if wallet columns exist in profiles table.</p>
                             </div>
                         </td>
                     </tr>
@@ -2064,10 +2064,11 @@
                     const statusLabels = {
                         'pending': '<span class="badge-pill status-pending">⏳ Pending</span>',
                         'approved': '<span class="badge-pill status-approved">✅ Approved</span>',
-                        'rejected': '<span class="badge-pill status-rejected">❌ Rejected</span>'
+                        'rejected': '<span class="badge-pill status-rejected">❌ Rejected</span>',
+                        'none': '<span class="badge-pill status-pending">⏳ Pending</span>'
                     };
                     
-                    const actions = status === 'pending' ? `
+                    const actions = status === 'pending' || status === 'none' ? `
                         <div class="action-buttons">
                             <button class="btn-approve" onclick="approveWallet('${user.id}')"><i class="fas fa-check"></i></button>
                             <button class="btn-reject" onclick="rejectWallet('${user.id}')"><i class="fas fa-times"></i></button>
@@ -2340,7 +2341,7 @@
         };
         
         // ============================================================
-        // APPROVE WALLET - FIXED
+        // APPROVE WALLET
         // ============================================================
         window.approveWallet = async function(userId) {
             const user = allUsers.find(u => u.id === userId);
