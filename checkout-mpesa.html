@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Add Funds - Nairobi Vibe Escorts</title>
+    <title>Add Funds - Nairobi Vibe</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -14,47 +14,69 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG - EMBEDDED WITH NEW KEYS -->
+    <!-- ============================================================
+         SUPABASE CONFIG - EMBEDDED WITH NEW KEYS
+         ============================================================ -->
     <script>
         // ============================================================
-        // SUPABASE CONFIG - NEW KEYS
+        // YOUR SUPABASE KEYS
         // ============================================================
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
-        // Initialize Supabase client
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabaseReady = false;
         
-        // Make it available globally
-        window.supabaseFunctions = {
-            supabase: supabase,
-            logActivity: async (userId, action, details) => {
-                const { data, error } = await supabase
-                    .from('activity_logs')
-                    .insert([{
-                        user_id: userId,
-                        action: action,
-                        details: details,
-                        created_at: new Date().toISOString()
-                    }]);
-                return { data, error };
+        function initSupabase() {
+            try {
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    
+                    window.supabaseFunctions = {
+                        supabase: supabase,
+                        logActivity: async (userId, action, details) => {
+                            const { data, error } = await supabase
+                                .from('activity_logs')
+                                .insert([{
+                                    user_id: userId,
+                                    action: action,
+                                    details: details,
+                                    created_at: new Date().toISOString()
+                                }]);
+                            return { data, error };
+                        }
+                    };
+                    
+                    supabaseReady = true;
+                    console.log('✅ Supabase initialized with NEW keys!');
+                    console.log('🔗 URL:', SUPABASE_URL);
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.error('❌ Supabase init error:', e);
+                return false;
             }
-        };
-        
-        console.log('✅ Supabase initialized with NEW keys!');
-        console.log('🔗 URL:', SUPABASE_URL);
-    </script>
-
-    <style>
-        /* ============================================================
-                   PAYMENT PAGE - MOBILE FIRST
-                   ============================================================ */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
+        
+        // Try to initialize immediately
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initSupabase();
+        }
+        
+        // Fallback: initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!supabaseReady) {
+                initSupabase();
+            }
+        });
+    </script>
+    
+    <style>
+        /* ... your existing styles ... */
+        /* (Keep all your existing CSS styles) */
+        
+        /* Quick fix for mobile */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Open Sans', "Helvetica Neue", Arial, sans-serif;
@@ -65,7 +87,7 @@
             padding-bottom: 20px;
         }
         
-        /* ---------- HEADER ---------- */
+        /* Header */
         .header {
             background: linear-gradient(135deg, #E0006C, #b30057);
             padding: 12px 16px;
@@ -132,14 +154,14 @@
             transform: scale(0.95);
         }
         
-        /* ---------- MAIN CONTENT ---------- */
+        /* Main Content */
         .main-content {
             max-width: 700px;
             margin: 0 auto;
             padding: 16px 14px;
         }
         
-        /* ---------- BREADCRUMB ---------- */
+        /* Breadcrumb */
         .breadcrumb {
             font-size: 12px;
             color: #999;
@@ -155,7 +177,7 @@
             color: #666;
         }
         
-        /* ---------- CONTACT BANNER ---------- */
+        /* Contact Banner */
         .contact-banner {
             background: linear-gradient(135deg, #fff3cd, #ffeaa7);
             border-radius: 14px;
@@ -190,11 +212,7 @@
             text-decoration: none;
         }
         
-        .contact-banner .contact-text a:active {
-            opacity: 0.7;
-        }
-        
-        /* ---------- PAYMENT CARD ---------- */
+        /* Payment Card */
         .payment-card {
             background: #fff;
             border-radius: 18px;
@@ -205,25 +223,12 @@
             overflow: hidden;
         }
         
-        .payment-card::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 150px;
-            height: 150px;
-            background: rgba(224, 0, 108, 0.04);
-            border-radius: 50%;
-        }
-        
         .payment-title {
             font-size: 22px;
             font-weight: 800;
             color: #E0006C;
             margin-bottom: 4px;
             text-align: center;
-            position: relative;
-            z-index: 1;
         }
         
         .payment-title i {
@@ -236,11 +241,9 @@
             color: #999;
             text-align: center;
             margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
         }
         
-        /* ---------- TILL DETAILS ---------- */
+        /* Till Details */
         .till-details {
             background: linear-gradient(145deg, #fce4ec, #f8d7da);
             border-radius: 16px;
@@ -248,8 +251,6 @@
             margin-bottom: 20px;
             text-align: center;
             border: 2px dashed #E0006C;
-            position: relative;
-            z-index: 1;
         }
         
         .till-details .till-icon {
@@ -326,7 +327,7 @@
             font-size: 14px;
         }
         
-        /* ---------- QUICK AMOUNT BUTTONS ---------- */
+        /* Quick Amount Buttons */
         .quick-amounts {
             display: flex;
             gap: 8px;
@@ -359,15 +360,13 @@
             color: #E0006C;
         }
         
-        /* ---------- INSTRUCTIONS ---------- */
+        /* Instructions */
         .instructions {
             background: linear-gradient(135deg, #f0f7ff, #e3eef9);
             border-radius: 14px;
             padding: 18px 18px 12px 18px;
             margin-bottom: 20px;
             border-left: 4px solid #3498db;
-            position: relative;
-            z-index: 1;
         }
         
         .instructions .step {
@@ -408,11 +407,9 @@
             font-weight: 700;
         }
         
-        /* ---------- PAYMENT FORM ---------- */
+        /* Payment Form */
         .payment-form {
             margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
         }
         
         .payment-form .form-title {
@@ -496,7 +493,7 @@
             padding-left: 72px;
         }
         
-        /* ---------- CONFIRM BUTTON ---------- */
+        /* Confirm Button */
         .btn-confirm {
             width: 100%;
             padding: 16px;
@@ -512,8 +509,6 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            position: relative;
-            z-index: 1;
             box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
             min-height: 56px;
         }
@@ -532,7 +527,7 @@
             font-size: 20px;
         }
         
-        /* ---------- LOADER ---------- */
+        /* Loader */
         .loader {
             display: none;
             width: 22px;
@@ -552,13 +547,11 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* ---------- PENDING STATE ---------- */
+        /* Pending State */
         .pending-state {
             display: none;
             text-align: center;
             padding: 20px 0;
-            position: relative;
-            z-index: 1;
         }
         
         .pending-state.show {
@@ -607,7 +600,7 @@
             transform: scale(0.95);
         }
         
-        /* ---------- TOAST ---------- */
+        /* Toast */
         .toast {
             position: fixed;
             top: 70px;
@@ -635,7 +628,7 @@
         .toast.error { background: linear-gradient(135deg, #e74c3c, #c0392b); }
         .toast.info { background: linear-gradient(135deg, #3498db, #2980b9); }
         
-        /* ---------- FOOTER ---------- */
+        /* Footer */
         .footer {
             background: #1a0528;
             color: #ccc;
@@ -704,105 +697,34 @@
             color: #1a0528;
         }
         
-        /* ---------- RESPONSIVE ---------- */
+        /* Responsive */
         @media (max-width: 600px) {
-            .payment-card {
-                padding: 18px 14px;
-                border-radius: 14px;
-            }
-            
-            .payment-title {
-                font-size: 20px;
-            }
-            
-            .contact-banner {
-                flex-direction: column;
-                text-align: center;
-                padding: 12px 14px;
-            }
-            
-            .till-details .till-number {
-                font-size: 26px;
-                padding: 4px 14px;
-            }
-            
-            .till-details {
-                padding: 18px 14px;
-            }
-            
-            .instructions .step {
-                font-size: 12px;
-                padding: 4px 0;
-            }
-            
-            .header-inner {
-                flex-wrap: nowrap;
-            }
-            
-            .logo-text {
-                font-size: 14px;
-            }
-            
-            .back-link {
-                font-size: 12px;
-                padding: 4px 12px;
-            }
-            
-            .footer-inner {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .quick-amounts .qa-btn {
-                font-size: 12px;
-                padding: 4px 12px;
-            }
-            
-            .btn-confirm {
-                font-size: 16px;
-                padding: 14px;
-                min-height: 48px;
-            }
+            .payment-card { padding: 18px 14px; border-radius: 14px; }
+            .payment-title { font-size: 20px; }
+            .contact-banner { flex-direction: column; text-align: center; padding: 12px 14px; }
+            .till-details .till-number { font-size: 26px; padding: 4px 14px; }
+            .till-details { padding: 18px 14px; }
+            .instructions .step { font-size: 12px; padding: 4px 0; }
+            .header-inner { flex-wrap: nowrap; }
+            .logo-text { font-size: 14px; }
+            .back-link { font-size: 12px; padding: 4px 12px; }
+            .footer-inner { grid-template-columns: 1fr; gap: 15px; }
+            .quick-amounts .qa-btn { font-size: 12px; padding: 4px 12px; }
+            .btn-confirm { font-size: 16px; padding: 14px; min-height: 48px; }
         }
         
         @media (max-width: 400px) {
-            .payment-title {
-                font-size: 18px;
-            }
-            
-            .till-details .till-number {
-                font-size: 22px;
-                letter-spacing: 2px;
-            }
-            
-            .till-details .amount-input-wrap input {
-                font-size: 16px;
-                padding: 10px 12px;
-                max-width: 180px;
-            }
-            
-            .main-content {
-                padding: 12px 10px;
-            }
-            
-            .payment-card {
-                padding: 14px 12px;
-            }
+            .payment-title { font-size: 18px; }
+            .till-details .till-number { font-size: 22px; letter-spacing: 2px; }
+            .till-details .amount-input-wrap input { font-size: 16px; padding: 10px 12px; max-width: 180px; }
+            .main-content { padding: 12px 10px; }
+            .payment-card { padding: 14px 12px; }
         }
         
-        /* ---------- SCROLLBAR ---------- */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #E0006C;
-            border-radius: 10px;
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #E0006C; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -834,7 +756,7 @@
             <span>Add Funds</span>
         </div>
 
-        <!-- Contact Banner - UPDATED PHONE NUMBER -->
+        <!-- Contact Banner -->
         <div class="contact-banner">
             <i class="fas fa-phone-alt"></i>
             <div class="contact-text">
@@ -941,7 +863,7 @@
                 <i class="fas fa-arrow-right" id="confirmIcon"></i>
             </button>
 
-            <!-- Pending State (shown after confirmation) -->
+            <!-- Pending State -->
             <div class="pending-state" id="pendingState">
                 <div class="pending-icon"><i class="fas fa-clock"></i></div>
                 <h3>Payment Sent for Approval! 🕐</h3>
@@ -958,7 +880,7 @@
 
     <!-- ============================================================
          FOOTER
-         ============================================================ -->
+     ============================================================ -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-col">
@@ -992,7 +914,7 @@
     </div>
 
     <!-- ============================================================
-     JAVASCRIPT - FULLY INTEGRATED
+     JAVASCRIPT - FIXED WITH SUPABASE CONFIG
      ============================================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1015,13 +937,42 @@
             const instructions = document.getElementById('instructions');
 
             // ============================================================
+            // CHECK SUPABASE - FIXED
+            // ============================================================
+            if (typeof window.supabaseFunctions === 'undefined') {
+                console.warn('⚠️ Supabase not loaded. Re-initializing...');
+                try {
+                    const supabase = window.supabase.createClient(
+                        'https://ndoctdhfkbawxinhvfwk.supabase.co',
+                        'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX'
+                    );
+                    window.supabaseFunctions = {
+                        supabase: supabase,
+                        logActivity: async (userId, action, details) => {
+                            const { data, error } = await supabase
+                                .from('activity_logs')
+                                .insert([{
+                                    user_id: userId,
+                                    action: action,
+                                    details: details,
+                                    created_at: new Date().toISOString()
+                                }]);
+                            return { data, error };
+                        }
+                    };
+                    console.log('✅ Supabase re-initialized!');
+                } catch (e) {
+                    showToast('System error. Please refresh.', 'error');
+                }
+            }
+
+            // ============================================================
             // QUICK AMOUNT SETTER
             // ============================================================
             window.setAmount = function(amount) {
                 amountInput.value = amount;
                 amountInput.focus();
                 
-                // Highlight active button
                 document.querySelectorAll('.qa-btn').forEach(btn => {
                     btn.classList.remove('active');
                     if (parseInt(btn.textContent.replace(/[^0-9]/g, '')) === amount) {
@@ -1031,7 +982,7 @@
             };
 
             // ============================================================
-            // GET USER DATA FROM SESSION
+            // GET USER DATA
             // ============================================================
             function getUserData() {
                 const session = localStorage.getItem('nairobi_vibe_session');
@@ -1057,7 +1008,6 @@
 
             console.log('👤 User ID:', userId);
             console.log('👤 User Name:', userName);
-            console.log('📧 User Email:', userEmail);
 
             // ============================================================
             // PHONE INPUT FORMATTING
@@ -1076,18 +1026,17 @@
             });
 
             // ============================================================
-            // AMOUNT INPUT VALIDATION
+            // AMOUNT VALIDATION
             // ============================================================
             amountInput.addEventListener('input', function() {
                 if (this.value < 0) this.value = '';
-                // Remove leading zeros
                 if (this.value.length > 1 && this.value.startsWith('0')) {
                     this.value = this.value.replace(/^0+/, '');
                 }
             });
 
             // ============================================================
-            // SEND PAYMENT TO ADMIN FOR APPROVAL
+            // SEND PAYMENT TO ADMIN
             // ============================================================
             async function sendPaymentToAdmin(userId, phone, transactionCode, amount) {
                 try {
@@ -1097,12 +1046,16 @@
                     console.log('📱 Phone:', phone);
                     console.log('🔑 Transaction:', transactionCode);
 
-                    // Check if user is logged in
                     if (!userId) {
                         return { success: false, error: 'User not logged in. Please login again.' };
                     }
 
-                    // First, check if profile exists for this user
+                    // Check if Supabase is ready
+                    if (typeof window.supabaseFunctions === 'undefined' || !window.supabaseFunctions.supabase) {
+                        return { success: false, error: 'System error. Please refresh the page.' };
+                    }
+
+                    // Check if profile exists
                     const { data: profileData, error: fetchError } = await window.supabaseFunctions.supabase
                         .from('profiles')
                         .select('id, full_name, wallet_balance, wallet_approval_status, email')
@@ -1113,11 +1066,10 @@
                         return { success: false, error: fetchError.message };
                     }
 
-                    // Check if profile exists
+                    // If no profile exists, create one
                     if (!profileData || profileData.length === 0) {
-                        console.log('⚠️ No profile found for user, creating one...');
+                        console.log('⚠️ No profile found, creating one...');
                         
-                        // Create a profile for the user with their name
                         const { data: newProfile, error: createError } = await window.supabaseFunctions.supabase
                             .from('profiles')
                             .insert([{
@@ -1143,9 +1095,8 @@
                             return { success: false, error: createError.message };
                         }
                         
-                        console.log('✅ Profile created for user with name:', userName || 'User');
+                        console.log('✅ Profile created for user');
                         
-                        // Log activity
                         await window.supabaseFunctions.logActivity(
                             userId,
                             'wallet_payment_pending',
@@ -1155,11 +1106,10 @@
                         return { success: true };
                     }
 
-                    // Profile exists - update it
+                    // Update existing profile
                     const profile = profileData[0];
                     console.log('✅ Profile found for user:', profile.id);
                     
-                    // Update profile with payment details
                     const updateData = {
                         wallet_approval_status: 'pending',
                         pending_wallet_balance: parseInt(amount),
@@ -1170,17 +1120,14 @@
                         updated_at: new Date().toISOString()
                     };
                     
-                    // If name is missing or empty, add it
-                    if (!profile.full_name || profile.full_name === '') {
+                    if (!profile.full_name) {
                         updateData.full_name = userName || 'User';
-                        console.log('📝 Adding name to profile:', userName || 'User');
                     }
-                    
-                    if (!profile.email || profile.email === '') {
+                    if (!profile.email) {
                         updateData.email = userEmail || '';
                     }
 
-                    const { data: updateResult, error: updateError } = await window.supabaseFunctions.supabase
+                    const { error: updateError } = await window.supabaseFunctions.supabase
                         .from('profiles')
                         .update(updateData)
                         .eq('user_id', userId);
@@ -1192,14 +1139,13 @@
 
                     console.log('✅ Payment details saved, pending admin approval');
 
-                    // Log activity for admin
                     await window.supabaseFunctions.logActivity(
                         userId,
                         'wallet_payment_pending',
                         `${userName || 'User'} requested wallet top-up of KSh${amount} - Transaction: ${transactionCode}`
                     );
 
-                    // Also create a notification for admin
+                    // Create admin notification
                     await window.supabaseFunctions.supabase
                         .from('admin_notifications')
                         .insert([{
@@ -1223,13 +1169,13 @@
                     return { success: true };
 
                 } catch (error) {
-                    console.error('❌ Error sending payment to admin:', error);
+                    console.error('❌ Error sending payment:', error);
                     return { success: false, error: error.message || 'Unknown error occurred' };
                 }
             }
 
             // ============================================================
-            // CONFIRM BUTTON - SEND TO ADMIN
+            // CONFIRM BUTTON
             // ============================================================
             confirmBtn.addEventListener('click', async function() {
                 const phone = phoneInput.value.trim();
@@ -1244,7 +1190,7 @@
                     return;
                 }
 
-                // Validate phone number
+                // Validate phone
                 if (phone.length < 9) {
                     showToast('Please enter a valid phone number (e.g., 722xxxxxx)', 'error');
                     phoneInput.focus();
@@ -1260,7 +1206,7 @@
                     return;
                 }
 
-                // Check if user is logged in
+                // Check session
                 const session = localStorage.getItem('nairobi_vibe_session');
                 if (!session) {
                     showToast('Please login to continue', 'error');
@@ -1277,9 +1223,7 @@
                 confirmIcon.style.display = 'none';
 
                 try {
-                    // Get user ID
                     let userId = getUserIdFromURL();
-                    
                     if (!userId && userData) {
                         userId = userData.id;
                     }
@@ -1295,7 +1239,6 @@
 
                     console.log('📝 Processing payment for user:', userId);
 
-                    // Send payment to admin for approval
                     const result = await sendPaymentToAdmin(
                         userId,
                         phone,
@@ -1304,20 +1247,17 @@
                     );
 
                     if (result.success) {
-                        // Hide form and instructions, show pending state
                         paymentForm.style.display = 'none';
                         instructions.style.display = 'none';
                         pendingState.classList.add('show');
                         
                         showToast('✅ Payment sent for admin approval!', 'success');
 
-                        // Reset button
                         confirmBtn.disabled = false;
                         confirmBtnText.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Payment';
                         confirmLoader.classList.remove('show');
                         confirmIcon.style.display = 'inline-block';
 
-                        // Redirect to profile after 3 seconds
                         setTimeout(function() {
                             window.location.href = 'myprofile.html';
                         }, 3000);
@@ -1341,20 +1281,6 @@
                     confirmIcon.style.display = 'inline-block';
                 }
             });
-
-            // ============================================================
-            // CHECK SESSION
-            // ============================================================
-            function checkSession() {
-                const session = localStorage.getItem('nairobi_vibe_session');
-                if (!session) {
-                    showToast('Please login to continue', 'error');
-                    setTimeout(function() {
-                        window.location.href = 'login.html?redirect=checkout-mpesa.html';
-                    }, 1500);
-                }
-            }
-            checkSession();
 
             // ============================================================
             // TOAST
@@ -1400,8 +1326,7 @@
             console.log('👤 Account Name: Mercy Chepkemoi');
             console.log('📞 Admin Contact: 0712831606');
             console.log('🔄 Payment sent to admin for approval');
-            console.log('📱 Mobile-first design optimized');
-
+            
         });
     </script>
 
