@@ -6,40 +6,20 @@
     <meta name="description" content="Find Kenyan Escorts Near You | Escorts in Nairobi County on Nairobi Vibe">
     <title>Nairobi Vibe - Find Kenyan Escorts Near You | Escorts in Nairobi County</title>
     
-    <!-- ============================================================
-         PERFORMANCE OPTIMIZATIONS
-         ============================================================ -->
-    <!-- DNS Prefetch for faster external connections -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://ndoctdhfkbawxinhvfwk.supabase.co">
     
-    <!-- Preconnect for critical origins -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://ndoctdhfkbawxinhvfwk.supabase.co" crossorigin>
     
-    <!-- Preload critical CSS -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts (loaded with swap for faster rendering) -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
-    
-    <!-- Font Awesome (loaded with swap) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-    
-    <!-- Supabase Client (deferred loading) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    
-    <!-- ============================================================
-         CRITICAL CSS (inlined for faster render)
-         ============================================================ -->
     <style>
-        /* Critical CSS - Only what's needed for first paint */
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Open Sans',"Helvetica Neue",Arial,sans-serif;background:#f5f5f5;color:#333;overflow-x:hidden;-webkit-tap-highlight-color:transparent;padding-bottom:70px}
         a{color:#E0006C;text-decoration:none}
@@ -195,126 +175,14 @@
         ::-webkit-scrollbar{width:3px}
         ::-webkit-scrollbar-track{background:#f1f1f1}
         ::-webkit-scrollbar-thumb{background:#E0006C;border-radius:10px}
-        /* Non-critical CSS that loads later */
-        .non-critical{display:none}
     </style>
-    
-    <!-- ============================================================
-         NON-CRITICAL CSS (loaded after page render)
-         ============================================================ -->
-    <link rel="stylesheet" href="data:text/css;base64,LmFuaW1hdGlvbi1kZWxheWVke29wYWNpdHk6MH0=" id="nonCriticalCSS" disabled>
-    
-    <!-- SUPABASE CONFIG - Optimized -->
-    <script>
-        // ============================================================
-        // OPTIMIZED SUPABASE CONFIG WITH RETRY LOGIC
-        // ============================================================
-        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
-        
-        let supabase = null;
-        let supabaseReady = false;
-        let initAttempts = 0;
-        const MAX_INIT_ATTEMPTS = 3;
-        
-        function initSupabase() {
-            if (initAttempts >= MAX_INIT_ATTEMPTS) {
-                console.warn('⚠️ Max Supabase init attempts reached');
-                return false;
-            }
-            initAttempts++;
-            
-            try {
-                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-                        auth: {
-                            persistSession: false,
-                            autoRefreshToken: false
-                        }
-                    });
-                    supabaseReady = true;
-                    
-                    // Optimized functions with smaller queries
-                    window.supabaseFunctions = {
-                        supabase: supabase,
-                        getApprovedProfiles: async (limit = 20) => {
-                            // Select only needed fields for speed
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at')
-                                .eq('status', 'approved')
-                                .eq('is_active', true)
-                                .order('created_at', { ascending: false })
-                                .limit(limit);
-                            return { data, error };
-                        },
-                        searchProfiles: async (searchTerm, limit = 20) => {
-                            const { data, error } = await supabase
-                                .from('profiles')
-                                .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at')
-                                .eq('status', 'approved')
-                                .eq('is_active', true)
-                                .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
-                                .order('created_at', { ascending: false })
-                                .limit(limit);
-                            return { data, error };
-                        },
-                        getProfileCount: async () => {
-                            const { count, error } = await supabase
-                                .from('profiles')
-                                .select('*', { count: 'exact', head: true })
-                                .eq('status', 'approved')
-                                .eq('is_active', true);
-                            return { count, error };
-                        },
-                        signOut: async () => {
-                            const { error } = await supabase.auth.signOut();
-                            return { error };
-                        }
-                    };
-                    
-                    console.log('✅ Supabase initialized (optimized)');
-                    return true;
-                }
-                return false;
-            } catch (e) {
-                console.error('❌ Supabase init error:', e);
-                return false;
-            }
-        }
-        
-        // Try immediate init
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            initSupabase();
-        }
-        
-        // Retry on DOM ready
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!supabaseReady) {
-                initSupabase();
-            }
-        });
-        
-        // Final retry on load
-        window.addEventListener('load', function() {
-            if (!supabaseReady && initAttempts < MAX_INIT_ATTEMPTS) {
-                setTimeout(initSupabase, 500);
-            }
-        });
-    </script>
 </head>
 <body>
 
-<!-- ============================================================
-     TOP BANNER
-     ============================================================ -->
 <div class="top-banner">
     <i class="fas fa-star"></i> Welcome to Nairobi Vibe - #1 Escort Directory in Kenya <i class="fas fa-star"></i>
 </div>
 
-<!-- ============================================================
-     HEADER
-     ============================================================ -->
 <header class="header">
     <div class="header-inner">
         <div class="logo">
@@ -351,17 +219,11 @@
     </div>
 </header>
 
-<!-- ============================================================
-     AUTO-REFRESH INDICATOR
-     ============================================================ -->
 <div class="refresh-indicator" id="refreshIndicator">
     <i class="fas fa-sync-alt"></i>
     <span id="refreshCountdown">30s</span>
 </div>
 
-<!-- ============================================================
-     PHOTO DETAIL MODAL
-     ============================================================ -->
 <div class="photo-modal-overlay" id="photoModal">
     <div class="photo-modal">
         <button class="modal-close" id="modalCloseBtn">&times;</button>
@@ -372,12 +234,8 @@
     </div>
 </div>
 
-<!-- ============================================================
-     MAIN CONTENT
-     ============================================================ -->
 <div class="main-content">
 
-    <!-- HERO SECTION -->
     <section class="hero-section">
         <div class="hero-content">
             <div class="hero-badge"><i class="fas fa-fire"></i> Hot Escorts in Nairobi</div>
@@ -391,7 +249,6 @@
         <div class="hero-image"><i class="fas fa-venus-mars"></i></div>
     </section>
 
-    <!-- STATS BAR -->
     <div class="stats-bar">
         <div class="stat-item">
             <div class="number" id="statEscorts">0</div>
@@ -411,7 +268,6 @@
         </div>
     </div>
 
-    <!-- LOCATION TAGS -->
     <section class="section-box">
         <div class="section-header">
             <div class="icon-circle"><i class="fas fa-map-marked-alt"></i></div>
@@ -504,7 +360,6 @@
         </div>
     </section>
 
-    <!-- POPULAR COUNTIES -->
     <section class="section-box">
         <div class="section-header">
             <div class="icon-circle"><i class="fas fa-flag"></i></div>
@@ -521,7 +376,6 @@
         </div>
     </section>
 
-    <!-- ESCORTS FROM OTHER TOWNS -->
     <section class="section-box">
         <div class="section-header">
             <div class="icon-circle"><i class="fas fa-city"></i></div>
@@ -572,7 +426,6 @@
         </div>
     </section>
 
-    <!-- ESCORT PROFILES -->
     <section class="section-box">
         <div class="section-header">
             <div class="icon-circle"><i class="fas fa-female"></i></div>
@@ -589,9 +442,6 @@
 
 </div>
 
-<!-- ============================================================
-     BOTTOM NAVIGATION
-     ============================================================ -->
 <div class="bottom-nav" id="bottomNav">
     <div class="nav-item active" onclick="window.location.href='index.html'">
         <i class="fas fa-home"></i>
@@ -615,9 +465,6 @@
     </div>
 </div>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
 <footer class="footer">
     <div class="footer-inner">
         <div class="footer-col">
@@ -656,92 +503,101 @@
     </div>
 </footer>
 
-<!-- ============================================================
-     TOAST NOTIFICATION
-     ============================================================ -->
 <div class="toast" id="toast">
     <span id="toastMessage">Notification</span>
 </div>
 
 <!-- ============================================================
-     OPTIMIZED JAVASCRIPT
+     SUPABASE SDK LOADED FIRST - NO DEFER
+     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<!-- ============================================================
+     MAIN JAVASCRIPT - IMMEDIATE EXECUTION
      ============================================================ -->
 <script>
     // ============================================================
-    // OPTIMIZED: Deferred execution with requestIdleCallback
+    // SUPABASE CONFIG - IMMEDIATE EXECUTION
     // ============================================================
-    function runWhenIdle(callback) {
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(callback, { timeout: 2000 });
+    var SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
+    var SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+    
+    var supabaseClient = null;
+    var supabaseReady = false;
+    
+    // Initialize Supabase immediately
+    try {
+        if (typeof supabase !== 'undefined' && supabase.createClient) {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                auth: { persistSession: false, autoRefreshToken: false }
+            });
+            supabaseReady = true;
+            console.log('✅ Supabase initialized');
         } else {
-            setTimeout(callback, 100);
+            // Wait for SDK to load
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof supabase !== 'undefined' && supabase.createClient) {
+                    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                        auth: { persistSession: false, autoRefreshToken: false }
+                    });
+                    supabaseReady = true;
+                    console.log('✅ Supabase initialized (DOM ready)');
+                }
+            });
         }
+    } catch(e) {
+        console.error('❌ Supabase init error:', e);
     }
     
-    function runWhenReady(callback) {
-        if (document.readyState === 'complete') {
-            setTimeout(callback, 50);
-        } else {
-            document.addEventListener('DOMContentLoaded', callback);
-        }
-    }
-    
     // ============================================================
-    // MAIN APP LOGIC (runs when idle)
+    // MAIN APP
     // ============================================================
-    runWhenIdle(function() {
+    (function() {
+        'use strict';
+        
+        // Elements
+        var hamburger = document.getElementById('hamburger');
+        var navMenu = document.getElementById('navMenu');
+        var heroSearch = document.getElementById('heroSearch');
+        var heroSearchBtn = document.getElementById('heroSearchBtn');
+        var toast = document.getElementById('toast');
+        var toastMessage = document.getElementById('toastMessage');
+        var registerBtn = document.getElementById('registerBtn');
+        var loginBtn = document.getElementById('loginBtn');
+        var createProfileBtn = document.getElementById('createProfileBtn');
+        var profileBtn = document.getElementById('profileBtn');
+        var logoutBtn = document.getElementById('logoutBtn');
+        var escortGrid = document.getElementById('escortGrid');
+        var loadingSpinner = document.getElementById('loadingSpinner');
+        var statEscorts = document.getElementById('statEscorts');
+        var refreshIndicator = document.getElementById('refreshIndicator');
+        var refreshCountdown = document.getElementById('refreshCountdown');
+        
+        var photoModal = document.getElementById('photoModal');
+        var modalImage = document.getElementById('modalImage');
+        var modalContent = document.getElementById('modalContent');
+        var modalCloseBtn = document.getElementById('modalCloseBtn');
+        
+        // State
+        var currentEscorts = [];
+        var refreshTimer = 30;
+        var autoRefreshInterval = null;
+        var countdownInterval = null;
+        var isSearching = false;
+        var currentSearchTerm = '';
+        var isLoading = false;
         
         // ============================================================
-        // ELEMENTS
-        // ============================================================
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('navMenu');
-        const heroSearch = document.getElementById('heroSearch');
-        const heroSearchBtn = document.getElementById('heroSearchBtn');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
-        const registerBtn = document.getElementById('registerBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const createProfileBtn = document.getElementById('createProfileBtn');
-        const profileBtn = document.getElementById('profileBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const escortGrid = document.getElementById('escortGrid');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const statEscorts = document.getElementById('statEscorts');
-        const refreshIndicator = document.getElementById('refreshIndicator');
-        const refreshCountdown = document.getElementById('refreshCountdown');
-        
-        // Modal Elements
-        const photoModal = document.getElementById('photoModal');
-        const modalImage = document.getElementById('modalImage');
-        const modalContent = document.getElementById('modalContent');
-        const modalCloseBtn = document.getElementById('modalCloseBtn');
-        
-        // ============================================================
-        // STATE
-        // ============================================================
-        let currentEscorts = [];
-        let refreshTimer = 30;
-        let autoRefreshInterval = null;
-        let countdownInterval = null;
-        let supabaseChannel = null;
-        let isSearching = false;
-        let currentSearchTerm = '';
-        let currentEscortData = null;
-        let isLoading = false;
-        let loadAttempts = 0;
-        const MAX_LOAD_ATTEMPTS = 3;
-        
-        // ============================================================
-        // CACHE - Store escorts in localStorage
+        // CACHE
         // ============================================================
         function getCachedEscorts() {
             try {
-                const cached = localStorage.getItem('nv_escorts_cache');
+                var cached = localStorage.getItem('nv_escorts_cache');
                 if (cached) {
-                    const data = JSON.parse(cached);
-                    const age = Date.now() - data.timestamp;
-                    if (age < 60000) { // 1 minute cache
+                    var data = JSON.parse(cached);
+                    var age = Date.now() - data.timestamp;
+                    if (age < 60000) {
                         return data.escorts;
                     }
                 }
@@ -764,126 +620,40 @@
         // BIO GENERATOR
         // ============================================================
         function generateUniqueBio(escort) {
-            const name = escort.full_name || 'A beautiful escort';
-            const age = escort.age || Math.floor(Math.random() * 15) + 20;
-            const gender = escort.gender || 'Female';
-            const location = escort.location || 'Nairobi';
-            const area = escort.area || '';
+            var name = escort.full_name || 'A beautiful escort';
+            var age = escort.age || Math.floor(Math.random() * 15) + 20;
+            var gender = escort.gender || 'Female';
+            var location = escort.location || 'Nairobi';
+            var area = escort.area || '';
             
-            const bios = [
-                `💃 I'm ${name}, a ${age}-year-old ${gender} escort based in ${location}${area ? ', specifically in ' + area : ''}. I'm here to make your fantasies come true with my charm and elegance. Book me for an unforgettable experience!`,
-                `✨ Hi, I'm ${name}! I'm a ${age}-year-old ${gender} escort offering premium services in ${location}${area ? ' (' + area + ')' : ''}. I pride myself on being professional, discreet, and passionate about making every moment special. Let's connect!`,
-                `💖 ${name} here! I'm a ${age}-year-old ${gender} escort who loves to explore and connect with new people. Based in ${location}${area ? ' near ' + area : ''}, I offer a unique blend of companionship and intimacy. Can't wait to meet you!`,
-                `🌟 Hey there, I'm ${name}! A ${age}-year-old ${gender} escort who's all about fun, laughter, and creating memorable experiences. I'm available in ${location}${area ? ' (around ' + area + ')' : ''} and ready to make your day special.`,
-                `💋 I'm ${name}, a ${age}-year-old ${gender} escort with a passion for making people feel special. I'm located in ${location}${area ? ', ' + area : ''} and I offer a wide range of services. Let's create some magic together!`,
-                `🌸 Hi, I'm ${name}! I'm a ${age}-year-old ${gender} escort who believes in quality time and genuine connections. Available in ${location}${area ? ' (' + area + ')' : ''} - I'm the perfect companion for any occasion. Book me now!`,
-                `🔥 ${name} here - a ${age}-year-old ${gender} escort who's confident, classy, and ready to satisfy your desires. I'm based in ${location}${area ? ', ' + area : ''} and I guarantee an experience you won't forget.`,
-                `💎 I'm ${name}, a ${age}-year-old ${gender} escort offering elite companionship in ${location}${area ? ' (' + area + ')' : ''}. I'm known for my elegance, intelligence, and ability to make every encounter memorable. Let's meet!`
+            var bios = [
+                '💃 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort based in ' + location + (area ? ', specifically in ' + area : '') + '. I\'m here to make your fantasies come true with my charm and elegance. Book me for an unforgettable experience!',
+                '✨ Hi, I\'m ' + name + '! I\'m a ' + age + '-year-old ' + gender + ' escort offering premium services in ' + location + (area ? ' (' + area + ')' : '') + '. I pride myself on being professional, discreet, and passionate about making every moment special. Let\'s connect!',
+                '💖 ' + name + ' here! I\'m a ' + age + '-year-old ' + gender + ' escort who loves to explore and connect with new people. Based in ' + location + (area ? ' near ' + area : '') + ', I offer a unique blend of companionship and intimacy. Can\'t wait to meet you!',
+                '🌟 Hey there, I\'m ' + name + '! A ' + age + '-year-old ' + gender + ' escort who\'s all about fun, laughter, and creating memorable experiences. I\'m available in ' + location + (area ? ' (around ' + area + ')' : '') + ' and ready to make your day special.',
+                '💋 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort with a passion for making people feel special. I\'m located in ' + location + (area ? ', ' + area : '') + ' and I offer a wide range of services. Let\'s create some magic together!',
+                '🌸 Hi, I\'m ' + name + '! I\'m a ' + age + '-year-old ' + gender + ' escort who believes in quality time and genuine connections. Available in ' + location + (area ? ' (' + area + ')' : '') + ' - I\'m the perfect companion for any occasion. Book me now!',
+                '🔥 ' + name + ' here - a ' + age + '-year-old ' + gender + ' escort who\'s confident, classy, and ready to satisfy your desires. I\'m based in ' + location + (area ? ', ' + area : '') + ' and I guarantee an experience you won\'t forget.',
+                '💎 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort offering elite companionship in ' + location + (area ? ' (' + area + ')' : '') + '. I\'m known for my elegance, intelligence, and ability to make every encounter memorable. Let\'s meet!'
             ];
             
-            const index = name.length % bios.length;
+            var index = name.length % bios.length;
             return bios[index];
-        }
-        
-        // ============================================================
-        // CHECK SUPABASE
-        // ============================================================
-        function ensureSupabase() {
-            if (typeof window.supabaseFunctions !== 'undefined' && window.supabaseFunctions.supabase) {
-                return true;
-            }
-            
-            // Retry init
-            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-                const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
-                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-                    auth: { persistSession: false, autoRefreshToken: false }
-                });
-                window.supabaseFunctions = {
-                    supabase: supabase,
-                    getApprovedProfiles: async (limit = 20) => {
-                        const { data, error } = await supabase
-                            .from('profiles')
-                            .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at')
-                            .eq('status', 'approved')
-                            .eq('is_active', true)
-                            .order('created_at', { ascending: false })
-                            .limit(limit);
-                        return { data, error };
-                    },
-                    searchProfiles: async (searchTerm, limit = 20) => {
-                        const { data, error } = await supabase
-                            .from('profiles')
-                            .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at')
-                            .eq('status', 'approved')
-                            .eq('is_active', true)
-                            .or(`full_name.ilike.%${searchTerm}%,location.ilike.%${searchTerm}%,area.ilike.%${searchTerm}%`)
-                            .order('created_at', { ascending: false })
-                            .limit(limit);
-                        return { data, error };
-                    },
-                    getProfileCount: async () => {
-                        const { count, error } = await supabase
-                            .from('profiles')
-                            .select('*', { count: 'exact', head: true })
-                            .eq('status', 'approved')
-                            .eq('is_active', true);
-                        return { count, error };
-                    },
-                    signOut: async () => {
-                        const { error } = await supabase.auth.signOut();
-                        return { error };
-                    }
-                };
-                console.log('✅ Supabase re-initialized successfully');
-                return true;
-            }
-            return false;
-        }
-        
-        // ============================================================
-        // CHECK SESSION
-        // ============================================================
-        function checkSession() {
-            try {
-                const session = localStorage.getItem('nairobi_vibe_session');
-                if (session) {
-                    if (registerBtn) registerBtn.style.display = 'none';
-                    if (loginBtn) loginBtn.style.display = 'none';
-                    if (createProfileBtn) createProfileBtn.style.display = 'inline-block';
-                    if (profileBtn) profileBtn.style.display = 'inline-block';
-                    if (logoutBtn) logoutBtn.style.display = 'inline-block';
-                    
-                    try {
-                        const userData = JSON.parse(session);
-                        if (profileBtn) {
-                            profileBtn.innerHTML = '<i class="fas fa-user"></i> ' + (userData.name || 'My Profile');
-                        }
-                    } catch (e) {}
-                } else {
-                    if (registerBtn) registerBtn.style.display = 'inline-block';
-                    if (loginBtn) loginBtn.style.display = 'inline-block';
-                    if (createProfileBtn) createProfileBtn.style.display = 'none';
-                    if (profileBtn) profileBtn.style.display = 'none';
-                    if (logoutBtn) logoutBtn.style.display = 'none';
-                }
-            } catch (e) {}
         }
         
         // ============================================================
         // GENERATE DESCRIPTION
         // ============================================================
         function generateDescription(escort) {
-            const name = escort.full_name || 'A beautiful escort';
-            const age = escort.age || 'young';
-            const gender = escort.gender || 'Female';
-            const location = escort.location || 'Nairobi';
-            const area = escort.area || '';
+            var name = escort.full_name || 'A beautiful escort';
+            var age = escort.age || 'young';
+            var gender = escort.gender || 'Female';
+            var location = escort.location || 'Nairobi';
+            var area = escort.area || '';
             
-            let desc = `Meet ${name}, a ${age} years old ${gender} escort from ${location}`;
-            if (area) desc += ` in ${area}`;
-            desc += `. Offers the best escort services in Nairobi.`;
+            var desc = 'Meet ' + name + ', a ' + age + ' years old ' + gender + ' escort from ' + location;
+            if (area) desc += ' in ' + area;
+            desc += '. Offers the best escort services in Nairobi.';
             return desc;
         }
         
@@ -892,68 +662,58 @@
         // ============================================================
         function openPhotoModal(escort) {
             if (!escort) return;
-            currentEscortData = escort;
             
-            let imageHtml = '';
+            var imageHtml = '';
             if (escort.photos && escort.photos.length > 0) {
-                imageHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}" loading="lazy">`;
+                imageHtml = '<img src="' + escort.photos[0] + '" alt="' + (escort.full_name || 'Escort') + '" loading="lazy">';
             } else {
-                imageHtml = `<div class="placeholder-icon"><i class="fas fa-user"></i></div>`;
+                imageHtml = '<div class="placeholder-icon"><i class="fas fa-user"></i></div>';
             }
             modalImage.innerHTML = imageHtml;
             
-            const name = escort.full_name || 'Anonymous';
-            const phone = escort.phone_number || '0712345678';
-            const location = escort.location || 'N/A';
-            const area = escort.area || '';
-            const age = escort.age || 'N/A';
-            const gender = escort.gender || 'N/A';
-            const nationality = escort.nationality || 'N/A';
-            const county = escort.county || 'N/A';
-            const city = escort.city_town || 'N/A';
-            const services = escort.services || [];
-            const incalls = escort.incalls_rate || 0;
-            const outcalls = escort.outcalls_rate || 0;
-            const wallet = escort.wallet_balance || 0;
-            const membership = escort.membership_plan || 'None';
-            const bio = generateUniqueBio(escort);
+            var name = escort.full_name || 'Anonymous';
+            var phone = escort.phone_number || '0712345678';
+            var location = escort.location || 'N/A';
+            var area = escort.area || '';
+            var age = escort.age || 'N/A';
+            var gender = escort.gender || 'N/A';
+            var nationality = escort.nationality || 'N/A';
+            var county = escort.county || 'N/A';
+            var city = escort.city_town || 'N/A';
+            var services = escort.services || [];
+            var incalls = escort.incalls_rate || 0;
+            var outcalls = escort.outcalls_rate || 0;
+            var wallet = escort.wallet_balance || 0;
+            var membership = escort.membership_plan || 'None';
+            var bio = generateUniqueBio(escort);
             
-            let servicesHtml = '';
+            var servicesHtml = '';
             if (services.length > 0) {
-                servicesHtml = `
-                    <div style="margin-bottom:8px;">
-                        <div style="font-size:12px; font-weight:600; color:#888; margin-bottom:6px;">🛎️ Services Offered</div>
-                        <div class="services-list">
-                            ${services.map(s => `<span class="service-tag">${s}</span>`).join('')}
-                        </div>
-                    </div>
-                `;
+                servicesHtml = '<div style="margin-bottom:8px;"><div style="font-size:12px; font-weight:600; color:#888; margin-bottom:6px;">🛎️ Services Offered</div><div class="services-list">';
+                for (var i = 0; i < services.length; i++) {
+                    servicesHtml += '<span class="service-tag">' + services[i] + '</span>';
+                }
+                servicesHtml += '</div></div>';
             }
             
-            modalContent.innerHTML = `
-                <div class="escort-name">
-                    ${name}
-                    <span class="badge-verified"><i class="fas fa-check-circle"></i> Verified</span>
-                </div>
-                <div class="escort-phone"><i class="fas fa-phone"></i> ${phone}</div>
-                <div class="escort-location"><i class="fas fa-map-pin"></i> ${location}${area ? ' - ' + area : ''}</div>
-                ${city && city !== 'N/A' ? `<div class="escort-location"><i class="fas fa-city"></i> ${city}</div>` : ''}
-                ${county && county !== 'N/A' ? `<div class="escort-location"><i class="fas fa-flag"></i> ${county} County</div>` : ''}
-                ${wallet > 0 ? `<div class="wallet-badge"><i class="fas fa-wallet"></i> KSh${wallet} balance</div>` : ''}
-                <div class="escort-bio"><i class="fas fa-quote-left"></i> ${bio}</div>
-                <div class="detail-grid">
-                    <div class="detail-item"><div class="label">Age</div><div class="value">${age}</div></div>
-                    <div class="detail-item"><div class="label">Gender</div><div class="value">${gender}</div></div>
-                    <div class="detail-item"><div class="label">Nationality</div><div class="value">${nationality}</div></div>
-                    <div class="detail-item"><div class="label">Membership</div><div class="value">${membership.toUpperCase()}</div></div>
-                    <div class="detail-item"><div class="label">Incalls</div><div class="value">KSh${incalls}</div></div>
-                    <div class="detail-item"><div class="label">Outcalls</div><div class="value">KSh${outcalls}</div></div>
-                </div>
-                ${servicesHtml}
-                <a href="tel:${phone}" class="modal-call-btn">
-                    <i class="fas fa-phone"></i> Call ${name} Now
-                </a>
-            `;
+            modalContent.innerHTML = 
+                '<div class="escort-name">' + name + '<span class="badge-verified"><i class="fas fa-check-circle"></i> Verified</span></div>' +
+                '<div class="escort-phone"><i class="fas fa-phone"></i> ' + phone + '</div>' +
+                '<div class="escort-location"><i class="fas fa-map-pin"></i> ' + location + (area ? ' - ' + area : '') + '</div>' +
+                (city && city !== 'N/A' ? '<div class="escort-location"><i class="fas fa-city"></i> ' + city + '</div>' : '') +
+                (county && county !== 'N/A' ? '<div class="escort-location"><i class="fas fa-flag"></i> ' + county + ' County</div>' : '') +
+                (wallet > 0 ? '<div class="wallet-badge"><i class="fas fa-wallet"></i> KSh' + wallet + ' balance</div>' : '') +
+                '<div class="escort-bio"><i class="fas fa-quote-left"></i> ' + bio + '</div>' +
+                '<div class="detail-grid">' +
+                    '<div class="detail-item"><div class="label">Age</div><div class="value">' + age + '</div></div>' +
+                    '<div class="detail-item"><div class="label">Gender</div><div class="value">' + gender + '</div></div>' +
+                    '<div class="detail-item"><div class="label">Nationality</div><div class="value">' + nationality + '</div></div>' +
+                    '<div class="detail-item"><div class="label">Membership</div><div class="value">' + membership.toUpperCase() + '</div></div>' +
+                    '<div class="detail-item"><div class="label">Incalls</div><div class="value">KSh' + incalls + '</div></div>' +
+                    '<div class="detail-item"><div class="label">Outcalls</div><div class="value">KSh' + outcalls + '</div></div>' +
+                '</div>' +
+                servicesHtml +
+                '<a href="tel:' + phone + '" class="modal-call-btn"><i class="fas fa-phone"></i> Call ' + name + ' Now</a>';
             
             photoModal.classList.add('show');
             document.body.style.overflow = 'hidden';
@@ -965,7 +725,6 @@
         function closePhotoModal() {
             photoModal.classList.remove('show');
             document.body.style.overflow = '';
-            currentEscortData = null;
         }
         
         modalCloseBtn.addEventListener('click', closePhotoModal);
@@ -977,15 +736,16 @@
         });
         
         // ============================================================
-        // LOAD ESCORTS (Optimized with cache & timeout)
+        // LOAD ESCORTS - DIRECT SUPABASE QUERY
         // ============================================================
-        async function loadEscorts(searchTerm = '') {
+        async function loadEscorts(searchTerm) {
+            searchTerm = searchTerm || '';
             if (isLoading) return;
             isLoading = true;
             
             try {
                 // Check cache first
-                const cached = getCachedEscorts();
+                var cached = getCachedEscorts();
                 if (cached && !searchTerm) {
                     currentEscorts = cached;
                     renderEscorts(cached);
@@ -994,47 +754,56 @@
                     console.log('📦 Loaded from cache');
                 }
                 
-                // Ensure Supabase is ready
-                if (!ensureSupabase()) {
-                    if (!cached) {
-                        renderEscorts([]);
-                        showToast('Connection error. Please refresh.', 'error');
+                // Check if Supabase is ready
+                if (!supabaseReady || !supabaseClient) {
+                    console.warn('⏳ Supabase not ready, waiting...');
+                    // Try to initialize again
+                    if (typeof supabase !== 'undefined' && supabase.createClient) {
+                        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                            auth: { persistSession: false, autoRefreshToken: false }
+                        });
+                        supabaseReady = true;
                     }
-                    isLoading = false;
-                    return;
+                    
+                    if (!supabaseReady) {
+                        if (!cached) {
+                            renderEscorts([]);
+                            showToast('Connecting to server...', 'info');
+                            // Retry after 2 seconds
+                            setTimeout(function() { loadEscorts(searchTerm); }, 2000);
+                        }
+                        isLoading = false;
+                        return;
+                    }
                 }
                 
-                // Set timeout for fetch
-                const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Request timeout')), 8000)
-                );
+                // Build query
+                var query = supabaseClient
+                    .from('profiles')
+                    .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at')
+                    .eq('status', 'approved')
+                    .eq('is_active', true);
                 
-                let result;
                 if (searchTerm) {
-                    result = await Promise.race([
-                        window.supabaseFunctions.searchProfiles(searchTerm, 20),
-                        timeoutPromise
-                    ]);
+                    query = query.or('full_name.ilike.%' + searchTerm + '%,location.ilike.%' + searchTerm + '%,area.ilike.%' + searchTerm + '%');
                     isSearching = true;
                     currentSearchTerm = searchTerm;
                 } else {
-                    result = await Promise.race([
-                        window.supabaseFunctions.getApprovedProfiles(20),
-                        timeoutPromise
-                    ]);
                     isSearching = false;
                     currentSearchTerm = '';
                 }
                 
+                var result = await query.order('created_at', { ascending: false }).limit(20);
+                
                 if (result.error) {
-                    if (!cached) {
-                        renderEscorts([]);
-                    }
+                    console.error('❌ Query error:', result.error);
+                    if (!cached) renderEscorts([]);
+                    showToast('Error loading data', 'error');
                     isLoading = false;
                     return;
                 }
                 
-                const escorts = result.data || [];
+                var escorts = result.data || [];
                 if (escorts.length > 0) {
                     currentEscorts = escorts;
                     cacheEscorts(escorts);
@@ -1044,22 +813,17 @@
                     renderEscorts([]);
                 }
                 
-                console.log(`✅ Loaded ${escorts.length} approved escorts`);
+                console.log('✅ Loaded ' + escorts.length + ' escorts');
                 
             } catch (error) {
                 console.error('❌ Error loading escorts:', error);
-                const cached = getCachedEscorts();
+                var cached = getCachedEscorts();
                 if (cached) {
                     renderEscorts(cached);
                     updateStats(cached.length);
                 } else {
                     renderEscorts([]);
-                    if (loadAttempts < MAX_LOAD_ATTEMPTS) {
-                        loadAttempts++;
-                        setTimeout(() => loadEscorts(searchTerm), 1000);
-                    } else {
-                        showToast('Error loading escorts. Please refresh.', 'error');
-                    }
+                    showToast('Connection error. Please refresh.', 'error');
                 }
             } finally {
                 isLoading = false;
@@ -1082,28 +846,26 @@
             if (loadingSpinner) loadingSpinner.style.display = 'none';
             
             if (!escorts || escorts.length === 0) {
-                escortGrid.innerHTML = `
-                    <div class="escort-grid-empty">
-                        <i class="fas fa-users empty-icon"></i>
-                        <h4>No Escorts Available</h4>
-                        <p>Check back soon for new listings!</p>
-                        <br>
-                        <a href="myprofile.html" class="btn-primary" style="padding:8px 20px; font-size:12px;">
-                            <i class="fas fa-pen-fancy"></i> Create Profile
-                        </a>
-                    </div>
-                `;
+                escortGrid.innerHTML = 
+                    '<div class="escort-grid-empty">' +
+                        '<i class="fas fa-users empty-icon"></i>' +
+                        '<h4>No Escorts Available</h4>' +
+                        '<p>Check back soon for new listings!</p><br>' +
+                        '<a href="myprofile.html" class="btn-primary" style="padding:8px 20px; font-size:12px;">' +
+                            '<i class="fas fa-pen-fancy"></i> Create Profile' +
+                        '</a>' +
+                    '</div>';
                 return;
             }
             
-            let html = '';
-            for (let i = 0; i < escorts.length; i++) {
+            var html = '';
+            for (var i = 0; i < escorts.length; i++) {
                 if (i % 3 === 0) {
                     html += renderFullCard(escorts[i]);
                 } else {
-                    if (i % 3 === 1) html += `<div class="escort-row">`;
+                    if (i % 3 === 1) html += '<div class="escort-row">';
                     html += renderSmallCard(escorts[i]);
-                    if (i % 3 === 2 || i === escorts.length - 1) html += `</div>`;
+                    if (i % 3 === 2 || i === escorts.length - 1) html += '</div>';
                 }
             }
             
@@ -1114,90 +876,82 @@
         // RENDER FULL CARD
         // ============================================================
         function renderFullCard(escort) {
-            let photoHtml = '';
+            var photoHtml = '';
             if (escort.photos && escort.photos.length > 0) {
-                photoHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}" loading="lazy" decoding="async">`;
+                photoHtml = '<img src="' + escort.photos[0] + '" alt="' + (escort.full_name || 'Escort') + '" loading="lazy" decoding="async">';
             } else {
-                photoHtml = `<div class="placeholder-icon"><i class="fas fa-user"></i></div>`;
+                photoHtml = '<div class="placeholder-icon"><i class="fas fa-user"></i></div>';
             }
             
-            const name = escort.full_name || 'Anonymous';
-            const phone = escort.phone_number || '0712345678';
-            const description = generateDescription(escort);
-            const location = escort.location || 'Nairobi';
+            var name = escort.full_name || 'Anonymous';
+            var phone = escort.phone_number || '0712345678';
+            var description = generateDescription(escort);
+            var location = escort.location || 'Nairobi';
             
-            return `
-                <div class="escort-card-full">
-                    <div class="card-inner">
-                        <div class="card-image" onclick="openPhotoModalFromId('${escort.id}')">
-                            ${photoHtml}
-                        </div>
-                        <div class="card-body">
-                            <div class="name">${name}</div>
-                            <div class="phone"><i class="fas fa-phone"></i> ${phone}</div>
-                            <div class="location-tag"><i class="fas fa-map-marker-alt"></i> ${location}</div>
-                            <div class="description">${description}</div>
-                            <a href="tel:${phone}" class="call-btn">
-                                <i class="fas fa-phone"></i> Call ${name}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
+            return '<div class="escort-card-full">' +
+                    '<div class="card-inner">' +
+                        '<div class="card-image" onclick="openPhotoModalFromId(\'' + escort.id + '\')">' + photoHtml + '</div>' +
+                        '<div class="card-body">' +
+                            '<div class="name">' + name + '</div>' +
+                            '<div class="phone"><i class="fas fa-phone"></i> ' + phone + '</div>' +
+                            '<div class="location-tag"><i class="fas fa-map-marker-alt"></i> ' + location + '</div>' +
+                            '<div class="description">' + description + '</div>' +
+                            '<a href="tel:' + phone + '" class="call-btn"><i class="fas fa-phone"></i> Call ' + name + '</a>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
         }
         
         // ============================================================
         // RENDER SMALL CARD
         // ============================================================
         function renderSmallCard(escort) {
-            let photoHtml = '';
+            var photoHtml = '';
             if (escort.photos && escort.photos.length > 0) {
-                photoHtml = `<img src="${escort.photos[0]}" alt="${escort.full_name || 'Escort'}" loading="lazy" decoding="async">`;
+                photoHtml = '<img src="' + escort.photos[0] + '" alt="' + (escort.full_name || 'Escort') + '" loading="lazy" decoding="async">';
             } else {
-                photoHtml = `<div class="placeholder-icon"><i class="fas fa-user"></i></div>`;
+                photoHtml = '<div class="placeholder-icon"><i class="fas fa-user"></i></div>';
             }
             
-            const name = escort.full_name || 'Anonymous';
-            const phone = escort.phone_number || '0712345678';
-            const location = escort.location || 'Nairobi';
-            const area = escort.area || '';
-            const age = escort.age || 'young';
-            const gender = escort.gender || 'Female';
+            var name = escort.full_name || 'Anonymous';
+            var phone = escort.phone_number || '0712345678';
+            var location = escort.location || 'Nairobi';
+            var area = escort.area || '';
+            var age = escort.age || 'young';
+            var gender = escort.gender || 'Female';
             
-            let shortDesc = `Meet ${name}, a ${age} years old ${gender} escort from ${location}`;
-            if (area) shortDesc += ` in ${area}`;
+            var shortDesc = 'Meet ' + name + ', a ' + age + ' years old ' + gender + ' escort from ' + location;
+            if (area) shortDesc += ' in ' + area;
             
-            return `
-                <div class="escort-card-small">
-                    <div class="card-image" onclick="openPhotoModalFromId('${escort.id}')">
-                        ${photoHtml}
-                    </div>
-                    <div class="card-body">
-                        <div class="name">${name}</div>
-                        <div class="phone"><i class="fas fa-phone"></i> ${phone}</div>
-                        <div class="location"><i class="fas fa-map-marker-alt"></i> ${location} ${area ? '- ' + area : ''}</div>
-                        <div class="description">${shortDesc}</div>
-                        <a href="tel:${phone}" class="call-btn">
-                            <i class="fas fa-phone"></i> Call ${name}
-                        </a>
-                    </div>
-                </div>
-            `;
+            return '<div class="escort-card-small">' +
+                    '<div class="card-image" onclick="openPhotoModalFromId(\'' + escort.id + '\')">' + photoHtml + '</div>' +
+                    '<div class="card-body">' +
+                        '<div class="name">' + name + '</div>' +
+                        '<div class="phone"><i class="fas fa-phone"></i> ' + phone + '</div>' +
+                        '<div class="location"><i class="fas fa-map-marker-alt"></i> ' + location + (area ? ' - ' + area : '') + '</div>' +
+                        '<div class="description">' + shortDesc + '</div>' +
+                        '<a href="tel:' + phone + '" class="call-btn"><i class="fas fa-phone"></i> Call ' + name + '</a>' +
+                    '</div>' +
+                '</div>';
         }
         
         // ============================================================
         // OPEN MODAL FROM ID
         // ============================================================
         window.openPhotoModalFromId = function(id) {
-            const escort = currentEscorts.find(e => e.id === id);
-            if (escort) openPhotoModal(escort);
+            for (var i = 0; i < currentEscorts.length; i++) {
+                if (currentEscorts[i].id === id) {
+                    openPhotoModal(currentEscorts[i]);
+                    break;
+                }
+            }
         };
         
         // ============================================================
         // SEARCH
         // ============================================================
         function performSearch() {
-            const term = heroSearch.value.trim();
+            var term = heroSearch.value.trim();
             if (term) {
                 showToast('Searching for "' + term + '"...', 'info');
                 loadEscorts(term);
@@ -1216,13 +970,13 @@
             refreshTimer = 30;
             updateCountdownDisplay();
             
-            countdownInterval = setInterval(() => {
+            countdownInterval = setInterval(function() {
                 refreshTimer--;
                 updateCountdownDisplay();
                 if (refreshTimer <= 0) refreshTimer = 30;
             }, 1000);
             
-            autoRefreshInterval = setInterval(() => {
+            autoRefreshInterval = setInterval(function() {
                 if (!isSearching && !isLoading) {
                     console.log('🔄 Auto-refreshing escorts...');
                     loadEscorts(currentSearchTerm);
@@ -1234,36 +988,6 @@
         
         function updateCountdownDisplay() {
             if (refreshCountdown) refreshCountdown.textContent = refreshTimer + 's';
-        }
-        
-        // ============================================================
-        // SETUP REALTIME
-        // ============================================================
-        function setupRealtime() {
-            if (supabaseChannel) {
-                supabaseChannel.unsubscribe();
-            }
-            
-            if (ensureSupabase() && window.supabaseFunctions.supabase) {
-                supabaseChannel = window.supabaseFunctions.supabase
-                    .channel('public:profiles')
-                    .on('postgres_changes', 
-                        { event: '*', schema: 'public', table: 'profiles' }, 
-                        (payload) => {
-                            console.log('🔄 Real-time update detected');
-                            const newData = payload.new;
-                            if (newData && newData.status === 'approved' && newData.is_active === true) {
-                                loadEscorts(currentSearchTerm);
-                            }
-                            if (payload.eventType === 'UPDATE' && newData && newData.status === 'approved' && newData.is_active === true) {
-                                loadEscorts(currentSearchTerm);
-                            }
-                        }
-                    )
-                    .subscribe((status) => {
-                        console.log('📡 Realtime status:', status);
-                    });
-            }
         }
         
         // ============================================================
@@ -1287,20 +1011,15 @@
         // LOGOUT
         // ============================================================
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', async function(e) {
+            logoutBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                try {
-                    if (window.supabaseFunctions && window.supabaseFunctions.signOut) {
-                        await window.supabaseFunctions.signOut();
-                    }
-                } catch (e) {}
                 try {
                     localStorage.removeItem('nairobi_vibe_session');
                     localStorage.removeItem('nairobi_vibe_admin_session');
                     localStorage.removeItem('nv_escorts_cache');
                 } catch (e) {}
                 showToast('Logged out successfully', 'success');
-                setTimeout(() => location.reload(), 1000);
+                setTimeout(function() { location.reload(); }, 1000);
             });
         }
         
@@ -1322,7 +1041,7 @@
         // ============================================================
         document.querySelectorAll('.location-tags .tag, .county-grid .county-item, .town-grid .town-item').forEach(function(el) {
             el.addEventListener('click', function() {
-                const text = this.textContent.trim();
+                var text = this.textContent.trim();
                 if (heroSearch) heroSearch.value = text;
                 performSearch();
             });
@@ -1331,14 +1050,15 @@
         // ============================================================
         // TOAST
         // ============================================================
-        function showToast(message, type = 'info') {
+        function showToast(message, type) {
+            type = type || 'info';
             if (toastMessage) toastMessage.textContent = message;
             if (toast) {
                 toast.className = 'toast ' + type;
                 void toast.offsetWidth;
                 toast.classList.add('show');
                 clearTimeout(toast._timeout);
-                toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+                toast._timeout = setTimeout(function() { toast.classList.remove('show'); }, 3000);
             }
         }
         
@@ -1346,26 +1066,51 @@
         // ANIMATE STATS
         // ============================================================
         function animateStats() {
-            const stats = document.querySelectorAll('.stats-bar .stat-item .number');
-            stats.forEach(stat => {
-                const target = parseInt(stat.textContent.replace(/[^0-9]/g, '')) || 0;
+            var stats = document.querySelectorAll('.stats-bar .stat-item .number');
+            for (var i = 0; i < stats.length; i++) {
+                var stat = stats[i];
+                var target = parseInt(stat.textContent.replace(/[^0-9]/g, '')) || 0;
                 if (target > 0) {
-                    let current = 0;
-                    const increment = Math.ceil(target / 25);
-                    const interval = setInterval(() => {
-                        current += increment;
-                        if (current >= target) {
-                            current = target;
-                            clearInterval(interval);
-                        }
-                        if (stat.id === 'statEscorts') {
-                            stat.textContent = current + '+';
-                        } else {
-                            stat.textContent = current;
-                        }
-                    }, 35);
+                    var current = 0;
+                    var increment = Math.ceil(target / 25);
+                    (function(stat, target) {
+                        var interval = setInterval(function() {
+                            current += increment;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(interval);
+                            }
+                            if (stat.id === 'statEscorts') {
+                                stat.textContent = current + '+';
+                            } else {
+                                stat.textContent = current;
+                            }
+                        }, 35);
+                    })(stat, target);
                 }
-            });
+            }
+        }
+        
+        // ============================================================
+        // CHECK SESSION
+        // ============================================================
+        function checkSession() {
+            try {
+                var session = localStorage.getItem('nairobi_vibe_session');
+                if (session) {
+                    if (registerBtn) registerBtn.style.display = 'none';
+                    if (loginBtn) loginBtn.style.display = 'none';
+                    if (createProfileBtn) createProfileBtn.style.display = 'inline-block';
+                    if (profileBtn) profileBtn.style.display = 'inline-block';
+                    if (logoutBtn) logoutBtn.style.display = 'inline-block';
+                } else {
+                    if (registerBtn) registerBtn.style.display = 'inline-block';
+                    if (loginBtn) loginBtn.style.display = 'inline-block';
+                    if (createProfileBtn) createProfileBtn.style.display = 'none';
+                    if (profileBtn) profileBtn.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                }
+            } catch (e) {}
         }
         
         // ============================================================
@@ -1373,26 +1118,18 @@
         // ============================================================
         checkSession();
         
-        // Load escorts with small delay for better perceived performance
-        setTimeout(() => {
-            loadEscorts();
+        // Load escorts after a small delay
+        setTimeout(function() {
+            loadEscorts('');
             animateStats();
-        }, 200);
+        }, 500);
         
-        setTimeout(startAutoRefresh, 800);
-        setTimeout(setupRealtime, 1500);
+        setTimeout(startAutoRefresh, 1500);
         
-        console.log('🔥 Nairobi Vibe - OPTIMIZED Fast-Loading Homepage!');
-        console.log('🚀 Performance optimizations:');
-        console.log('  📦 LocalStorage cache (1 min)');
-        console.log('  ⚡ Selective field queries');
-        console.log('  🔄 30s silent auto-refresh');
-        console.log('  📡 Realtime updates');
-        console.log('  🖼️ Lazy loading images');
-        console.log('  💾 Request timeout protection');
-        console.log('  🔁 Retry logic (max 3 attempts)');
+        console.log('🔥 Nairobi Vibe - Fast-Loading Homepage');
+        console.log('🔑 Supabase Key:', SUPABASE_ANON_KEY.substring(0, 20) + '...');
         
-    });
+    })();
 </script>
 
 </body>
