@@ -14,11 +14,8 @@
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG - EMBEDDED WITH NEW KEYS + FALLBACK -->
+    <!-- SUPABASE CONFIG -->
     <script>
-        // ============================================================
-        // SUPABASE CONFIG - NEW KEYS
-        // ============================================================
         const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
         
@@ -37,10 +34,6 @@
                             const { error } = await supabase.auth.signOut();
                             return { error };
                         },
-                        getSession: async () => {
-                            const { data, error } = await supabase.auth.getSession();
-                            return { data, error };
-                        },
                         logActivity: async (userId, action, details) => {
                             const { data, error } = await supabase
                                 .from('activity_logs')
@@ -54,8 +47,7 @@
                         }
                     };
                     
-                    console.log('✅ Supabase initialized with NEW keys!');
-                    console.log('🔗 URL:', SUPABASE_URL);
+                    console.log('✅ Supabase initialized');
                     return true;
                 }
                 return false;
@@ -65,7 +57,6 @@
             }
         }
         
-        // Try to initialize immediately
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             initSupabase();
         }
@@ -178,6 +169,16 @@
         .profile-header h2 { font-size: 16px; font-weight: 800; color: #E0006C; }
         .profile-header .breadcrumb { font-size: 10px; color: #999; margin-top: 2px; }
         .profile-header .breadcrumb span { color: #E0006C; }
+        .profile-header .edit-badge {
+            display: inline-block;
+            background: #28a745;
+            color: #fff;
+            font-size: 8px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            margin-left: 6px;
+        }
         
         /* ---------- STATUS BANNER ---------- */
         .status-banner {
@@ -452,6 +453,17 @@
             padding: 10px 14px;
             border-bottom: 2px solid #f0f0f0;
             background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .profile-form .form-title .edit-mode-badge {
+            font-size: 8px;
+            background: #28a745;
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-weight: 600;
         }
         
         /* ----- PROFILE FIELDS TABLE ----- */
@@ -536,43 +548,146 @@
         .badge-reg { background: #6c757d; color: #fff; }
         .badge-vip { background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff; }
         
-        /* ----- MEMBERSHIP PLANS - COMPACT GRID ----- */
+        /* ============================================================
+           MEMBERSHIP PLANS - PROFESSIONAL CARDS
+           ============================================================ */
         .plans-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
-            margin-bottom: 4px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
-        .plans-grid .plan-opt {
-            padding: 4px 2px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
+
+        .plan-card {
+            background: #fff;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: #fafafa;
+            position: relative;
+            overflow: hidden;
+            min-height: 170px;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .plan-card.active {
+            border-color: #E0006C;
+            box-shadow: 0 0 0 3px rgba(224,0,108,0.15), 0 4px 25px rgba(224,0,108,0.15);
+            transform: translateY(-4px);
+        }
+
+        .plan-card .plan-card-inner {
+            padding: 12px 8px 10px;
             text-align: center;
-            min-height: 36px;
+            position: relative;
+        }
+
+        .plan-card .plan-icon {
+            font-size: 22px;
+            color: #E0006C;
+            margin-bottom: 3px;
+        }
+
+        .plan-card.active .plan-icon {
+            color: #E0006C;
+        }
+
+        .plan-card .plan-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1px;
+        }
+
+        .plan-card .plan-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: #E0006C;
+            margin-bottom: 1px;
+        }
+
+        .plan-card .plan-duration {
+            font-size: 9px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .plan-card .plan-features {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            gap: 1px;
+            margin: 3px 0 5px;
         }
-        .plans-grid .plan-opt:active { border-color: #E0006C; }
-        .plans-grid .plan-opt.active { border-color: #E0006C; background: #fce4ec; }
-        .plans-grid .plan-opt .pname { font-size: 9px; font-weight: 700; color: #333; }
-        .plans-grid .plan-opt .pprice { font-size: 8px; color: #E0006C; font-weight: 600; }
-        .plans-grid .plan-opt .pbadge {
-            font-size: 6px;
-            padding: 1px 4px;
-            border-radius: 6px;
+
+        .plan-card .plan-features span {
+            font-size: 8px;
+            color: #666;
+            padding: 1px 0;
+        }
+
+        .plan-card .plan-badge {
+            display: inline-block;
+            font-size: 7px;
+            padding: 2px 10px;
+            border-radius: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            margin-top: 1px;
+            letter-spacing: 0.3px;
         }
-        .pbadge-reg { background: #6c757d; color: #fff; }
-        .pbadge-prime { background: #007bff; color: #fff; }
-        .pbadge-pvip { background: #8b5cf6; color: #fff; }
-        .pbadge-vip { background: linear-gradient(135deg, #f7053e, #d60435); color: #fff; }
+
+        .plan-card .plan-check {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            font-size: 16px;
+            color: #ddd;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        .plan-card.active .plan-check {
+            color: #E0006C;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .plan-card .plan-popular {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #fff;
+            font-size: 7px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 0 10px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .plan-card .plan-best {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff;
+            font-size: 7px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 0 10px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-reg { background: #6c757d; color: #fff; }
+        .badge-prime { background: #007bff; color: #fff; }
+        .badge-pvip { background: #8b5cf6; color: #fff; }
+        .badge-vip { background: linear-gradient(135deg, #f7053e, #d60435); color: #fff; }
         
         /* ----- DURATION - COMPACT ROW ----- */
         .duration-row {
@@ -773,7 +888,13 @@
             .profile-fields th { background: #f5f5f5; border-bottom: none; padding-bottom: 2px; }
             .profile-fields td { padding-top: 2px; }
             .profile-fields tr { border-bottom: 1px dotted #e8e8e8; }
-            .plans-grid { grid-template-columns: repeat(2, 1fr); }
+            .plans-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .plan-card { min-height: 150px; }
+            .plan-card .plan-price { font-size: 16px; }
+            .plan-card .plan-features span { font-size: 7px; }
             .duration-row { grid-template-columns: repeat(2, 1fr); }
             .site-header { flex-direction: column; text-align: center; }
             .wallet-stats { flex-direction: column; }
@@ -793,7 +914,15 @@
             .profile-form { padding: 0; }
             .profile-fields th,
             .profile-fields td { padding: 3px 6px; }
-            .plans-grid { grid-template-columns: 1fr 1fr; }
+            .plans-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .plan-card { min-height: 130px; }
+            .plan-card .plan-icon { font-size: 18px; }
+            .plan-card .plan-name { font-size: 11px; }
+            .plan-card .plan-price { font-size: 14px; }
+            .plan-card .plan-features span { font-size: 6px; }
             .duration-row { grid-template-columns: 1fr 1fr; }
             .profile-form .form-title { padding: 8px 10px; font-size: 12px; }
             .form-actions { padding: 6px 10px 10px 10px; }
@@ -852,7 +981,12 @@
 
             <!-- Profile Header -->
             <div class="profile-header">
-                <h2>My Profile</h2>
+                <h2>
+                    My Profile 
+                    <span class="edit-badge" id="editBadge" style="display:none;">
+                        <i class="fas fa-edit"></i> Edit Mode
+                    </span>
+                </h2>
                 <div class="breadcrumb">
                     Hookup with <span id="profileNameDisplay">User</span>
                 </div>
@@ -939,7 +1073,12 @@
                  PROFILE FORM
                  ============================================================ -->
             <form class="profile-form" id="profileForm">
-                <div class="form-title"><i class="fas fa-user-edit"></i> My Profile</div>
+                <div class="form-title">
+                    <span><i class="fas fa-user-edit"></i> My Profile</span>
+                    <span class="edit-mode-badge" id="editModeBadge" style="display:none;">
+                        <i class="fas fa-pen"></i> Editing
+                    </span>
+                </div>
 
                 <table class="profile-fields">
                     <tbody>
@@ -1190,31 +1329,82 @@
                         </tr>
                         
                         <!-- ============================================================
-                             MEMBERSHIP PLAN
+                             MEMBERSHIP PLAN - PROFESSIONAL CARDS
                              ============================================================ -->
                         <tr>
                             <th>Membership <span class="required">*</span></th>
                             <td>
                                 <div class="plans-grid" id="membershipPlans">
-                                    <div class="plan-opt active" data-plan="regular" onclick="selectPlan('regular')">
-                                        <span class="pname">Regular</span>
-                                        <span class="pprice">KSh400</span>
-                                        <span class="pbadge pbadge-reg">Basic</span>
+                                    <!-- Regular Plan -->
+                                    <div class="plan-card active" data-plan="regular" onclick="selectPlan('regular')">
+                                        <div class="plan-card-inner">
+                                            <div class="plan-icon"><i class="fas fa-user"></i></div>
+                                            <div class="plan-name">Regular</div>
+                                            <div class="plan-price">KSh 400</div>
+                                            <div class="plan-duration">3 days</div>
+                                            <div class="plan-features">
+                                                <span>✓ Basic Listing</span>
+                                                <span>✓ Standard Visibility</span>
+                                            </div>
+                                            <div class="plan-badge badge-reg">Basic</div>
+                                            <div class="plan-check"><i class="fas fa-check-circle"></i></div>
+                                        </div>
                                     </div>
-                                    <div class="plan-opt" data-plan="prime" onclick="selectPlan('prime')">
-                                        <span class="pname">Prime</span>
-                                        <span class="pprice">KSh500</span>
-                                        <span class="pbadge pbadge-prime">Popular</span>
+                                    
+                                    <!-- Prime Plan -->
+                                    <div class="plan-card" data-plan="prime" onclick="selectPlan('prime')">
+                                        <div class="plan-card-inner">
+                                            <div class="plan-popular">🔥 Popular</div>
+                                            <div class="plan-icon"><i class="fas fa-star"></i></div>
+                                            <div class="plan-name">Prime</div>
+                                            <div class="plan-price">KSh 500</div>
+                                            <div class="plan-duration">3 days</div>
+                                            <div class="plan-features">
+                                                <span>✓ Premium Listing</span>
+                                                <span>✓ Higher Visibility</span>
+                                                <span>✓ Priority Support</span>
+                                            </div>
+                                            <div class="plan-badge badge-prime">Popular</div>
+                                            <div class="plan-check"><i class="fas fa-check-circle"></i></div>
+                                        </div>
                                     </div>
-                                    <div class="plan-opt" data-plan="prime-vip" onclick="selectPlan('prime-vip')">
-                                        <span class="pname">Prime VIP</span>
-                                        <span class="pprice">KSh600</span>
-                                        <span class="pbadge pbadge-pvip">Best</span>
+                                    
+                                    <!-- Prime VIP Plan -->
+                                    <div class="plan-card" data-plan="prime-vip" onclick="selectPlan('prime-vip')">
+                                        <div class="plan-card-inner">
+                                            <div class="plan-best">🌟 Best Value</div>
+                                            <div class="plan-icon"><i class="fas fa-crown"></i></div>
+                                            <div class="plan-name">Prime VIP</div>
+                                            <div class="plan-price">KSh 600</div>
+                                            <div class="plan-duration">3 days</div>
+                                            <div class="plan-features">
+                                                <span>✓ VIP Listing</span>
+                                                <span>✓ Top Visibility</span>
+                                                <span>✓ Priority Support</span>
+                                                <span>✓ Featured Badge</span>
+                                            </div>
+                                            <div class="plan-badge badge-pvip">Best</div>
+                                            <div class="plan-check"><i class="fas fa-check-circle"></i></div>
+                                        </div>
                                     </div>
-                                    <div class="plan-opt" data-plan="vip" onclick="selectPlan('vip')">
-                                        <span class="pname">VIP</span>
-                                        <span class="pprice">KSh900</span>
-                                        <span class="pbadge pbadge-vip">Prem</span>
+                                    
+                                    <!-- VIP Plan -->
+                                    <div class="plan-card" data-plan="vip" onclick="selectPlan('vip')">
+                                        <div class="plan-card-inner">
+                                            <div class="plan-icon"><i class="fas fa-gem"></i></div>
+                                            <div class="plan-name">VIP</div>
+                                            <div class="plan-price">KSh 900</div>
+                                            <div class="plan-duration">3 days</div>
+                                            <div class="plan-features">
+                                                <span>✓ Elite Listing</span>
+                                                <span>✓ Maximum Visibility</span>
+                                                <span>✓ Priority Support</span>
+                                                <span>✓ Verified Badge</span>
+                                                <span>✓ Featured Spotlight</span>
+                                            </div>
+                                            <div class="plan-badge badge-vip">Premium</div>
+                                            <div class="plan-check"><i class="fas fa-check-circle"></i></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <input type="hidden" id="selectedPlan" value="regular">
@@ -1354,7 +1544,7 @@
     </div>
 
     <!-- ============================================================
-     JAVASCRIPT - WITH PHOTO REQUIRED & WALLET CHECK
+     JAVASCRIPT - WITH PROFESSIONAL PLAN CARDS
      ============================================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1377,20 +1567,34 @@
             let currentUser = null;
             let profileStatus = 'inactive';
             let existingProfileId = null;
+            let existingProfileData = null;
+            let isEditMode = false;
 
             // ============================================================
-            // SELECT PLAN
+            // SELECT PLAN - WITH VISUAL FEEDBACK
             // ============================================================
             window.selectPlan = function(plan) {
                 currentPlan = plan;
                 document.getElementById('selectedPlan').value = plan;
                 
-                document.querySelectorAll('.plan-opt').forEach(opt => {
-                    opt.classList.remove('active');
-                    if (opt.dataset.plan === plan) opt.classList.add('active');
+                // Update visual selection on cards
+                document.querySelectorAll('.plan-card').forEach(card => {
+                    card.classList.remove('active');
+                    if (card.dataset.plan === plan) {
+                        card.classList.add('active');
+                    }
                 });
                 
                 updateDurations(plan);
+                
+                // Toast notification for plan selection
+                const planNames = {
+                    'regular': 'Regular',
+                    'prime': 'Prime',
+                    'prime-vip': 'Prime VIP',
+                    'vip': 'VIP'
+                };
+                showToast(`✅ Selected ${planNames[plan] || plan} plan`, 'success');
             };
 
             // ============================================================
@@ -1471,6 +1675,8 @@
             const photoCount = document.getElementById('photoCount');
             const photoRequired = document.getElementById('photoRequired');
             const addFundBtn = document.getElementById('addFundBtn');
+            const editBadge = document.getElementById('editBadge');
+            const editModeBadge = document.getElementById('editModeBadge');
             
             // ============================================================
             // CHECK SUPABASE
@@ -1487,10 +1693,6 @@
                         signOut: async () => {
                             const { error } = await supabase.auth.signOut();
                             return { error };
-                        },
-                        getSession: async () => {
-                            const { data, error } = await supabase.auth.getSession();
-                            return { data, error };
                         },
                         logActivity: async (userId, action, details) => {
                             const { data, error } = await supabase
@@ -1557,6 +1759,12 @@
                     
                     if (data) {
                         existingProfileId = data.id;
+                        existingProfileData = data;
+                        isEditMode = true;
+                        
+                        editBadge.style.display = 'inline-block';
+                        editModeBadge.style.display = 'inline-block';
+                        
                         fillProfileForm(data);
                         
                         if (data.status === 'approved' && data.is_active === true) {
@@ -1573,14 +1781,23 @@
                         uploadedPhotos = (data.photos && Array.isArray(data.photos)) ? data.photos : [];
                         renderPhotos();
                         
+                        console.log('✅ Profile loaded - EDIT MODE ACTIVE (no charges for edits)');
+                        
                     } else {
+                        isEditMode = false;
+                        editBadge.style.display = 'none';
+                        editModeBadge.style.display = 'none';
                         profileStatus = 'inactive';
                         updateStatusBanner('inactive');
                         uploadedPhotos = [];
                         renderPhotos();
+                        console.log('🆕 New profile - will charge membership fee');
                     }
                 } catch (error) {
                     console.log('No existing profile found or error:', error);
+                    isEditMode = false;
+                    editBadge.style.display = 'none';
+                    editModeBadge.style.display = 'none';
                     profileStatus = 'inactive';
                     updateStatusBanner('inactive');
                     uploadedPhotos = [];
@@ -1613,6 +1830,14 @@
                 if (data.profile_type) selectProfileType(data.profile_type);
                 
                 if (data.membership_plan) {
+                    // Update plan card visual
+                    document.querySelectorAll('.plan-card').forEach(card => {
+                        card.classList.remove('active');
+                        if (card.dataset.plan === data.membership_plan) {
+                            card.classList.add('active');
+                        }
+                    });
+                    
                     selectPlan(data.membership_plan);
                     if (data.membership_days) {
                         const planData = membershipData[data.membership_plan];
@@ -1809,12 +2034,24 @@
                     return;
                 }
                 
-                if (currentWalletBalance < currentPrice) {
-                    const shortfall = currentPrice - currentWalletBalance;
-                    showToast(`❌ Insufficient balance! Need KSh${shortfall} more.`, 'error');
-                    addFundBtn.classList.add('wallet-warning');
-                    setTimeout(() => addFundBtn.classList.remove('wallet-warning'), 3000);
-                    return;
+                // Only charge if this is a NEW profile (not edit)
+                let newBalance = currentWalletBalance;
+                let chargeAmount = 0;
+                let isNewProfile = !isEditMode;
+                
+                if (isNewProfile) {
+                    if (currentWalletBalance < currentPrice) {
+                        const shortfall = currentPrice - currentWalletBalance;
+                        showToast(`❌ Insufficient balance! Need KSh${shortfall} more.`, 'error');
+                        addFundBtn.classList.add('wallet-warning');
+                        setTimeout(() => addFundBtn.classList.remove('wallet-warning'), 3000);
+                        return;
+                    }
+                    chargeAmount = currentPrice;
+                    newBalance = currentWalletBalance - currentPrice;
+                    showToast(`💳 Charging KSh${chargeAmount} for new membership`, 'info');
+                } else {
+                    showToast('✏️ Editing profile - No charge applied', 'info');
                 }
                 
                 saveBtn.disabled = true;
@@ -1826,8 +2063,6 @@
                 document.querySelectorAll('#servicesGrid input[type="checkbox"]:checked').forEach(cb => {
                     services.push(cb.value);
                 });
-                
-                const newBalance = currentWalletBalance - currentPrice;
                 
                 const profileData = {
                     user_id: currentUser.id,
@@ -1853,43 +2088,75 @@
                     membership_price: parseInt(document.getElementById('selectedPrice').value),
                     photos: uploadedPhotos,
                     wallet_balance: newBalance,
-                    status: 'pending',
-                    is_active: false,
                     updated_at: new Date().toISOString()
                 };
                 
+                if (isNewProfile) {
+                    profileData.status = 'pending';
+                    profileData.is_active = false;
+                    profileData.created_at = new Date().toISOString();
+                } else {
+                    profileData.status = existingProfileData?.status || 'pending';
+                    profileData.is_active = existingProfileData?.is_active || false;
+                }
+                
                 try {
                     let result;
-                    if (existingProfileId) {
+                    if (existingProfileId && isEditMode) {
                         result = await window.supabaseFunctions.supabase
                             .from('profiles')
                             .update(profileData)
                             .eq('id', existingProfileId);
+                        
+                        if (result.error) throw result.error;
+                        
+                        currentWalletBalance = newBalance;
+                        document.getElementById('walletBalance').textContent = 'KSh' + newBalance;
+                        document.getElementById('totalWalletBalance').textContent = 'KSh' + newBalance;
+                        document.getElementById('availableBalance').textContent = 'KSh' + newBalance;
+                        
+                        await window.supabaseFunctions.logActivity(
+                            currentUser.id,
+                            'profile_updated',
+                            `User ${profileData.full_name} updated ${profileData.profile_type.toUpperCase()} profile`
+                        );
+                        
+                        showToast(`✅ Profile updated successfully!`, 'success');
+                        
                     } else {
+                        profileData.status = 'pending';
+                        profileData.is_active = false;
                         profileData.created_at = new Date().toISOString();
+                        
                         result = await window.supabaseFunctions.supabase
                             .from('profiles')
                             .insert([profileData]);
+                        
+                        if (result.error) throw result.error;
+                        
+                        currentWalletBalance = newBalance;
+                        document.getElementById('walletBalance').textContent = 'KSh' + newBalance;
+                        document.getElementById('totalWalletBalance').textContent = 'KSh' + newBalance;
+                        document.getElementById('availableBalance').textContent = 'KSh' + newBalance;
+                        
+                        profileStatus = 'pending';
+                        updateStatusBanner('pending');
+                        
+                        await window.supabaseFunctions.logActivity(
+                            currentUser.id,
+                            'profile_submitted',
+                            `User ${profileData.full_name} submitted ${profileData.profile_type.toUpperCase()} profile - Wallet: KSh${newBalance}`
+                        );
+                        
+                        showToast(`✅ Profile submitted for admin approval! KSh${chargeAmount} deducted.`, 'success');
                     }
                     
-                    if (result.error) throw result.error;
-                    
-                    currentWalletBalance = newBalance;
-                    document.getElementById('walletBalance').textContent = 'KSh' + newBalance;
-                    document.getElementById('totalWalletBalance').textContent = 'KSh' + newBalance;
-                    document.getElementById('availableBalance').textContent = 'KSh' + newBalance;
-                    
-                    profileStatus = 'pending';
-                    updateStatusBanner('pending');
-                    
-                    await window.supabaseFunctions.logActivity(
-                        currentUser.id,
-                        'profile_submitted',
-                        `User ${profileData.full_name} submitted ${profileData.profile_type.toUpperCase()} profile - Wallet: KSh${newBalance}`
-                    );
-                    
-                    showToast(`✅ Profile submitted for admin approval! KSh${currentPrice} deducted.`, 'success');
                     updateAboutSection(profileData);
+                    
+                    isEditMode = true;
+                    existingProfileId = result.data?.[0]?.id || existingProfileId;
+                    editBadge.style.display = 'inline-block';
+                    editModeBadge.style.display = 'inline-block';
                     
                     saveBtn.disabled = false;
                     saveBtnText.textContent = 'Save Changes';
@@ -1953,10 +2220,10 @@
             checkSession();
             updateDurations('regular');
             
-            console.log('✅ My Profile - Squeezed & Professional!');
+            console.log('✅ My Profile - Professional Plan Cards Active');
             console.log('📸 Photo required: At least 1 photo');
-            console.log('💰 Wallet balance checked before saving');
-            console.log('📤 Profile submitted to admin for approval');
+            console.log('💰 New profiles: Charged, Existing profiles: Free edits');
+            console.log('🎯 Plan cards with visual feedback');
             
         });
     </script>
