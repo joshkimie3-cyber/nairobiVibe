@@ -92,62 +92,67 @@
         .escort-card-full .card-body .location-tag{display:inline-block;font-size:12px;color:#999;margin-bottom:6px}
         .escort-card-full .card-body .location-tag i{color:#E0006C;margin-right:3px}
         
-        /* ----- ACTION BUTTONS ROW ----- */
+        /* ----- PROFESSIONAL ACTION BUTTONS ----- */
         .action-buttons-row {
             display: flex;
             gap: 8px;
-            margin-top: 6px;
+            margin-top: 8px;
         }
-        .action-buttons-row .call-btn {
+        .action-buttons-row .btn-call {
             flex: 1;
             background: linear-gradient(135deg, #25d366, #1da851);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 700;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all .3s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 44px;
+            min-height: 42px;
             text-decoration: none;
+            letter-spacing: 0.3px;
         }
-        .action-buttons-row .call-btn:active{transform:scale(.95)}
-        .action-buttons-row .call-btn i{font-size:16px}
-        .action-buttons-row .whatsapp-btn {
+        .action-buttons-row .btn-call:hover{opacity:.9}
+        .action-buttons-row .btn-call:active{transform:scale(.96)}
+        .action-buttons-row .btn-call i{font-size:15px}
+        
+        .action-buttons-row .btn-whatsapp {
             flex: 1;
             background: linear-gradient(135deg, #25d366, #128C7E);
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 700;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all .3s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 44px;
+            min-height: 42px;
             text-decoration: none;
+            letter-spacing: 0.3px;
         }
-        .action-buttons-row .whatsapp-btn:active{transform:scale(.95)}
-        .action-buttons-row .whatsapp-btn i{font-size:18px}
+        .action-buttons-row .btn-whatsapp:hover{opacity:.9}
+        .action-buttons-row .btn-whatsapp:active{transform:scale(.96)}
+        .action-buttons-row .btn-whatsapp i{font-size:16px}
         
         /* Small Card Buttons */
-        .action-buttons-row.small{gap:6px;margin-top:4px}
-        .action-buttons-row.small .call-btn-small {
+        .action-buttons-row.small{gap:6px;margin-top:6px}
+        .action-buttons-row.small .btn-call-sm {
             flex: 1;
             background: linear-gradient(135deg, #25d366, #1da851);
             color: #fff;
             border: none;
             padding: 6px 10px;
-            border-radius: 20px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
@@ -155,18 +160,21 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            min-height: 34px;
+            gap: 5px;
+            min-height: 32px;
             text-decoration: none;
+            letter-spacing: 0.2px;
         }
-        .action-buttons-row.small .call-btn-small:active{transform:scale(.95)}
-        .action-buttons-row.small .whatsapp-btn-small {
+        .action-buttons-row.small .btn-call-sm:active{transform:scale(.95)}
+        .action-buttons-row.small .btn-call-sm i{font-size:12px}
+        
+        .action-buttons-row.small .btn-whatsapp-sm {
             flex: 1;
             background: linear-gradient(135deg, #25d366, #128C7E);
             color: #fff;
             border: none;
             padding: 6px 10px;
-            border-radius: 20px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: 600;
             cursor: pointer;
@@ -174,12 +182,13 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            min-height: 34px;
+            gap: 5px;
+            min-height: 32px;
             text-decoration: none;
+            letter-spacing: 0.2px;
         }
-        .action-buttons-row.small .whatsapp-btn-small:active{transform:scale(.95)}
-        .action-buttons-row.small .whatsapp-btn-small i{font-size:14px}
+        .action-buttons-row.small .btn-whatsapp-sm:active{transform:scale(.95)}
+        .action-buttons-row.small .btn-whatsapp-sm i{font-size:13px}
         
         .escort-card-small{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);transition:all .3s ease;display:flex;flex-direction:column}
         .escort-card-small:active{transform:scale(.95)}
@@ -217,18 +226,18 @@
         .photo-modal .modal-content .services-list{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
         .photo-modal .modal-content .services-list .service-tag{background:linear-gradient(135deg,#fce4ec,#f8d7da);color:#E0006C;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid rgba(224,0,108,.1)}
         
-        /* Modal WhatsApp Button */
+        /* Modal Action Buttons */
         .modal-actions{display:flex;flex-direction:column;gap:10px;margin-top:4px}
-        .modal-actions .modal-call-btn {
-            width:100%;padding:14px;background:linear-gradient(135deg,#25d366,#1da851);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;box-shadow:0 4px 15px rgba(37,211,102,.3);text-decoration:none
+        .modal-actions .btn-modal-call {
+            width:100%;padding:14px;background:linear-gradient(135deg,#25d366,#1da851);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;text-decoration:none;letter-spacing:0.3px
         }
-        .modal-actions .modal-call-btn:active{transform:scale(.97)}
-        .modal-actions .modal-call-btn i{font-size:18px}
-        .modal-actions .modal-whatsapp-btn {
-            width:100%;padding:14px;background:linear-gradient(135deg,#25d366,#128C7E);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;box-shadow:0 4px 15px rgba(37,211,102,.25);text-decoration:none
+        .modal-actions .btn-modal-call:active{transform:scale(.97)}
+        .modal-actions .btn-modal-call i{font-size:18px}
+        .modal-actions .btn-modal-whatsapp {
+            width:100%;padding:14px;background:linear-gradient(135deg,#25d366,#128C7E);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;text-decoration:none;letter-spacing:0.3px
         }
-        .modal-actions .modal-whatsapp-btn:active{transform:scale(.97)}
-        .modal-actions .modal-whatsapp-btn i{font-size:20px}
+        .modal-actions .btn-modal-whatsapp:active{transform:scale(.97)}
+        .modal-actions .btn-modal-whatsapp i{font-size:20px}
         
         .photo-modal .modal-content .wallet-badge{display:inline-block;background:#fff8e1;color:#f39c12;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;margin-bottom:10px;border:1px solid #f39c12}
         .photo-modal .modal-content .wallet-badge i{margin-right:4px}
@@ -238,9 +247,6 @@
         .escort-grid-empty .empty-icon{font-size:48px;color:#f0f0f0;margin-bottom:10px;display:block}
         .escort-grid-empty h4{font-size:16px;color:#666;margin-bottom:4px}
         .escort-grid-empty p{font-size:13px;color:#999}
-        .refresh-indicator{position:fixed;bottom:80px;right:20px;background:rgba(0,0,0,.6);color:#fff;padding:5px 12px;border-radius:20px;font-size:9px;z-index:100;backdrop-filter:blur(5px);display:flex;align-items:center;gap:6px;opacity:.5;transition:all .3s ease;font-weight:600}
-        .refresh-indicator i{animation:spin 3s linear infinite}
-        .refresh-indicator:hover{opacity:1}
         .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;align-items:center;padding:6px 0 10px;z-index:999;box-shadow:0 -2px 15px rgba(0,0,0,.08)}
         .bottom-nav .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:#999;font-size:10px;font-weight:600;transition:all .3s ease;cursor:pointer;padding:4px 12px;min-height:44px;justify-content:center}
         .bottom-nav .nav-item.active{color:#E0006C}
@@ -264,12 +270,12 @@
         @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
         
         /* PAGINATION */
-        .pagination-container{display:flex;justify-content:center;align-items:center;gap:8px;padding:10px 0 5px;flex-wrap:wrap}
-        .pagination-container .page-btn{background:#fff;border:1px solid #ddd;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:600;color:#555;cursor:pointer;min-height:30px;transition:all .3s ease}
+        .pagination-container{display:flex;justify-content:center;align-items:center;gap:8px;padding:12px 0 5px;flex-wrap:wrap}
+        .pagination-container .page-btn{background:#fff;border:2px solid #eee;border-radius:8px;padding:4px 14px;font-size:12px;font-weight:600;color:#555;cursor:pointer;min-height:34px;transition:all .3s ease}
         .pagination-container .page-btn:active{transform:scale(.95)}
         .pagination-container .page-btn.active{background:#E0006C;color:#fff;border-color:#E0006C}
         .pagination-container .page-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-        .pagination-container .page-info{font-size:10px;color:#999;padding:0 6px}
+        .pagination-container .page-info{font-size:11px;color:#999;padding:0 8px;font-weight:600}
         
         /* SKELETON */
         .skeleton-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);width:100%;animation:pulse-skeleton 1.5s ease-in-out infinite}
@@ -292,15 +298,14 @@
         
         @media(min-width:600px){.hero-section{padding:30px 25px;min-height:220px}.hero-section h1{font-size:26px}.hero-section p{font-size:14px}.escort-card-full .card-image{height:300px}.escort-card-full .card-inner{flex-direction:row}.escort-card-full .card-image{width:40%;height:auto;min-height:280px}.escort-card-full .card-body{width:60%;padding:20px 24px}.escort-card-small .card-image{height:200px}.photo-modal .modal-image{height:400px}}
         @media(min-width:768px){.hero-section h1{font-size:30px}.hero-section .hero-image{display:block;position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:100px;opacity:.08}.footer-inner{grid-template-columns:repeat(4,1fr)}}
-        @media(min-width:992px){.nav-menu{display:flex!important;flex-direction:row;width:auto;padding:0;gap:2px}.nav-menu>li{width:auto}.nav-menu>li>a{padding:8px 12px;font-size:13px}.hamburger{display:none}.hero-section{padding:40px 35px;min-height:260px}.hero-section h1{font-size:36px}.hero-section .hero-image{font-size:140px}.bottom-nav{display:none}body{padding-bottom:0}.escort-card-full .card-image{width:35%}.escort-card-full .card-body{width:65%}.escort-card-full .card-image{min-height:320px}.escort-card-small .card-image{height:220px}.refresh-indicator{bottom:30px;right:30px}.photo-modal{max-width:550px}.photo-modal .modal-image{height:450px}}
+        @media(min-width:992px){.nav-menu{display:flex!important;flex-direction:row;width:auto;padding:0;gap:2px}.nav-menu>li{width:auto}.nav-menu>li>a{padding:8px 12px;font-size:13px}.hamburger{display:none}.hero-section{padding:40px 35px;min-height:260px}.hero-section h1{font-size:36px}.hero-section .hero-image{font-size:140px}.bottom-nav{display:none}body{padding-bottom:0}.escort-card-full .card-image{width:35%}.escort-card-full .card-body{width:65%}.escort-card-full .card-image{min-height:320px}.escort-card-small .card-image{height:220px}.photo-modal{max-width:550px}.photo-modal .modal-image{height:450px}}
         @media(min-width:1200px){.escort-row{grid-template-columns:1fr 1fr}}
         
-        /* Responsive for buttons */
         @media (max-width: 480px) {
             .action-buttons-row{flex-direction:column;gap:6px}
-            .action-buttons-row .call-btn,.action-buttons-row .whatsapp-btn{font-size:12px;padding:8px 16px;min-height:38px}
-            .action-buttons-row.small .call-btn-small,.action-buttons-row.small .whatsapp-btn-small{font-size:10px;padding:5px 8px;min-height:30px}
-            .modal-actions .modal-call-btn,.modal-actions .modal-whatsapp-btn{font-size:14px;padding:12px;min-height:44px}
+            .action-buttons-row .btn-call,.action-buttons-row .btn-whatsapp{font-size:12px;padding:8px 14px;min-height:38px}
+            .action-buttons-row.small .btn-call-sm,.action-buttons-row.small .btn-whatsapp-sm{font-size:10px;padding:5px 8px;min-height:30px}
+            .modal-actions .btn-modal-call,.modal-actions .btn-modal-whatsapp{font-size:14px;padding:12px;min-height:44px}
         }
         
         ::-webkit-scrollbar{width:3px}
@@ -349,11 +354,6 @@
         </div>
     </div>
 </header>
-
-<div class="refresh-indicator" id="refreshIndicator">
-    <i class="fas fa-sync-alt"></i>
-    <span id="refreshCountdown">60s</span>
-</div>
 
 <div class="photo-modal-overlay" id="photoModal">
     <div class="photo-modal">
@@ -677,7 +677,6 @@
         
         var ITEMS_PER_PAGE = 6;
         var CACHE_DURATION = 300000;
-        var REFRESH_INTERVAL = 60000;
         var DEBOUNCE_DELAY = 500;
         
         // DOM Elements
@@ -694,8 +693,6 @@
         var logoutBtn = document.getElementById('logoutBtn');
         var escortGrid = document.getElementById('escortGrid');
         var statEscorts = document.getElementById('statEscorts');
-        var refreshIndicator = document.getElementById('refreshIndicator');
-        var refreshCountdown = document.getElementById('refreshCountdown');
         var paginationContainer = document.getElementById('paginationContainer');
         
         var photoModal = document.getElementById('photoModal');
@@ -709,9 +706,6 @@
         var isSearching = false;
         var currentSearchTerm = '';
         var isLoading = false;
-        var refreshTimer = 60;
-        var autoRefreshInterval = null;
-        var countdownInterval = null;
         var debounceTimer = null;
         var totalCount = 0;
         
@@ -870,7 +864,6 @@
             var wallet = escort.wallet_balance || 0;
             var membership = escort.membership_plan || 'None';
             var bio = generateUniqueBio(escort);
-            
             var whatsappPhone = formatWhatsAppPhone(phone);
             
             var servicesHtml = '';
@@ -900,8 +893,8 @@
                 '</div>' +
                 servicesHtml +
                 '<div class="modal-actions">' +
-                    '<a href="tel:' + phone + '" class="modal-call-btn"><i class="fas fa-phone"></i> Call ' + name + '</a>' +
-                    '<a href="https://wa.me/' + whatsappPhone + '" target="_blank" class="modal-whatsapp-btn"><i class="fab fa-whatsapp"></i> WhatsApp ' + name + '</a>' +
+                    '<a href="tel:' + phone + '" class="btn-modal-call"><i class="fas fa-phone"></i> Call ' + name + '</a>' +
+                    '<a href="https://wa.me/' + whatsappPhone + '" target="_blank" class="btn-modal-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp ' + name + '</a>' +
                 '</div>';
             
             photoModal.classList.add('show');
@@ -947,8 +940,8 @@
                             '<div class="location-tag"><i class="fas fa-map-marker-alt"></i> ' + location + '</div>' +
                             '<div class="description">' + description + '</div>' +
                             '<div class="action-buttons-row">' +
-                                '<a href="tel:' + phone + '" class="call-btn"><i class="fas fa-phone"></i> Call ' + name + '</a>' +
-                                '<a href="https://wa.me/' + whatsappPhone + '" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>' +
+                                '<a href="tel:' + phone + '" class="btn-call"><i class="fas fa-phone"></i> Call</a>' +
+                                '<a href="https://wa.me/' + whatsappPhone + '" target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>' +
                             '</div>' +
                         '</div>' +
                     '</div>' +
@@ -982,8 +975,8 @@
                         '<div class="location"><i class="fas fa-map-marker-alt"></i> ' + location + (area ? ' - ' + area : '') + '</div>' +
                         '<div class="description">' + shortDesc + '</div>' +
                         '<div class="action-buttons-row small">' +
-                            '<a href="tel:' + phone + '" class="call-btn-small"><i class="fas fa-phone"></i> Call</a>' +
-                            '<a href="https://wa.me/' + whatsappPhone + '" target="_blank" class="whatsapp-btn-small"><i class="fab fa-whatsapp"></i> Chat</a>' +
+                            '<a href="tel:' + phone + '" class="btn-call-sm"><i class="fas fa-phone"></i> Call</a>' +
+                            '<a href="https://wa.me/' + whatsappPhone + '" target="_blank" class="btn-whatsapp-sm"><i class="fab fa-whatsapp"></i> Chat</a>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
@@ -1250,36 +1243,6 @@
         }
         
         // ============================================================
-        // AUTO-REFRESH
-        // ============================================================
-        function startAutoRefresh() {
-            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-            if (countdownInterval) clearInterval(countdownInterval);
-            
-            refreshTimer = 60;
-            updateCountdownDisplay();
-            
-            countdownInterval = setInterval(function() {
-                refreshTimer--;
-                updateCountdownDisplay();
-                if (refreshTimer <= 0) refreshTimer = 60;
-            }, 1000);
-            
-            autoRefreshInterval = setInterval(function() {
-                if (!isSearching && !isLoading) {
-                    console.log('🔄 Auto-refreshing escorts...');
-                    loadEscorts(currentSearchTerm);
-                }
-                refreshTimer = 60;
-                updateCountdownDisplay();
-            }, REFRESH_INTERVAL);
-        }
-        
-        function updateCountdownDisplay() {
-            if (refreshCountdown) refreshCountdown.textContent = refreshTimer + 's';
-        }
-        
-        // ============================================================
         // MENU
         // ============================================================
         if (hamburger) {
@@ -1411,13 +1374,10 @@
             animateStats();
         }, 300);
         
-        setTimeout(startAutoRefresh, 1000);
-        
-        console.log('🔥 Nairobi Vibe - OPTIMIZED with WhatsApp Buttons!');
+        console.log('🔥 Nairobi Vibe - Professional Homepage');
         console.log('📄 Items per page: ' + ITEMS_PER_PAGE);
         console.log('💾 Cache duration: 5 minutes');
-        console.log('🔄 Auto-refresh: 60 seconds');
-        console.log('📱 WhatsApp buttons added to all cards');
+        console.log('📱 WhatsApp & Call buttons added');
         
     })();
 </script>
