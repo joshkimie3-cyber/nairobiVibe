@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <meta name="description" content="Find Kenyan Escorts Near You | Escorts in Nairobi County on Nairobi Vibe">
-    <title>Nairobi Vibe - Find Kenyan Escorts Near You | Escorts in Nairobi County</title>
+    <title>Nairobi Vibe - Find Kenyan Escorts Near You</title>
     
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -175,6 +175,109 @@
         ::-webkit-scrollbar{width:3px}
         ::-webkit-scrollbar-track{background:#f1f1f1}
         ::-webkit-scrollbar-thumb{background:#E0006C;border-radius:10px}
+        
+        /* ===== PAGINATION STYLES ===== */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 0 5px;
+            flex-wrap: wrap;
+        }
+        .pagination-container .page-btn {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            min-height: 30px;
+            transition: all 0.3s ease;
+        }
+        .pagination-container .page-btn:active {
+            transform: scale(0.95);
+        }
+        .pagination-container .page-btn.active {
+            background: #E0006C;
+            color: #fff;
+            border-color: #E0006C;
+        }
+        .pagination-container .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .pagination-container .page-info {
+            font-size: 10px;
+            color: #999;
+            padding: 0 6px;
+        }
+        
+        /* ===== LOADING SKELETON ===== */
+        .skeleton-card {
+            background: #fff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,.08);
+            width: 100%;
+            animation: pulse-skeleton 1.5s ease-in-out infinite;
+        }
+        .skeleton-card .skeleton-image {
+            width: 100%;
+            height: 250px;
+            background: #e8e8e8;
+        }
+        .skeleton-card .skeleton-body {
+            padding: 14px 16px;
+        }
+        .skeleton-card .skeleton-line {
+            height: 12px;
+            background: #e8e8e8;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+        .skeleton-card .skeleton-line.short { width: 60%; }
+        .skeleton-card .skeleton-line.medium { width: 80%; }
+        .skeleton-card .skeleton-line.long { width: 100%; }
+        .skeleton-card .skeleton-line.button { height: 38px; width: 100%; border-radius: 25px; }
+        
+        @keyframes pulse-skeleton {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .skeleton-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .skeleton-small {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,.06);
+            animation: pulse-skeleton 1.5s ease-in-out infinite;
+        }
+        .skeleton-small .skeleton-image {
+            width: 100%;
+            height: 160px;
+            background: #e8e8e8;
+        }
+        .skeleton-small .skeleton-body {
+            padding: 10px 12px 12px;
+        }
+        .skeleton-small .skeleton-line {
+            height: 10px;
+            background: #e8e8e8;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+        .skeleton-small .skeleton-line.short { width: 50%; }
+        .skeleton-small .skeleton-line.medium { width: 70%; }
+        .skeleton-small .skeleton-line.button { height: 34px; width: 100%; border-radius: 20px; }
     </style>
 </head>
 <body>
@@ -433,11 +536,10 @@
             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="escort-grid" id="escortGrid">
-            <div class="loading-spinner" id="loadingSpinner">
-                <i class="fas fa-spinner"></i>
-                <p style="color:#999; font-size:12px; margin-top:6px;">Loading escorts...</p>
-            </div>
+            <!-- Loading Skeletons will be rendered by JS -->
         </div>
+        <!-- Pagination -->
+        <div class="pagination-container" id="paginationContainer"></div>
     </section>
 
 </div>
@@ -507,18 +609,12 @@
     <span id="toastMessage">Notification</span>
 </div>
 
-<!-- ============================================================
-     SUPABASE SDK LOADED FIRST - NO DEFER
-     ============================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<!-- ============================================================
-     MAIN JAVASCRIPT - IMMEDIATE EXECUTION
-     ============================================================ -->
 <script>
     // ============================================================
-    // SUPABASE CONFIG - IMMEDIATE EXECUTION
+    // SUPABASE CONFIG
     // ============================================================
     var SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
     var SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
@@ -526,7 +622,6 @@
     var supabaseClient = null;
     var supabaseReady = false;
     
-    // Initialize Supabase immediately
     try {
         if (typeof supabase !== 'undefined' && supabase.createClient) {
             supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -535,7 +630,6 @@
             supabaseReady = true;
             console.log('✅ Supabase initialized');
         } else {
-            // Wait for SDK to load
             document.addEventListener('DOMContentLoaded', function() {
                 if (typeof supabase !== 'undefined' && supabase.createClient) {
                     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -551,12 +645,22 @@
     }
     
     // ============================================================
-    // MAIN APP
+    // MAIN APP - OPTIMIZED
     // ============================================================
     (function() {
         'use strict';
         
-        // Elements
+        // ============================================================
+        // CONSTANTS
+        // ============================================================
+        var ITEMS_PER_PAGE = 6; // Only 6 escorts per page
+        var CACHE_DURATION = 300000; // 5 minutes cache (was 1 minute)
+        var REFRESH_INTERVAL = 60000; // 60 seconds (was 30 seconds)
+        var DEBOUNCE_DELAY = 500; // 500ms debounce for search
+        
+        // ============================================================
+        // DOM ELEMENTS
+        // ============================================================
         var hamburger = document.getElementById('hamburger');
         var navMenu = document.getElementById('navMenu');
         var heroSearch = document.getElementById('heroSearch');
@@ -569,24 +673,29 @@
         var profileBtn = document.getElementById('profileBtn');
         var logoutBtn = document.getElementById('logoutBtn');
         var escortGrid = document.getElementById('escortGrid');
-        var loadingSpinner = document.getElementById('loadingSpinner');
         var statEscorts = document.getElementById('statEscorts');
         var refreshIndicator = document.getElementById('refreshIndicator');
         var refreshCountdown = document.getElementById('refreshCountdown');
+        var paginationContainer = document.getElementById('paginationContainer');
         
         var photoModal = document.getElementById('photoModal');
         var modalImage = document.getElementById('modalImage');
         var modalContent = document.getElementById('modalContent');
         var modalCloseBtn = document.getElementById('modalCloseBtn');
         
-        // State
-        var currentEscorts = [];
-        var refreshTimer = 30;
-        var autoRefreshInterval = null;
-        var countdownInterval = null;
+        // ============================================================
+        // STATE
+        // ============================================================
+        var allEscorts = [];
+        var currentPage = 1;
         var isSearching = false;
         var currentSearchTerm = '';
         var isLoading = false;
+        var refreshTimer = 60;
+        var autoRefreshInterval = null;
+        var countdownInterval = null;
+        var debounceTimer = null;
+        var totalCount = 0;
         
         // ============================================================
         // CACHE
@@ -597,8 +706,8 @@
                 if (cached) {
                     var data = JSON.parse(cached);
                     var age = Date.now() - data.timestamp;
-                    if (age < 60000) {
-                        return data.escorts;
+                    if (age < CACHE_DURATION) {
+                        return data;
                     }
                 }
                 return null;
@@ -607,13 +716,65 @@
             }
         }
         
-        function cacheEscorts(escorts) {
+        function cacheEscorts(escorts, count) {
             try {
                 localStorage.setItem('nv_escorts_cache', JSON.stringify({
                     escorts: escorts,
+                    count: count,
                     timestamp: Date.now()
                 }));
             } catch (e) {}
+        }
+        
+        // ============================================================
+        // RENDER SKELETON LOADERS
+        // ============================================================
+        function renderSkeletons() {
+            var html = '';
+            // One full card skeleton
+            html += '<div class="skeleton-card">' +
+                        '<div class="skeleton-image"></div>' +
+                        '<div class="skeleton-body">' +
+                            '<div class="skeleton-line short"></div>' +
+                            '<div class="skeleton-line medium"></div>' +
+                            '<div class="skeleton-line long"></div>' +
+                            '<div class="skeleton-line long"></div>' +
+                            '<div class="skeleton-line button"></div>' +
+                        '</div>' +
+                    '</div>';
+            
+            // Two small card skeletons in a row
+            html += '<div class="skeleton-row">';
+            for (var i = 0; i < 2; i++) {
+                html += '<div class="skeleton-small">' +
+                            '<div class="skeleton-image"></div>' +
+                            '<div class="skeleton-body">' +
+                                '<div class="skeleton-line short"></div>' +
+                                '<div class="skeleton-line medium"></div>' +
+                                '<div class="skeleton-line medium"></div>' +
+                                '<div class="skeleton-line button"></div>' +
+                            '</div>' +
+                        '</div>';
+            }
+            html += '</div>';
+            
+            // Another two small card skeletons
+            html += '<div class="skeleton-row">';
+            for (var j = 0; j < 2; j++) {
+                html += '<div class="skeleton-small">' +
+                            '<div class="skeleton-image"></div>' +
+                            '<div class="skeleton-body">' +
+                                '<div class="skeleton-line short"></div>' +
+                                '<div class="skeleton-line medium"></div>' +
+                                '<div class="skeleton-line medium"></div>' +
+                                '<div class="skeleton-line button"></div>' +
+                            '</div>' +
+                        '</div>';
+            }
+            html += '</div>';
+            
+            escortGrid.innerHTML = html;
+            paginationContainer.innerHTML = '';
         }
         
         // ============================================================
@@ -627,23 +788,17 @@
             var area = escort.area || '';
             
             var bios = [
-                '💃 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort based in ' + location + (area ? ', specifically in ' + area : '') + '. I\'m here to make your fantasies come true with my charm and elegance. Book me for an unforgettable experience!',
-                '✨ Hi, I\'m ' + name + '! I\'m a ' + age + '-year-old ' + gender + ' escort offering premium services in ' + location + (area ? ' (' + area + ')' : '') + '. I pride myself on being professional, discreet, and passionate about making every moment special. Let\'s connect!',
-                '💖 ' + name + ' here! I\'m a ' + age + '-year-old ' + gender + ' escort who loves to explore and connect with new people. Based in ' + location + (area ? ' near ' + area : '') + ', I offer a unique blend of companionship and intimacy. Can\'t wait to meet you!',
-                '🌟 Hey there, I\'m ' + name + '! A ' + age + '-year-old ' + gender + ' escort who\'s all about fun, laughter, and creating memorable experiences. I\'m available in ' + location + (area ? ' (around ' + area + ')' : '') + ' and ready to make your day special.',
-                '💋 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort with a passion for making people feel special. I\'m located in ' + location + (area ? ', ' + area : '') + ' and I offer a wide range of services. Let\'s create some magic together!',
-                '🌸 Hi, I\'m ' + name + '! I\'m a ' + age + '-year-old ' + gender + ' escort who believes in quality time and genuine connections. Available in ' + location + (area ? ' (' + area + ')' : '') + ' - I\'m the perfect companion for any occasion. Book me now!',
-                '🔥 ' + name + ' here - a ' + age + '-year-old ' + gender + ' escort who\'s confident, classy, and ready to satisfy your desires. I\'m based in ' + location + (area ? ', ' + area : '') + ' and I guarantee an experience you won\'t forget.',
-                '💎 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort offering elite companionship in ' + location + (area ? ' (' + area + ')' : '') + '. I\'m known for my elegance, intelligence, and ability to make every encounter memorable. Let\'s meet!'
+                '💃 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort based in ' + location + (area ? ', specifically in ' + area : '') + '. I\'m here to make your fantasies come true with my charm and elegance.',
+                '✨ Hi, I\'m ' + name + '! I\'m a ' + age + '-year-old ' + gender + ' escort offering premium services in ' + location + (area ? ' (' + area + ')' : '') + '. I pride myself on being professional and discreet.',
+                '💖 ' + name + ' here! I\'m a ' + age + '-year-old ' + gender + ' escort based in ' + location + (area ? ' near ' + area : '') + '. I offer a unique blend of companionship and intimacy.',
+                '🌟 Hey there, I\'m ' + name + '! A ' + age + '-year-old ' + gender + ' escort available in ' + location + (area ? ' (around ' + area + ')' : '') + '. Ready to make your day special!',
+                '💋 I\'m ' + name + ', a ' + age + '-year-old ' + gender + ' escort located in ' + location + (area ? ', ' + area : '') + '. I offer a wide range of services. Let\'s create some magic together!'
             ];
             
             var index = name.length % bios.length;
             return bios[index];
         }
         
-        // ============================================================
-        // GENERATE DESCRIPTION
-        // ============================================================
         function generateDescription(escort) {
             var name = escort.full_name || 'A beautiful escort';
             var age = escort.age || 'young';
@@ -658,7 +813,7 @@
         }
         
         // ============================================================
-        // OPEN PHOTO MODAL
+        // PHOTO MODAL
         // ============================================================
         function openPhotoModal(escort) {
             if (!escort) return;
@@ -719,9 +874,6 @@
             document.body.style.overflow = 'hidden';
         }
         
-        // ============================================================
-        // CLOSE PHOTO MODAL
-        // ============================================================
         function closePhotoModal() {
             photoModal.classList.remove('show');
             document.body.style.overflow = '';
@@ -736,115 +888,9 @@
         });
         
         // ============================================================
-        // LOAD ESCORTS - DIRECT SUPABASE QUERY
+        // RENDER ESCORTS (with pagination)
         // ============================================================
-        async function loadEscorts(searchTerm) {
-            searchTerm = searchTerm || '';
-            if (isLoading) return;
-            isLoading = true;
-            
-            try {
-                // Check cache first
-                var cached = getCachedEscorts();
-                if (cached && !searchTerm) {
-                    currentEscorts = cached;
-                    renderEscorts(cached);
-                    updateStats(cached.length);
-                    isLoading = false;
-                    console.log('📦 Loaded from cache');
-                }
-                
-                // Check if Supabase is ready
-                if (!supabaseReady || !supabaseClient) {
-                    console.warn('⏳ Supabase not ready, waiting...');
-                    // Try to initialize again
-                    if (typeof supabase !== 'undefined' && supabase.createClient) {
-                        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-                            auth: { persistSession: false, autoRefreshToken: false }
-                        });
-                        supabaseReady = true;
-                    }
-                    
-                    if (!supabaseReady) {
-                        if (!cached) {
-                            renderEscorts([]);
-                            showToast('Connecting to server...', 'info');
-                            // Retry after 2 seconds
-                            setTimeout(function() { loadEscorts(searchTerm); }, 2000);
-                        }
-                        isLoading = false;
-                        return;
-                    }
-                }
-                
-                // Build query
-                var query = supabaseClient
-                    .from('profiles')
-                    .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at')
-                    .eq('status', 'approved')
-                    .eq('is_active', true);
-                
-                if (searchTerm) {
-                    query = query.or('full_name.ilike.%' + searchTerm + '%,location.ilike.%' + searchTerm + '%,area.ilike.%' + searchTerm + '%');
-                    isSearching = true;
-                    currentSearchTerm = searchTerm;
-                } else {
-                    isSearching = false;
-                    currentSearchTerm = '';
-                }
-                
-                var result = await query.order('created_at', { ascending: false }).limit(20);
-                
-                if (result.error) {
-                    console.error('❌ Query error:', result.error);
-                    if (!cached) renderEscorts([]);
-                    showToast('Error loading data', 'error');
-                    isLoading = false;
-                    return;
-                }
-                
-                var escorts = result.data || [];
-                if (escorts.length > 0) {
-                    currentEscorts = escorts;
-                    cacheEscorts(escorts);
-                    renderEscorts(escorts);
-                    updateStats(escorts.length);
-                } else if (!cached) {
-                    renderEscorts([]);
-                }
-                
-                console.log('✅ Loaded ' + escorts.length + ' escorts');
-                
-            } catch (error) {
-                console.error('❌ Error loading escorts:', error);
-                var cached = getCachedEscorts();
-                if (cached) {
-                    renderEscorts(cached);
-                    updateStats(cached.length);
-                } else {
-                    renderEscorts([]);
-                    showToast('Connection error. Please refresh.', 'error');
-                }
-            } finally {
-                isLoading = false;
-            }
-        }
-        
-        // ============================================================
-        // UPDATE STATS
-        // ============================================================
-        function updateStats(count) {
-            if (statEscorts) {
-                statEscorts.textContent = count > 0 ? count + '+' : '0';
-            }
-        }
-        
-        // ============================================================
-        // RENDER ESCORT CARDS
-        // ============================================================
-        function renderEscorts(escorts) {
-            if (loadingSpinner) loadingSpinner.style.display = 'none';
-            
+        function renderEscorts(escorts, total) {
             if (!escorts || escorts.length === 0) {
                 escortGrid.innerHTML = 
                     '<div class="escort-grid-empty">' +
@@ -855,26 +901,29 @@
                             '<i class="fas fa-pen-fancy"></i> Create Profile' +
                         '</a>' +
                     '</div>';
+                paginationContainer.innerHTML = '';
                 return;
             }
             
             var html = '';
-            for (var i = 0; i < escorts.length; i++) {
+            var itemsToShow = escorts.slice(0, ITEMS_PER_PAGE);
+            
+            for (var i = 0; i < itemsToShow.length; i++) {
                 if (i % 3 === 0) {
-                    html += renderFullCard(escorts[i]);
+                    html += renderFullCard(itemsToShow[i]);
                 } else {
                     if (i % 3 === 1) html += '<div class="escort-row">';
-                    html += renderSmallCard(escorts[i]);
-                    if (i % 3 === 2 || i === escorts.length - 1) html += '</div>';
+                    html += renderSmallCard(itemsToShow[i]);
+                    if (i % 3 === 2 || i === itemsToShow.length - 1) html += '</div>';
                 }
             }
             
             escortGrid.innerHTML = html;
+            
+            // Update pagination
+            renderPagination(total || escorts.length);
         }
         
-        // ============================================================
-        // RENDER FULL CARD
-        // ============================================================
         function renderFullCard(escort) {
             var photoHtml = '';
             if (escort.photos && escort.photos.length > 0) {
@@ -902,9 +951,6 @@
                 '</div>';
         }
         
-        // ============================================================
-        // RENDER SMALL CARD
-        // ============================================================
         function renderSmallCard(escort) {
             var photoHtml = '';
             if (escort.photos && escort.photos.length > 0) {
@@ -935,45 +981,254 @@
                 '</div>';
         }
         
-        // ============================================================
-        // OPEN MODAL FROM ID
-        // ============================================================
         window.openPhotoModalFromId = function(id) {
-            for (var i = 0; i < currentEscorts.length; i++) {
-                if (currentEscorts[i].id === id) {
-                    openPhotoModal(currentEscorts[i]);
+            for (var i = 0; i < allEscorts.length; i++) {
+                if (allEscorts[i].id === id) {
+                    openPhotoModal(allEscorts[i]);
                     break;
                 }
             }
         };
         
         // ============================================================
-        // SEARCH
+        // PAGINATION
         // ============================================================
-        function performSearch() {
-            var term = heroSearch.value.trim();
-            if (term) {
-                showToast('Searching for "' + term + '"...', 'info');
-                loadEscorts(term);
-            } else {
-                loadEscorts('');
+        function renderPagination(total) {
+            var totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            var html = '';
+            html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i></button>';
+            
+            var startPage = Math.max(1, currentPage - 2);
+            var endPage = Math.min(totalPages, currentPage + 2);
+            
+            if (startPage > 1) {
+                html += '<button class="page-btn" onclick="goToPage(1)">1</button>';
+                if (startPage > 2) html += '<span class="page-info">...</span>';
+            }
+            
+            for (var i = startPage; i <= endPage; i++) {
+                html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) html += '<span class="page-info">...</span>';
+                html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
+            }
+            
+            html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '><i class="fas fa-chevron-right"></i></button>';
+            
+            paginationContainer.innerHTML = html;
+        }
+        
+        window.goToPage = function(page) {
+            var totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages || page === currentPage) return;
+            currentPage = page;
+            renderPage();
+        };
+        
+        function renderPage() {
+            var start = (currentPage - 1) * ITEMS_PER_PAGE;
+            var end = Math.min(start + ITEMS_PER_PAGE, allEscorts.length);
+            var pageItems = allEscorts.slice(start, end);
+            
+            var html = '';
+            for (var i = 0; i < pageItems.length; i++) {
+                if (i % 3 === 0) {
+                    html += renderFullCard(pageItems[i]);
+                } else {
+                    if (i % 3 === 1) html += '<div class="escort-row">';
+                    html += renderSmallCard(pageItems[i]);
+                    if (i % 3 === 2 || i === pageItems.length - 1) html += '</div>';
+                }
+            }
+            
+            escortGrid.innerHTML = html;
+            renderPagination(totalCount);
+        }
+        
+        // ============================================================
+        // LOAD ESCORTS - OPTIMIZED
+        // ============================================================
+        async function loadEscorts(searchTerm) {
+            searchTerm = searchTerm || '';
+            if (isLoading) return;
+            isLoading = true;
+            
+            // Show skeletons
+            renderSkeletons();
+            
+            try {
+                // Check cache first (only for non-search)
+                if (!searchTerm) {
+                    var cached = getCachedEscorts();
+                    if (cached && cached.escorts && cached.escorts.length > 0) {
+                        allEscorts = cached.escorts;
+                        totalCount = cached.count || cached.escorts.length;
+                        currentPage = 1;
+                        renderPage();
+                        updateStats(totalCount);
+                        isLoading = false;
+                        console.log('📦 Loaded from cache (' + allEscorts.length + ' escorts)');
+                        return;
+                    }
+                }
+                
+                // Check if Supabase is ready
+                if (!supabaseReady || !supabaseClient) {
+                    if (typeof supabase !== 'undefined' && supabase.createClient) {
+                        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                            auth: { persistSession: false, autoRefreshToken: false }
+                        });
+                        supabaseReady = true;
+                    }
+                    
+                    if (!supabaseReady) {
+                        showToast('Connecting to server...', 'info');
+                        setTimeout(function() { loadEscorts(searchTerm); }, 2000);
+                        isLoading = false;
+                        return;
+                    }
+                }
+                
+                // Build query
+                var query = supabaseClient
+                    .from('profiles')
+                    .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at')
+                    .eq('status', 'approved')
+                    .eq('is_active', true);
+                
+                if (searchTerm) {
+                    query = query.or('full_name.ilike.%' + searchTerm + '%,location.ilike.%' + searchTerm + '%,area.ilike.%' + searchTerm + '%');
+                    isSearching = true;
+                    currentSearchTerm = searchTerm;
+                } else {
+                    isSearching = false;
+                    currentSearchTerm = '';
+                }
+                
+                // Get count first
+                var countQuery = supabaseClient
+                    .from('profiles')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'approved')
+                    .eq('is_active', true);
+                
+                if (searchTerm) {
+                    countQuery = countQuery.or('full_name.ilike.%' + searchTerm + '%,location.ilike.%' + searchTerm + '%,area.ilike.%' + searchTerm + '%');
+                }
+                
+                var countResult = await countQuery;
+                if (!countResult.error) {
+                    totalCount = countResult.count || 0;
+                } else {
+                    totalCount = 0;
+                }
+                
+                // Get data with limit
+                var result = await query.order('created_at', { ascending: false }).limit(50);
+                
+                if (result.error) {
+                    console.error('❌ Query error:', result.error);
+                    var cached = getCachedEscorts();
+                    if (cached && cached.escorts) {
+                        allEscorts = cached.escorts;
+                        totalCount = cached.count || cached.escorts.length;
+                        currentPage = 1;
+                        renderPage();
+                        updateStats(totalCount);
+                    } else {
+                        escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Error loading escorts</h4><p>Please refresh the page.</p></div>';
+                        paginationContainer.innerHTML = '';
+                    }
+                    isLoading = false;
+                    return;
+                }
+                
+                var escorts = result.data || [];
+                if (escorts.length > 0) {
+                    allEscorts = escorts;
+                    if (!searchTerm) {
+                        cacheEscorts(escorts, totalCount);
+                    }
+                    currentPage = 1;
+                    renderPage();
+                    updateStats(totalCount);
+                } else {
+                    allEscorts = [];
+                    totalCount = 0;
+                    escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-users empty-icon"></i><h4>No Escorts Found</h4><p>Try adjusting your search or check back later.</p></div>';
+                    paginationContainer.innerHTML = '';
+                    updateStats(0);
+                }
+                
+                console.log('✅ Loaded ' + escorts.length + ' escorts, total: ' + totalCount);
+                
+            } catch (error) {
+                console.error('❌ Error loading escorts:', error);
+                var cached = getCachedEscorts();
+                if (cached && cached.escorts) {
+                    allEscorts = cached.escorts;
+                    totalCount = cached.count || cached.escorts.length;
+                    currentPage = 1;
+                    renderPage();
+                    updateStats(totalCount);
+                    showToast('Showing cached data', 'warning');
+                } else {
+                    escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Connection Error</h4><p>Please check your internet and refresh.</p></div>';
+                    paginationContainer.innerHTML = '';
+                    showToast('Connection error. Please refresh.', 'error');
+                }
+            } finally {
+                isLoading = false;
             }
         }
         
         // ============================================================
-        // AUTO-REFRESH
+        // UPDATE STATS
+        // ============================================================
+        function updateStats(count) {
+            if (statEscorts) {
+                statEscorts.textContent = count > 0 ? count + '+' : '0';
+            }
+        }
+        
+        // ============================================================
+        // SEARCH - WITH DEBOUNCE
+        // ============================================================
+        function performSearch() {
+            var term = heroSearch.value.trim();
+            if (debounceTimer) clearTimeout(debounceTimer);
+            
+            debounceTimer = setTimeout(function() {
+                if (term) {
+                    showToast('Searching for "' + term + '"...', 'info');
+                    loadEscorts(term);
+                } else {
+                    loadEscorts('');
+                }
+            }, DEBOUNCE_DELAY);
+        }
+        
+        // ============================================================
+        // AUTO-REFRESH - OPTIMIZED (60 seconds)
         // ============================================================
         function startAutoRefresh() {
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
             if (countdownInterval) clearInterval(countdownInterval);
             
-            refreshTimer = 30;
+            refreshTimer = 60;
             updateCountdownDisplay();
             
             countdownInterval = setInterval(function() {
                 refreshTimer--;
                 updateCountdownDisplay();
-                if (refreshTimer <= 0) refreshTimer = 30;
+                if (refreshTimer <= 0) refreshTimer = 60;
             }, 1000);
             
             autoRefreshInterval = setInterval(function() {
@@ -981,9 +1236,9 @@
                     console.log('🔄 Auto-refreshing escorts...');
                     loadEscorts(currentSearchTerm);
                 }
-                refreshTimer = 30;
+                refreshTimer = 60;
                 updateCountdownDisplay();
-            }, 30000);
+            }, REFRESH_INTERVAL);
         }
         
         function updateCountdownDisplay() {
@@ -1028,11 +1283,9 @@
         // ============================================================
         if (heroSearchBtn) heroSearchBtn.addEventListener('click', performSearch);
         if (heroSearch) {
-            heroSearch.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    performSearch();
-                }
+            heroSearch.addEventListener('keyup', performSearch);
+            heroSearch.addEventListener('search', function() {
+                if (this.value === '') loadEscorts('');
             });
         }
         
@@ -1072,7 +1325,7 @@
                 var target = parseInt(stat.textContent.replace(/[^0-9]/g, '')) || 0;
                 if (target > 0) {
                     var current = 0;
-                    var increment = Math.ceil(target / 25);
+                    var increment = Math.ceil(target / 20);
                     (function(stat, target) {
                         var interval = setInterval(function() {
                             current += increment;
@@ -1085,7 +1338,7 @@
                             } else {
                                 stat.textContent = current;
                             }
-                        }, 35);
+                        }, 30);
                     })(stat, target);
                 }
             }
@@ -1118,16 +1371,22 @@
         // ============================================================
         checkSession();
         
+        // Show skeletons immediately
+        renderSkeletons();
+        
         // Load escorts after a small delay
         setTimeout(function() {
             loadEscorts('');
             animateStats();
-        }, 500);
+        }, 300);
         
-        setTimeout(startAutoRefresh, 1500);
+        setTimeout(startAutoRefresh, 1000);
         
-        console.log('🔥 Nairobi Vibe - Fast-Loading Homepage');
-        console.log('🔑 Supabase Key:', SUPABASE_ANON_KEY.substring(0, 20) + '...');
+        console.log('🔥 Nairobi Vibe - OPTIMIZED Fast Homepage');
+        console.log('📄 Items per page: ' + ITEMS_PER_PAGE);
+        console.log('💾 Cache duration: 5 minutes');
+        console.log('🔄 Auto-refresh: 60 seconds');
+        console.log('🔍 Search debounce: 500ms');
         
     })();
 </script>
