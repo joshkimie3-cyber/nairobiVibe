@@ -64,10 +64,6 @@
     </script>
     
     <style>
-        /* ============================================================
-                   MY PROFILE - SQUEEZED & PROFESSIONAL
-                   ============================================================ */
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -94,11 +90,32 @@
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
+        .site-header .back-home-btn {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 32px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .site-header .back-home-btn:active { background: rgba(255,255,255,0.3); transform: scale(0.95); }
+        .site-header .back-home-btn i { font-size: 12px; }
+        
+        .site-header .logo { display: flex; align-items: center; gap: 6px; }
         .site-header .logo h1 { font-size: 15px; font-weight: 800; }
         .site-header .logo span { font-size: 9px; opacity: 0.8; }
+        
         .site-header .user-info { display: flex; align-items: center; gap: 8px; }
         .site-header .user-info img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
-        .site-header .user-info .username { font-weight: 600; font-size: 11px; }
+        .site-header .user-info .username { font-weight: 600; font-size: 11px; display: none; }
         .site-header .user-info .logout-btn {
             background: rgba(255,255,255,0.15);
             border: none;
@@ -109,6 +126,46 @@
             font-size: 10px;
             min-height: 30px;
             transition: all 0.3s ease;
+        }
+        
+        @media (min-width: 600px) {
+            .site-header .user-info .username { display: inline; }
+        }
+        
+        .live-status {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-left: 4px solid #27ae60;
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: #155724;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(39,174,96,0.15);
+        }
+        .live-status .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #27ae60;
+            border-radius: 50%;
+            animation: livePulse 1.5s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+        
+        @keyframes walletFlash {
+            0%, 100% { background: #fff; }
+            50% { background: #d4edda; box-shadow: 0 0 0 3px rgba(39,174,96,0.3); }
+        }
+        .wallet-updated {
+            animation: walletFlash 1s ease 3;
+            border-radius: 10px;
         }
         
         .login-prompt {
@@ -361,6 +418,15 @@
         .photo-section .photo-grid .photo-item .add-icon i { font-size: 18px; }
         .photo-section .photo-grid .photo-item .add-icon span { font-size: 7px; margin-top: 2px; }
         .photo-section .photo-grid.no-photos .photo-item { border-color: #dc3545; background: #fff5f5; }
+        
+        @keyframes photoWarnFlash {
+            0%, 100% { background: #fff5f5; }
+            50% { background: #f8d7da; }
+        }
+        .photo-section.photo-error {
+            border: 2px solid #dc3545;
+            animation: photoWarnFlash 0.6s ease 3;
+        }
         
         .photo-section .video-section { margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee; }
         .photo-section .video-section .verify-notice {
@@ -772,6 +838,9 @@
 <body>
 
     <header class="site-header">
+        <a href="index.html" class="back-home-btn">
+            <i class="fas fa-arrow-left"></i> Home
+        </a>
         <div class="logo">
             <h1>Nairobi Vibe <span>Escorts</span></h1>
         </div>
@@ -783,6 +852,11 @@
     </header>
 
     <div class="site-content">
+
+        <div class="live-status" id="liveStatus" style="display:none;">
+            <span class="live-dot"></span>
+            <span>Live — Auto-syncing your account</span>
+        </div>
 
         <div class="login-prompt" id="loginPrompt">
             <i class="fas fa-lock lock-icon"></i>
@@ -818,7 +892,7 @@
                 <button class="btn-activate" id="activateBtn">Activate Now</button>
             </div>
 
-            <div class="wallet-section">
+            <div class="wallet-section" id="walletSection">
                 <div class="wallet-header">
                     <div class="wallet-balance">
                         <i class="fas fa-wallet"></i> <span id="walletBalance">KSh0</span>
@@ -850,7 +924,7 @@
                 </div>
             </div>
 
-            <div class="photo-section">
+            <div class="photo-section" id="photoSection">
                 <div class="photo-upload">
                     <div class="file-input-wrapper">
                         <button class="btn-upload"><i class="fas fa-camera"></i> Add Photos</button>
@@ -1345,6 +1419,8 @@
             let existingProfileId = null;
             let existingProfileData = null;
             let isEditMode = false;
+            let profileChannel = null;
+            let lastWalletBalance = 0;
 
             window.selectPlan = function(plan) {
                 currentPlan = plan;
@@ -1436,9 +1512,11 @@
             const addFundBtn = document.getElementById('addFundBtn');
             const editBadge = document.getElementById('editBadge');
             const editModeBadge = document.getElementById('editModeBadge');
+            const walletSection = document.getElementById('walletSection');
+            const liveStatus = document.getElementById('liveStatus');
+            const photoSection = document.getElementById('photoSection');
             
             if (typeof window.supabaseFunctions === 'undefined') {
-                console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
                 const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
                 const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
                 
@@ -1462,7 +1540,6 @@
                             return { data, error };
                         }
                     };
-                    console.log('✅ Supabase re-initialized successfully!');
                 } else {
                     showToast('System error. Please refresh the page.', 'error');
                     return;
@@ -1476,15 +1553,163 @@
                         currentUser = JSON.parse(session);
                         loginPrompt.style.display = 'none';
                         profileContent.style.display = 'block';
+                        if (liveStatus) liveStatus.style.display = 'flex';
                         loadUserProfile();
+                        setupProfileRealtime();
+                        startSilentRefresh();
                     } else {
                         currentUser = null;
                         loginPrompt.style.display = 'block';
                         profileContent.style.display = 'none';
+                        if (liveStatus) liveStatus.style.display = 'none';
                     }
                 } catch (e) {
                     loginPrompt.style.display = 'block';
                     profileContent.style.display = 'none';
+                }
+            }
+            
+            function setupProfileRealtime() {
+                if (!currentUser || !window.supabaseFunctions.supabase) return;
+                
+                if (profileChannel) {
+                    window.supabaseFunctions.supabase.removeChannel(profileChannel);
+                }
+                
+                profileChannel = window.supabaseFunctions.supabase
+                    .channel('myprofile-realtime-' + currentUser.id)
+                    .on('postgres_changes',
+                        {
+                            event: 'UPDATE',
+                            schema: 'public',
+                            table: 'profiles',
+                            filter: 'user_id=eq.' + currentUser.id
+                        },
+                        (payload) => {
+                            console.log('🔄 Profile updated in realtime:', payload.new);
+                            const newData = payload.new;
+                            if (newData) {
+                                const newBalance = newData.wallet_balance || 0;
+                                if (newBalance > lastWalletBalance) {
+                                    lastWalletBalance = newBalance;
+                                    currentWalletBalance = newBalance;
+                                    updateWalletDisplay(newBalance);
+                                    
+                                    if (walletSection) {
+                                        walletSection.classList.add('wallet-updated');
+                                        setTimeout(() => walletSection.classList.remove('wallet-updated'), 3000);
+                                    }
+                                    
+                                    playNotificationSound();
+                                    showToast(`💰 Wallet updated! KSh${newBalance}`, 'success');
+                                    
+                                    if ('Notification' in window && Notification.permission === 'granted') {
+                                        new Notification('💰 Wallet Approved!', {
+                                            body: 'Your wallet balance has been updated to KSh' + newBalance
+                                        });
+                                    }
+                                } else {
+                                    lastWalletBalance = newBalance;
+                                }
+                                
+                                updateProfileFromRealtime(newData);
+                            }
+                        }
+                    )
+                    .subscribe((status) => {
+                        console.log('📡 Realtime status:', status);
+                    });
+            }
+            
+            function updateProfileFromRealtime(data) {
+                if (data.status === 'approved' && data.is_active === true) {
+                    profileStatus = 'active';
+                    updateStatusBanner('active');
+                } else if (data.status === 'pending' || data.status === 'pending_review') {
+                    profileStatus = 'pending';
+                    updateStatusBanner('pending');
+                } else {
+                    profileStatus = 'inactive';
+                    updateStatusBanner('inactive');
+                }
+                
+                existingProfileData = data;
+                existingProfileId = data.id;
+            }
+            
+            function updateWalletDisplay(balance) {
+                document.getElementById('walletBalance').textContent = 'KSh' + balance;
+                document.getElementById('totalWalletBalance').textContent = 'KSh' + balance;
+                document.getElementById('availableBalance').textContent = 'KSh' + balance;
+            }
+            
+            function playNotificationSound() {
+                try {
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    oscillator.frequency.value = 880;
+                    oscillator.type = 'sine';
+                    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    oscillator.start(audioCtx.currentTime);
+                    oscillator.stop(audioCtx.currentTime + 0.3);
+                    
+                    setTimeout(() => {
+                        const osc2 = audioCtx.createOscillator();
+                        const gain2 = audioCtx.createGain();
+                        osc2.connect(gain2);
+                        gain2.connect(audioCtx.destination);
+                        osc2.frequency.value = 1100;
+                        osc2.type = 'sine';
+                        gain2.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                        gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                        osc2.start(audioCtx.currentTime);
+                        osc2.stop(audioCtx.currentTime + 0.2);
+                    }, 200);
+                } catch (e) {}
+            }
+            
+            function startSilentRefresh() {
+                setInterval(() => {
+                    if (currentUser && document.visibilityState === 'visible') {
+                        silentlyRefreshProfile();
+                    }
+                }, 20000);
+            }
+            
+            async function silentlyRefreshProfile() {
+                if (!currentUser) return;
+                try {
+                    const { data, error } = await window.supabaseFunctions.supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('user_id', currentUser.id)
+                        .single();
+                    
+                    if (error || !data) return;
+                    
+                    const newBalance = data.wallet_balance || 0;
+                    if (newBalance > currentWalletBalance) {
+                        currentWalletBalance = newBalance;
+                        lastWalletBalance = newBalance;
+                        updateWalletDisplay(newBalance);
+                        
+                        if (walletSection) {
+                            walletSection.classList.add('wallet-updated');
+                            setTimeout(() => walletSection.classList.remove('wallet-updated'), 3000);
+                        }
+                        
+                        playNotificationSound();
+                        showToast(`💰 Wallet updated! KSh${newBalance}`, 'success');
+                    }
+                    
+                    updateProfileFromRealtime(data);
+                    
+                } catch (e) {
+                    console.log('Silent refresh error:', e);
                 }
             }
             
@@ -1506,26 +1731,43 @@
                     if (data) {
                         existingProfileId = data.id;
                         existingProfileData = data;
-                        isEditMode = true;
                         
-                        editBadge.style.display = 'inline-block';
-                        editModeBadge.style.display = 'inline-block';
+                        const isWalletOnly = data.status === 'wallet_only';
                         
-                        fillProfileForm(data);
-                        
-                        if (data.status === 'approved' && data.is_active === true) {
-                            profileStatus = 'active';
-                            updateStatusBanner('active');
-                        } else if (data.status === 'pending' || data.status === 'pending_review') {
-                            profileStatus = 'pending';
-                            updateStatusBanner('pending');
-                        } else {
+                        if (isWalletOnly) {
+                            isEditMode = false;
+                            editBadge.style.display = 'none';
+                            editModeBadge.style.display = 'none';
                             profileStatus = 'inactive';
                             updateStatusBanner('inactive');
+                            
+                            currentWalletBalance = data.wallet_balance || 0;
+                            lastWalletBalance = currentWalletBalance;
+                            updateWalletDisplay(currentWalletBalance);
+                            
+                            uploadedPhotos = (data.photos && Array.isArray(data.photos)) ? data.photos : [];
+                            renderPhotos();
+                        } else {
+                            isEditMode = true;
+                            editBadge.style.display = 'inline-block';
+                            editModeBadge.style.display = 'inline-block';
+                            
+                            fillProfileForm(data);
+                            
+                            if (data.status === 'approved' && data.is_active === true) {
+                                profileStatus = 'active';
+                                updateStatusBanner('active');
+                            } else if (data.status === 'pending' || data.status === 'pending_review') {
+                                profileStatus = 'pending';
+                                updateStatusBanner('pending');
+                            } else {
+                                profileStatus = 'inactive';
+                                updateStatusBanner('inactive');
+                            }
+                            
+                            uploadedPhotos = (data.photos && Array.isArray(data.photos)) ? data.photos : [];
+                            renderPhotos();
                         }
-                        
-                        uploadedPhotos = (data.photos && Array.isArray(data.photos)) ? data.photos : [];
-                        renderPhotos();
                         
                     } else {
                         isEditMode = false;
@@ -1565,9 +1807,8 @@
                 document.getElementById('listOtherCities').checked = data.list_in_other_cities || false;
                 
                 currentWalletBalance = data.wallet_balance || 0;
-                document.getElementById('walletBalance').textContent = 'KSh' + currentWalletBalance;
-                document.getElementById('totalWalletBalance').textContent = 'KSh' + currentWalletBalance;
-                document.getElementById('availableBalance').textContent = 'KSh' + currentWalletBalance;
+                lastWalletBalance = currentWalletBalance;
+                updateWalletDisplay(currentWalletBalance);
                 
                 if (data.profile_type) selectProfileType(data.profile_type);
                 
@@ -1670,6 +1911,7 @@
                         if (loaded === filesToUpload || uploadedPhotos.length >= 10) {
                             renderPhotos();
                             showToast(`${uploadedPhotos.length} photos uploaded`, 'success');
+                            if (photoSection) photoSection.classList.remove('photo-error');
                         }
                     };
                     reader.readAsDataURL(file);
@@ -1741,6 +1983,9 @@
                 window.location.href = 'checkout-mpesa.html?user_id=' + currentUser.id;
             });
             
+            // ============================================================
+            // ✅ FORM SUBMIT - CORRECTED WALLET DEDUCTION LOGIC
+            // ============================================================
             profileForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
@@ -1749,33 +1994,134 @@
                     return;
                 }
                 
+                // PHOTO VALIDATION
                 if (uploadedPhotos.length === 0) {
-                    showToast('❌ Please upload at least 1 photo!', 'error');
+                    if (photoSection) {
+                        photoSection.classList.add('photo-error');
+                        photoSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => photoSection.classList.remove('photo-error'), 4000);
+                    }
+                    
+                    showToast('📸 Please upload at least 1 photo before submitting!', 'error');
                     photoRequired.style.display = 'inline-block';
                     photoGrid.classList.add('no-photos');
-                    photoGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    setTimeout(() => {
+                        photoInput.click();
+                    }, 500);
+                    
                     return;
                 }
                 
-                let newBalance = currentWalletBalance;
-                let chargeAmount = 0;
-                let isNewProfile = !isEditMode;
+                if (photoSection) photoSection.classList.remove('photo-error');
                 
+                // ============================================================
+                // STEP 1: GET FRESH WALLET BALANCE FROM DATABASE
+                // ============================================================
+                let freshWalletBalance = currentWalletBalance;
+                let freshProfileData = null;
+                
+                try {
+                    const { data: freshData, error: freshError } = await window.supabaseFunctions.supabase
+                        .from('profiles')
+                        .select('id, wallet_balance, status, is_active, membership_plan, membership_days')
+                        .eq('user_id', currentUser.id)
+                        .single();
+                    
+                    if (!freshError && freshData) {
+                        freshProfileData = freshData;
+                        freshWalletBalance = freshData.wallet_balance || 0;
+                        currentWalletBalance = freshWalletBalance;
+                        lastWalletBalance = freshWalletBalance;
+                        console.log('💰 Fresh wallet balance from DB:', freshWalletBalance);
+                        console.log('📋 Fresh status:', freshData.status);
+                    }
+                } catch (err) {
+                    console.log('Could not fetch fresh balance, using cached:', currentWalletBalance);
+                }
+                
+                // ============================================================
+                // STEP 2: DETERMINE IF WE NEED TO CHARGE
+                // ============================================================
+                let chargeAmount = 0;
+                let newBalance = freshWalletBalance;
+                let isNewProfile = false;
+                
+                const currentStatus = freshProfileData?.status || 'new';
+                const selectedPrice = parseInt(document.getElementById('selectedPrice').value) || currentPrice;
+                const previousPlan = freshProfileData?.membership_plan;
+                const previousDays = freshProfileData?.membership_days;
+                const selectedPlan = document.getElementById('selectedPlan').value;
+                const selectedDays = parseInt(document.getElementById('selectedDuration').value) || 3;
+                
+                console.log('🎯 Current status:', currentStatus);
+                console.log('🎯 Selected plan:', selectedPlan, '| Days:', selectedDays, '| Price:', selectedPrice);
+                console.log('🎯 Previous plan:', previousPlan, '| Days:', previousDays);
+                
+                // DETERMINE IF CHARGE IS NEEDED
+                if (currentStatus === 'new' || !freshProfileData) {
+                    // No profile at all → NEW → CHARGE
+                    isNewProfile = true;
+                    console.log('✅ Reason: No profile exists');
+                } else if (currentStatus === 'wallet_only') {
+                    // Paid wallet only, no real profile yet → CHARGE
+                    isNewProfile = true;
+                    console.log('✅ Reason: Wallet-only profile (upgrading)');
+                } else if (currentStatus === 'inactive' || currentStatus === 'rejected') {
+                    // Was deactivated/rejected → Resubmitting → CHARGE
+                    isNewProfile = true;
+                    console.log('✅ Reason: Resubmitting (status was ' + currentStatus + ')');
+                } else if (currentStatus === 'approved') {
+                    // Already published
+                    // Only charge if they CHANGED the plan/duration
+                    if (previousPlan !== selectedPlan || previousDays !== selectedDays) {
+                        isNewProfile = true;
+                        console.log('✅ Reason: Plan/duration changed on approved profile');
+                    } else {
+                        isNewProfile = false;
+                        console.log('✏️ Reason: Approved profile, editing only, no change to plan');
+                    }
+                } else if (currentStatus === 'pending_review' || currentStatus === 'pending') {
+                    // Already submitted, being edited
+                    // Charge if they changed the plan/duration
+                    if (previousPlan !== selectedPlan || previousDays !== selectedDays) {
+                        isNewProfile = true;
+                        console.log('✅ Reason: Plan/duration changed on pending profile');
+                    } else {
+                        isNewProfile = false;
+                        console.log('✏️ Reason: Pending profile, editing only, no plan change');
+                    }
+                } else {
+                    isNewProfile = true;
+                    console.log('✅ Reason: Unknown status');
+                }
+                
+                // ============================================================
+                // STEP 3: PROCESS CHARGE OR EDIT
+                // ============================================================
                 if (isNewProfile) {
-                    if (currentWalletBalance < currentPrice) {
-                        const shortfall = currentPrice - currentWalletBalance;
+                    if (freshWalletBalance < selectedPrice) {
+                        const shortfall = selectedPrice - freshWalletBalance;
                         showToast(`❌ Insufficient balance! Need KSh${shortfall} more.`, 'error');
                         addFundBtn.classList.add('wallet-warning');
                         setTimeout(() => addFundBtn.classList.remove('wallet-warning'), 3000);
+                        addFundBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         return;
                     }
-                    chargeAmount = currentPrice;
-                    newBalance = currentWalletBalance - currentPrice;
-                    showToast(`💳 Charging KSh${chargeAmount} for new membership`, 'info');
+                    chargeAmount = selectedPrice;
+                    newBalance = freshWalletBalance - selectedPrice;
+                    console.log(`💳 CHARGING: KSh${freshWalletBalance} - KSh${selectedPrice} = KSh${newBalance}`);
+                    showToast(`💳 Charging KSh${chargeAmount} for membership`, 'info');
                 } else {
+                    chargeAmount = 0;
+                    newBalance = freshWalletBalance;
+                    console.log('✏️ No charge - editing existing profile');
                     showToast('✏️ Editing profile - No charge applied', 'info');
                 }
                 
+                // ============================================================
+                // STEP 4: SAVE TO DATABASE
+                // ============================================================
                 saveBtn.disabled = true;
                 saveBtnText.textContent = 'Saving...';
                 saveLoader.classList.add('show');
@@ -1805,89 +2151,106 @@
                     outcalls_rate: parseInt(document.getElementById('profileOutcallsRate').value) || 0,
                     list_in_other_cities: document.getElementById('listOtherCities').checked,
                     profile_type: document.getElementById('profileType').value,
-                    membership_plan: document.getElementById('selectedPlan').value,
-                    membership_days: parseInt(document.getElementById('selectedDuration').value),
-                    membership_price: parseInt(document.getElementById('selectedPrice').value),
+                    membership_plan: selectedPlan,
+                    membership_days: selectedDays,
+                    membership_price: selectedPrice,
                     photos: uploadedPhotos,
-                    wallet_balance: newBalance,
+                    wallet_balance: newBalance,   // ✅ Deducted balance
+                    status: 'pending_review',
+                    is_active: false,
                     updated_at: new Date().toISOString()
                 };
                 
-                if (isNewProfile) {
-                    profileData.status = 'pending';
-                    profileData.is_active = false;
-                    profileData.created_at = new Date().toISOString();
-                } else {
-                    profileData.status = existingProfileData?.status || 'pending';
-                    profileData.is_active = existingProfileData?.is_active || false;
-                }
-                
                 try {
                     let result;
-                    if (existingProfileId && isEditMode) {
+                    const profileIdToUpdate = existingProfileId || freshProfileData?.id;
+                    
+                    if (profileIdToUpdate) {
+                        // UPDATE existing profile
+                        console.log('📝 Updating profile ID:', profileIdToUpdate);
                         result = await window.supabaseFunctions.supabase
                             .from('profiles')
                             .update(profileData)
-                            .eq('id', existingProfileId);
+                            .eq('id', profileIdToUpdate)
+                            .select();
                         
                         if (result.error) throw result.error;
                         
-                        currentWalletBalance = newBalance;
-                        document.getElementById('walletBalance').textContent = 'KSh' + newBalance;
-                        document.getElementById('totalWalletBalance').textContent = 'KSh' + newBalance;
-                        document.getElementById('availableBalance').textContent = 'KSh' + newBalance;
-                        
-                        await window.supabaseFunctions.logActivity(
-                            currentUser.id,
-                            'profile_updated',
-                            `User ${profileData.full_name} updated ${profileData.profile_type.toUpperCase()} profile`
-                        );
-                        
-                        showToast(`✅ Profile updated successfully!`, 'success');
+                        existingProfileId = profileIdToUpdate;
+                        console.log('✅ Profile updated');
                         
                     } else {
-                        profileData.status = 'pending';
-                        profileData.is_active = false;
+                        // INSERT new profile
+                        console.log('📝 Creating new profile');
                         profileData.created_at = new Date().toISOString();
                         
                         result = await window.supabaseFunctions.supabase
                             .from('profiles')
-                            .insert([profileData]);
+                            .insert([profileData])
+                            .select();
                         
                         if (result.error) throw result.error;
                         
-                        currentWalletBalance = newBalance;
-                        document.getElementById('walletBalance').textContent = 'KSh' + newBalance;
-                        document.getElementById('totalWalletBalance').textContent = 'KSh' + newBalance;
-                        document.getElementById('availableBalance').textContent = 'KSh' + newBalance;
-                        
-                        profileStatus = 'pending';
-                        updateStatusBanner('pending');
-                        
-                        await window.supabaseFunctions.logActivity(
-                            currentUser.id,
-                            'profile_submitted',
-                            `User ${profileData.full_name} submitted ${profileData.profile_type.toUpperCase()} profile - Wallet: KSh${newBalance}`
-                        );
-                        
-                        showToast(`✅ Profile submitted for admin approval! KSh${chargeAmount} deducted.`, 'success');
+                        existingProfileId = result.data?.[0]?.id;
+                        console.log('✅ Profile created');
                     }
+                    
+                    // ============================================================
+                    // STEP 5: VERIFY THE DEDUCTION SAVED CORRECTLY
+                    // ============================================================
+                    const { data: verifyData } = await window.supabaseFunctions.supabase
+                        .from('profiles')
+                        .select('wallet_balance')
+                        .eq('id', existingProfileId)
+                        .single();
+                    
+                    const savedBalance = verifyData?.wallet_balance ?? newBalance;
+                    console.log('✅ Verified saved balance in DB:', savedBalance);
+                    
+                    if (isNewProfile && savedBalance >= freshWalletBalance) {
+                        console.error('❌ WARNING: Balance was NOT deducted!');
+                        showToast('⚠️ Warning: Balance may not have been deducted.', 'error');
+                    }
+                    
+                    // ============================================================
+                    // STEP 6: UPDATE UI
+                    // ============================================================
+                    currentWalletBalance = savedBalance;
+                    lastWalletBalance = savedBalance;
+                    updateWalletDisplay(savedBalance);
+                    
+                    profileStatus = 'pending';
+                    updateStatusBanner('pending');
+                    isEditMode = true;
+                    existingProfileData = { ...existingProfileData, ...profileData, wallet_balance: savedBalance };
+                    editBadge.style.display = 'inline-block';
+                    editModeBadge.style.display = 'inline-block';
                     
                     updateAboutSection(profileData);
                     
-                    isEditMode = true;
-                    existingProfileId = result.data?.[0]?.id || existingProfileId;
-                    editBadge.style.display = 'inline-block';
-                    editModeBadge.style.display = 'inline-block';
+                    try {
+                        await window.supabaseFunctions.logActivity(
+                            currentUser.id,
+                            'profile_submitted',
+                            `User ${profileData.full_name} submitted - Charged: KSh${chargeAmount} - New Balance: KSh${savedBalance}`
+                        );
+                    } catch (e) {}
+                    
+                    if (chargeAmount > 0) {
+                        showToast(`✅ Profile submitted! KSh${chargeAmount} deducted. Balance: KSh${savedBalance}`, 'success');
+                    } else {
+                        showToast(`✅ Profile updated successfully!`, 'success');
+                    }
                     
                     saveBtn.disabled = false;
                     saveBtnText.textContent = 'Save Changes';
                     saveLoader.classList.remove('show');
                     saveIcon.style.display = 'inline-block';
                     
-                    setTimeout(() => location.reload(), 2000);
+                    setTimeout(() => location.reload(), 2500);
                     
                 } catch (error) {
+                    console.error('❌ Save error:', error);
                     showToast('Error: ' + error.message, 'error');
                     saveBtn.disabled = false;
                     saveBtnText.textContent = 'Save Changes';
@@ -1905,6 +2268,9 @@
             
             logoutBtn.addEventListener('click', async function() {
                 try {
+                    if (profileChannel) {
+                        window.supabaseFunctions.supabase.removeChannel(profileChannel);
+                    }
                     await window.supabaseFunctions.signOut();
                 } catch(e) {}
                 localStorage.removeItem('nairobi_vibe_session');
@@ -1924,10 +2290,14 @@
             
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+            
             checkSession();
             updateDurations('regular');
             
-            console.log('✅ My Profile - NEW Supabase keys active');
+            console.log('✅ My Profile - Corrected wallet deduction + Photo required + Home button');
             
         });
     </script>
