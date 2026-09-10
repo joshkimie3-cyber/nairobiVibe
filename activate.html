@@ -5,23 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Activate Profile - Nairobi Vibe Escorts</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Supabase Config -->
-    <script src="supabase-config.js"></script>
+    <!-- ============================================================
+         SUPABASE CONFIG - NEW KEYS (INLINE)
+         ============================================================ -->
+    <script>
+        const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
+        
+        let supabaseClient = null;
+        let supabaseReady = false;
+        
+        try {
+            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                supabaseReady = true;
+                
+                window.supabaseFunctions = {
+                    supabase: supabaseClient,
+                    signOut: async () => {
+                        const { error } = await supabaseClient.auth.signOut();
+                        return { error };
+                    },
+                    logActivity: async (userId, action, details) => {
+                        const { data, error } = await supabaseClient
+                            .from('activity_logs')
+                            .insert([{
+                                user_id: userId,
+                                action: action,
+                                details: details,
+                                created_at: new Date().toISOString()
+                            }]);
+                        return { data, error };
+                    }
+                };
+                console.log('✅ Supabase initialized with NEW keys');
+            }
+        } catch(e) {
+            console.error('❌ Supabase init error:', e);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!supabaseReady && typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                supabaseReady = true;
+                window.supabaseFunctions = {
+                    supabase: supabaseClient,
+                    signOut: async () => {
+                        const { error } = await supabaseClient.auth.signOut();
+                        return { error };
+                    },
+                    logActivity: async (userId, action, details) => {
+                        const { data, error } = await supabaseClient
+                            .from('activity_logs')
+                            .insert([{
+                                user_id: userId,
+                                action: action,
+                                details: details,
+                                created_at: new Date().toISOString()
+                            }]);
+                        return { data, error };
+                    }
+                };
+                console.log('✅ Supabase initialized (DOM ready)');
+            }
+        });
+    </script>
 
     <style>
-        /* ============================================================
-                   ACTIVATE PAGE STYLES
-                   ============================================================ */
-        
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +89,6 @@
             overflow-x: hidden;
         }
         
-        /* ---------- HEADER ---------- */
         .header {
             background: linear-gradient(135deg, #f7053e, #d60435);
             padding: 10px 15px;
@@ -103,14 +156,12 @@
             margin-right: 6px;
         }
         
-        /* ---------- MAIN CONTENT ---------- */
         .main-content {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px 15px;
         }
         
-        /* ---------- PAGE HEADER ---------- */
         .page-header {
             text-align: center;
             margin-bottom: 30px;
@@ -133,7 +184,6 @@
             margin-top: 5px;
         }
         
-        /* ---------- WALLET SECTION ---------- */
         .wallet-section {
             background: #fff;
             border-radius: 16px;
@@ -207,7 +257,6 @@
             color: #333;
         }
         
-        /* ---------- MEMBERSHIP PLANS ---------- */
         .membership-title {
             font-size: 20px;
             font-weight: 800;
@@ -325,7 +374,6 @@
             color: #e74c3c;
         }
         
-        /* ---------- DURATION SELECTOR ---------- */
         .duration-selector {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -422,7 +470,6 @@
             box-shadow: 0 4px 15px rgba(247, 5, 62, 0.3);
         }
         
-        /* ---------- FOOTER ---------- */
         .footer {
             background: #1a0528;
             color: #ccc;
@@ -490,7 +537,6 @@
             color: #1a0528;
         }
         
-        /* ---------- TOAST ---------- */
         .toast {
             position: fixed;
             top: 70px;
@@ -518,7 +564,6 @@
         .toast.error { background: #e74c3c; }
         .toast.info { background: #3498db; }
         
-        /* ---------- LOADER ---------- */
         .loader {
             display: none;
             width: 20px;
@@ -538,12 +583,10 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* ---------- RESPONSIVE ---------- */
         @media (min-width: 600px) {
             .plans-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
             .wallet-stats {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -553,11 +596,9 @@
             .plans-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
-            
             .footer-inner {
                 grid-template-columns: repeat(4, 1fr);
             }
-            
             .page-header h1 {
                 font-size: 36px;
             }
@@ -567,11 +608,9 @@
             .duration-selector {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
             .wallet-stats {
                 grid-template-columns: 1fr;
             }
-            
             .plan-card .plan-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -579,7 +618,6 @@
             }
         }
         
-        /* ---------- SCROLLBAR ---------- */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -596,9 +634,6 @@
 </head>
 <body>
 
-    <!-- ============================================================
-         HEADER
-         ============================================================ -->
     <header class="header">
         <div class="header-inner">
             <div class="logo">
@@ -611,18 +646,13 @@
         </div>
     </header>
 
-    <!-- ============================================================
-         MAIN CONTENT
-         ============================================================ -->
     <div class="main-content">
 
-        <!-- Page Header -->
         <div class="page-header">
             <h1><i class="fas fa-crown"></i> Activate Your Profile</h1>
             <p>Choose a membership plan to get listed and start receiving bookings</p>
         </div>
 
-        <!-- Wallet Section -->
         <div class="wallet-section">
             <div class="wallet-header">
                 <div class="wallet-balance">
@@ -646,16 +676,13 @@
             </div>
         </div>
 
-        <!-- Membership Plans -->
         <div class="membership-title">
             <i class="fas fa-tags"></i> Choose Your Membership Plan
         </div>
 
         <div class="plans-grid">
 
-            <!-- ============================================================
-                 REGULAR PLAN
-                 ============================================================ -->
+            <!-- REGULAR PLAN -->
             <div class="plan-card" data-plan="regular">
                 <div class="plan-badge">BASIC</div>
                 <div class="plan-header">
@@ -697,9 +724,7 @@
                 </button>
             </div>
 
-            <!-- ============================================================
-                 PRIME PLAN
-                 ============================================================ -->
+            <!-- PRIME PLAN -->
             <div class="plan-card" data-plan="prime">
                 <div class="plan-badge popular">POPULAR</div>
                 <div class="plan-header">
@@ -741,9 +766,7 @@
                 </button>
             </div>
 
-            <!-- ============================================================
-                 PRIME VIP PLAN
-                 ============================================================ -->
+            <!-- PRIME VIP PLAN -->
             <div class="plan-card" data-plan="prime-vip">
                 <div class="plan-badge best-value">BEST VALUE</div>
                 <div class="plan-header">
@@ -785,9 +808,7 @@
                 </button>
             </div>
 
-            <!-- ============================================================
-                 VIP PLAN
-                 ============================================================ -->
+            <!-- VIP PLAN -->
             <div class="plan-card" data-plan="vip">
                 <div class="plan-badge" style="background:linear-gradient(135deg, #f7053e, #d60435);">PREMIUM</div>
                 <div class="plan-header">
@@ -833,9 +854,6 @@
 
     </div>
 
-    <!-- ============================================================
-         FOOTER
-         ============================================================ -->
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-col">
@@ -868,40 +886,25 @@
         </div>
     </footer>
 
-    <!-- ============================================================
-         TOAST
-         ============================================================ -->
     <div class="toast" id="toast">
         <span id="toastMessage">Notification</span>
     </div>
 
-    <!-- ============================================================
-     JAVASCRIPT - MODIFIED TO PASS DATA TO CHECKOUT
-     ============================================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // ============================================================
-            // ELEMENTS
-            // ============================================================
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             const addFundBtn = document.getElementById('addFundBtn');
             const planCards = document.querySelectorAll('.plan-card');
             const signupBtns = document.querySelectorAll('.btn-signup');
 
-            // ============================================================
-            // CHECK SUPABASE
-            // ============================================================
             if (typeof window.supabaseFunctions === 'undefined') {
                 console.warn('⚠️ Supabase functions not loaded');
             } else {
-                console.log('✅ Supabase is loaded');
+                console.log('✅ Supabase is loaded with NEW keys');
             }
 
-            // ============================================================
-            // CHECK SESSION
-            // ============================================================
             let currentUser = null;
 
             function checkSession() {
@@ -917,9 +920,6 @@
                 }
             }
 
-            // ============================================================
-            // LOAD WALLET DATA
-            // ============================================================
             async function loadWalletData() {
                 if (!currentUser) return;
 
@@ -941,9 +941,6 @@
                 }
             }
 
-            // ============================================================
-            // DURATION SELECTOR
-            // ============================================================
             document.querySelectorAll('.duration-selector').forEach(function(selector) {
                 const btns = selector.querySelectorAll('.duration-btn');
 
@@ -963,9 +960,6 @@
                 });
             });
 
-            // ============================================================
-            // PLAN SELECTION (click on card)
-            // ============================================================
             planCards.forEach(function(card) {
                 card.addEventListener('click', function(e) {
                     if (e.target.closest('.btn-signup') || e.target.closest('.duration-btn')) return;
@@ -974,9 +968,6 @@
                 });
             });
 
-            // ============================================================
-            // SIGN UP BUTTON - MODIFIED TO PASS DATA TO CHECKOUT
-            // ============================================================
             signupBtns.forEach(function(btn) {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -987,13 +978,11 @@
                     const days = durationBtn ? durationBtn.dataset.days : '3';
                     const price = durationBtn ? durationBtn.dataset.price : '0';
 
-                    // Get user ID
                     if (!currentUser) {
                         showToast('Please login first', 'error');
                         return;
                     }
 
-                    // Show loading state
                     const originalText = this.querySelector('span');
                     const loader = this.querySelector('.loader');
                     const icon = this.querySelector('i');
@@ -1002,36 +991,26 @@
                     if (loader) loader.classList.add('show');
                     if (icon) icon.style.display = 'none';
 
-                    // Redirect to checkout with plan data
                     setTimeout(function() {
-                        // Build URL with parameters
                         const checkoutUrl = 'checkout.html?plan=' + plan + 
                                            '&days=' + days + 
                                            '&price=' + price + 
                                            '&user_id=' + currentUser.id;
 
-                        // Reset button
                         if (originalText) originalText.textContent = 'Sign Up Now';
                         if (loader) loader.classList.remove('show');
                         if (icon) icon.style.display = 'inline-block';
 
-                        // Redirect to checkout
                         window.location.href = checkoutUrl;
 
                     }, 800);
                 });
             });
 
-            // ============================================================
-            // ADD FUND
-            // ============================================================
             addFundBtn.addEventListener('click', function() {
                 showToast('💳 Fund feature coming soon!', 'info');
             });
 
-            // ============================================================
-            // TOAST
-            // ============================================================
             function showToast(message, type = 'info') {
                 toastMessage.textContent = message;
                 toast.className = 'toast ' + type;
@@ -1044,12 +1023,9 @@
                 }, 4000);
             }
 
-            // ============================================================
-            // INIT
-            // ============================================================
             checkSession();
 
-            console.log('✅ Activate Page Loaded Successfully!');
+            console.log('✅ Activate Page Loaded - NEW Supabase keys');
             console.log('📋 Membership Plans: Regular, Prime, Prime VIP, VIP');
             console.log('💰 Duration options: 3, 7, 15, 30 days');
             console.log('🔗 Redirects to checkout.html with plan data');
