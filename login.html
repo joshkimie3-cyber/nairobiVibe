@@ -5,27 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Nairobi Vibe</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG - EMBEDDED WITH NEW KEYS -->
     <script>
         // ============================================================
         // SUPABASE CONFIG - NEW KEYS
         // ============================================================
-        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+        const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
         
-        // Initialize Supabase client
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // Make it available globally
         window.supabaseFunctions = {
             supabase: supabase,
             signIn: async (email, password) => {
@@ -60,15 +52,7 @@
     </script>
     
     <style>
-        /* ============================================================
-                   LOGIN PAGE STYLES
-                   ============================================================ */
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Open Sans', "Helvetica Neue", Arial, sans-serif;
@@ -80,12 +64,8 @@
             padding: 20px;
         }
         
-        .login-wrapper {
-            width: 100%;
-            max-width: 440px;
-        }
+        .login-wrapper { width: 100%; max-width: 440px; }
         
-        /* ---------- LOGIN CARD ---------- */
         .login-card {
             background: #fff;
             border-radius: 20px;
@@ -99,446 +79,148 @@
             100% { opacity: 1; transform: translateY(0); }
         }
         
-        .login-card .logo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
+        .login-card .logo { text-align: center; margin-bottom: 25px; }
         .login-card .logo .logo-icon {
-            display: inline-block;
-            width: 70px;
-            height: 70px;
+            display: inline-block; width: 70px; height: 70px;
             background: linear-gradient(135deg, #E0006C, #b30057);
-            border-radius: 15px;
-            color: #fff;
-            font-size: 32px;
-            font-weight: 800;
-            line-height: 70px;
-            text-align: center;
+            border-radius: 15px; color: #fff;
+            font-size: 32px; font-weight: 800;
+            line-height: 70px; text-align: center;
         }
+        .login-card .logo h1 { font-size: 24px; font-weight: 800; color: #E0006C; margin-top: 8px; }
+        .login-card .logo p { color: #888; font-size: 14px; }
         
-        .login-card .logo h1 {
-            font-size: 24px;
-            font-weight: 800;
-            color: #E0006C;
-            margin-top: 8px;
-        }
-        
-        .login-card .logo p {
-            color: #888;
-            font-size: 14px;
-        }
-        
-        /* ---------- ALERT BANNER ---------- */
         .alert-banner {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 12px 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
+            background: #fff3cd; border-left: 4px solid #ffc107;
+            padding: 12px 15px; border-radius: 10px;
+            margin-bottom: 20px; display: none;
+            align-items: center; gap: 10px;
         }
+        .alert-banner.show { display: flex; }
+        .alert-banner i { color: #ffc107; font-size: 18px; }
+        .alert-banner .alert-text { font-size: 13px; color: #856404; flex: 1; }
+        .alert-banner .alert-close { cursor: pointer; color: #856404; font-size: 18px; opacity: 0.7; }
         
-        .alert-banner.show {
-            display: flex;
-        }
-        
-        .alert-banner i {
-            color: #ffc107;
-            font-size: 18px;
-        }
-        
-        .alert-banner .alert-text {
-            font-size: 13px;
-            color: #856404;
-            flex: 1;
-        }
-        
-        .alert-banner .alert-close {
-            cursor: pointer;
-            color: #856404;
-            font-size: 18px;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
-        
-        .alert-banner .alert-close:hover {
-            opacity: 1;
-        }
-        
-        /* ---------- FORM ---------- */
-        .form-group {
-            margin-bottom: 18px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        
-        .form-group label .required {
-            color: #e74c3c;
-            margin-left: 2px;
-        }
-        
-        .form-group .input-wrapper {
-            position: relative;
-        }
-        
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-weight: 600; font-size: 14px; color: #333; margin-bottom: 5px; }
+        .form-group label .required { color: #e74c3c; margin-left: 2px; }
+        .form-group .input-wrapper { position: relative; }
         .form-group .input-wrapper i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            position: absolute; left: 15px; top: 50%;
+            transform: translateY(-50%); color: #999; font-size: 16px;
         }
-        
         .form-group .input-wrapper input {
-            width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #e8e8e8;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: 'Open Sans', sans-serif;
-            transition: all 0.3s ease;
-            background: #fafafa;
-            color: #333;
+            width: 100%; padding: 12px 15px 12px 45px;
+            border: 2px solid #e8e8e8; border-radius: 12px;
+            font-size: 15px; font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease; background: #fafafa; color: #333;
         }
-        
         .form-group .input-wrapper input:focus {
-            outline: none;
-            border-color: #E0006C;
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(224, 0, 108, 0.1);
+            outline: none; border-color: #E0006C;
+            background: #fff; box-shadow: 0 0 0 4px rgba(224, 0, 108, 0.1);
         }
-        
-        .form-group .input-wrapper input:focus + i,
-        .form-group .input-wrapper input:focus ~ i {
-            color: #E0006C;
-        }
-        
         .form-group .input-wrapper .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: none;
-            border: none;
-            font-size: 16px;
+            position: absolute; right: 15px; top: 50%;
+            transform: translateY(-50%); color: #999;
+            cursor: pointer; background: none; border: none; font-size: 16px;
         }
         
-        .form-group .input-wrapper .password-toggle:hover {
-            color: #E0006C;
-        }
-        
-        /* ---------- REMEMBER ME & FORGOT ---------- */
         .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 20px;
         }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
+        .remember-me { display: flex; align-items: center; gap: 8px; }
         .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #E0006C;
+            width: 18px; height: 18px; cursor: pointer; accent-color: #E0006C;
         }
+        .remember-me label { font-size: 14px; color: #666; cursor: pointer; }
+        .forgot-link { font-size: 14px; color: #E0006C; font-weight: 600; }
         
-        .remember-me label {
-            font-size: 14px;
-            color: #666;
-            cursor: pointer;
-        }
-        
-        .forgot-link {
-            font-size: 14px;
-            color: #E0006C;
-            font-weight: 600;
-        }
-        
-        .forgot-link:hover {
-            text-decoration: underline;
-        }
-        
-        /* ---------- LOGIN BUTTON ---------- */
         .btn-login {
-            width: 100%;
-            padding: 14px;
+            width: 100%; padding: 14px;
             background: linear-gradient(135deg, #E0006C, #b30057);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
+            color: #fff; border: none; border-radius: 12px;
+            font-size: 18px; font-weight: 700; cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(224, 0, 108, 0.4); }
+        .btn-login:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(224, 0, 108, 0.4);
-        }
-        
-        .btn-login:active {
-            transform: translateY(0);
-        }
-        
-        .btn-login:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-login i {
-            font-size: 18px;
-        }
-        
-        /* ---------- DIVIDER ---------- */
         .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: #999;
-            font-size: 13px;
+            display: flex; align-items: center;
+            margin: 20px 0; color: #999; font-size: 13px;
         }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e8e8e8;
+        .divider::before, .divider::after {
+            content: ''; flex: 1; height: 1px; background: #e8e8e8;
         }
+        .divider::before { margin-right: 15px; }
+        .divider::after { margin-left: 15px; }
         
-        .divider::before {
-            margin-right: 15px;
-        }
-        
-        .divider::after {
-            margin-left: 15px;
-        }
-        
-        /* ---------- SOCIAL LOGIN ---------- */
-        .social-login {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
+        .social-login { display: flex; gap: 12px; margin-bottom: 20px; }
         .social-login .social-btn {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e8e8e8;
-            border-radius: 12px;
-            background: #fafafa;
-            cursor: pointer;
+            flex: 1; padding: 10px;
+            border: 2px solid #e8e8e8; border-radius: 12px;
+            background: #fafafa; cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; font-weight: 600; font-size: 14px; color: #333;
         }
+        .social-login .social-btn:hover { border-color: #E0006C; transform: translateY(-2px); }
+        .social-login .social-btn i { font-size: 20px; }
+        .social-login .social-btn.google i { color: #DB4437; }
+        .social-login .social-btn.facebook i { color: #4267B2; }
         
-        .social-login .social-btn:hover {
-            border-color: #E0006C;
-            transform: translateY(-2px);
-        }
+        .register-link { text-align: center; font-size: 14px; color: #666; }
+        .register-link a { color: #E0006C; font-weight: 700; }
         
-        .social-login .social-btn i {
-            font-size: 20px;
-        }
-        
-        .social-login .social-btn.google i {
-            color: #DB4437;
-        }
-        
-        .social-login .social-btn.facebook i {
-            color: #4267B2;
-        }
-        
-        /* ---------- REGISTER LINK ---------- */
-        .register-link {
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .register-link a {
-            color: #E0006C;
-            font-weight: 700;
-        }
-        
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-        
-        /* ---------- ERROR MESSAGES ---------- */
         .error-message {
-            color: #e74c3c;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 5px;
-            display: none;
+            color: #e74c3c; font-size: 12px;
+            font-weight: 600; margin-top: 5px; display: none;
         }
+        .error-message.show { display: block; }
+        .form-group.error .input-wrapper input { border-color: #e74c3c; background: #fdf2f2; }
+        .form-group.error .input-wrapper i { color: #e74c3c; }
+        .form-group.success .input-wrapper input { border-color: #27ae60; background: #f0faf4; }
+        .form-group.success .input-wrapper i { color: #27ae60; }
         
-        .error-message.show {
-            display: block;
-        }
-        
-        .form-group.error .input-wrapper input {
-            border-color: #e74c3c;
-            background: #fdf2f2;
-        }
-        
-        .form-group.error .input-wrapper i {
-            color: #e74c3c;
-        }
-        
-        .form-group.success .input-wrapper input {
-            border-color: #27ae60;
-            background: #f0faf4;
-        }
-        
-        .form-group.success .input-wrapper i {
-            color: #27ae60;
-        }
-        
-        /* ---------- LOADER ---------- */
         .loader {
-            display: none;
-            width: 24px;
-            height: 24px;
+            display: none; width: 24px; height: 24px;
             border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid #fff;
-            border-radius: 50%;
+            border-top: 3px solid #fff; border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
+        .loader.show { display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        .loader.show {
-            display: inline-block;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* ---------- TOAST ---------- */
         .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 12px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 14px;
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 12px;
+            color: #fff; font-weight: 600; font-size: 14px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             transform: translateX(120%);
-            transition: all 0.4s ease;
-            z-index: 9999;
-            max-width: 400px;
+            transition: all 0.4s ease; z-index: 9999; max-width: 400px;
         }
-        
-        .toast.show {
-            transform: translateX(0);
-        }
-        
-        .toast.success {
-            background: linear-gradient(135deg, #27ae60, #1e8449);
-        }
-        
-        .toast.error {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-        }
-        
-        .toast.info {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-        }
-        
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: linear-gradient(135deg, #27ae60, #1e8449); }
+        .toast.error { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .toast.info { background: linear-gradient(135deg, #3498db, #2980b9); }
         .toast .toast-close {
-            float: right;
-            margin-left: 15px;
-            cursor: pointer;
-            opacity: 0.8;
-            font-size: 18px;
+            float: right; margin-left: 15px;
+            cursor: pointer; opacity: 0.8; font-size: 18px;
         }
         
-        .toast .toast-close:hover {
-            opacity: 1;
-        }
-        
-        /* ---------- RESPONSIVE ---------- */
         @media (max-width: 500px) {
-            .login-card {
-                padding: 30px 20px 25px;
-            }
-            
-            .social-login {
-                flex-direction: column;
-            }
-            
-            .form-options {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-            
-            .login-card .logo h1 {
-                font-size: 20px;
-            }
-            
-            .btn-login {
-                font-size: 16px;
-                padding: 12px;
-            }
+            .login-card { padding: 30px 20px 25px; }
+            .social-login { flex-direction: column; }
+            .form-options { flex-direction: column; gap: 10px; align-items: flex-start; }
+            .login-card .logo h1 { font-size: 20px; }
+            .btn-login { font-size: 16px; padding: 12px; }
         }
         
-        @media (max-width: 400px) {
-            .form-group .input-wrapper input {
-                padding: 10px 12px 10px 40px;
-                font-size: 14px;
-            }
-        }
-        
-        /* ---------- SCROLLBAR ---------- */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #E0006C;
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #E0006C; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -546,30 +228,20 @@
 <div class="login-wrapper">
     <div class="login-card" id="loginCard">
         
-        <!-- ============================================================
-             LOGO
-             ============================================================ -->
         <div class="logo">
             <div class="logo-icon">NV</div>
             <h1>Welcome Back</h1>
             <p>Login to your Nairobi Vibe account</p>
         </div>
         
-        <!-- ============================================================
-             ALERT BANNER
-             ============================================================ -->
         <div class="alert-banner" id="alertBanner">
             <i class="fas fa-info-circle"></i>
-            <span class="alert-text" id="alertText">Your account is pending admin approval. You'll receive an email once verified.</span>
+            <span class="alert-text" id="alertText">Your account is pending admin approval.</span>
             <span class="alert-close" id="alertClose">&times;</span>
         </div>
         
-        <!-- ============================================================
-             LOGIN FORM
-             ============================================================ -->
         <form id="loginForm" novalidate>
             
-            <!-- Email -->
             <div class="form-group" id="emailGroup">
                 <label>Email Address <span class="required">*</span></label>
                 <div class="input-wrapper">
@@ -579,7 +251,6 @@
                 <div class="error-message" id="emailError">Please enter a valid email address</div>
             </div>
             
-            <!-- Password -->
             <div class="form-group" id="passwordGroup">
                 <label>Password <span class="required">*</span></label>
                 <div class="input-wrapper">
@@ -592,7 +263,6 @@
                 <div class="error-message" id="passwordError">Please enter your password</div>
             </div>
             
-            <!-- Remember Me & Forgot Password -->
             <div class="form-options">
                 <div class="remember-me">
                     <input type="checkbox" id="rememberMe">
@@ -601,7 +271,6 @@
                 <a href="#" class="forgot-link" id="forgotPassword">Forgot Password?</a>
             </div>
             
-            <!-- Login Button -->
             <button type="submit" class="btn-login" id="loginBtn">
                 <span id="btnText">Login</span>
                 <span class="loader" id="btnLoader"></span>
@@ -610,14 +279,8 @@
             
         </form>
         
-        <!-- ============================================================
-             DIVIDER
-             ============================================================ -->
         <div class="divider">Or continue with</div>
         
-        <!-- ============================================================
-             SOCIAL LOGIN
-             ============================================================ -->
         <div class="social-login">
             <button class="social-btn google" id="googleLogin">
                 <i class="fab fa-google"></i> Google
@@ -627,9 +290,6 @@
             </button>
         </div>
         
-        <!-- ============================================================
-             REGISTER LINK - FIXED TO signup.html
-             ============================================================ -->
         <div class="register-link">
             Don't have an account? <a href="signup.html">Create one now</a>
         </div>
@@ -637,23 +297,14 @@
     </div>
 </div>
 
-<!-- ============================================================
-     TOAST NOTIFICATION
-     ============================================================ -->
 <div class="toast" id="toast">
     <span class="toast-close" id="toastClose">&times;</span>
     <span id="toastMessage">Notification</span>
 </div>
 
-<!-- ============================================================
-     JAVASCRIPT - WITH SUPABASE INTEGRATION + FALLBACK
-     ============================================================ -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         
-        // ============================================================
-        // ELEMENTS
-        // ============================================================
         const form = document.getElementById('loginForm');
         const email = document.getElementById('email');
         const password = document.getElementById('password');
@@ -671,14 +322,10 @@
         const alertClose = document.getElementById('alertClose');
         const forgotPassword = document.getElementById('forgotPassword');
         
-        // ============================================================
-        // CHECK SUPABASE - WITH FALLBACK
-        // ============================================================
         if (typeof window.supabaseFunctions === 'undefined') {
             console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
-            // Re-initialize if not loaded
-            const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-            const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+            const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
             
             if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -705,17 +352,10 @@
                 console.log('✅ Supabase re-initialized successfully!');
             } else {
                 showToast('System error. Please refresh the page.', 'error');
-                console.error('❌ Supabase failed to load');
                 return;
             }
-        } else {
-            console.log('✅ Supabase is ready with NEW keys');
-            console.log('🔗 URL:', SUPABASE_URL);
         }
         
-        // ============================================================
-        // CHECK FOR PENDING APPROVAL MESSAGE
-        // ============================================================
         const urlParams = new URLSearchParams(window.location.search);
         const pendingMsg = urlParams.get('pending');
         if (pendingMsg === 'true') {
@@ -723,14 +363,10 @@
             alertText.textContent = 'Your account is pending admin approval. You\'ll receive an email once verified.';
         }
         
-        // Close alert banner
         alertClose.addEventListener('click', function() {
             alertBanner.classList.remove('show');
         });
         
-        // ============================================================
-        // PASSWORD TOGGLE
-        // ============================================================
         togglePassword.addEventListener('click', function() {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
@@ -738,9 +374,6 @@
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
         
-        // ============================================================
-        // REAL-TIME VALIDATION
-        // ============================================================
         email.addEventListener('blur', function() {
             const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
             validateField(this, 'emailGroup', 'emailError', isValid);
@@ -772,34 +405,21 @@
             }
         }
         
-        // ============================================================
-        // LOAD SAVED EMAIL FROM LOCAL STORAGE
-        // ============================================================
         try {
             const savedEmail = localStorage.getItem('nairobi_vibe_email');
             if (savedEmail) {
                 email.value = savedEmail;
                 rememberMe.checked = true;
             }
-        } catch (e) {
-            console.log('localStorage not available');
-        }
+        } catch (e) {}
         
-        // ============================================================
-        // GET REDIRECT URL FROM QUERY PARAMETER
-        // ============================================================
         const redirectUrl = urlParams.get('redirect') || 'index.html';
         
-        // ============================================================
-        // FORM SUBMISSION - WITH SUPABASE
-        // ============================================================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Validate fields
             let isValid = true;
             
-            // Email
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
                 validateField(email, 'emailGroup', 'emailError', false);
                 isValid = false;
@@ -807,7 +427,6 @@
                 validateField(email, 'emailGroup', 'emailError', true);
             }
             
-            // Password
             if (password.value.length < 1) {
                 validateField(password, 'passwordGroup', 'passwordError', false);
                 isValid = false;
@@ -820,27 +439,18 @@
                 return;
             }
             
-            // ============================================================
-            // LOGIN WITH SUPABASE
-            // ============================================================
             loginBtn.disabled = true;
             btnText.textContent = 'Logging in...';
             btnLoader.classList.add('show');
             btnIcon.style.display = 'none';
             
-            // Save remember me
             if (rememberMe.checked) {
-                try {
-                    localStorage.setItem('nairobi_vibe_email', email.value);
-                } catch (e) {}
+                try { localStorage.setItem('nairobi_vibe_email', email.value); } catch (e) {}
             } else {
-                try {
-                    localStorage.removeItem('nairobi_vibe_email');
-                } catch (e) {}
+                try { localStorage.removeItem('nairobi_vibe_email'); } catch (e) {}
             }
             
             try {
-                // Call Supabase sign in
                 const { data, error } = await window.supabaseFunctions.supabase.auth.signInWithPassword({
                     email: email.value.trim(),
                     password: password.value
@@ -849,11 +459,9 @@
                 if (error) throw error;
                 
                 if (data && data.user) {
-                    // Get user profile data from user metadata
                     const user = data.user;
                     const userData = user.user_metadata || {};
                     
-                    // Create session data
                     const sessionData = {
                         id: user.id,
                         email: user.email,
@@ -865,7 +473,6 @@
                         loginTime: new Date().toISOString()
                     };
                     
-                    // Store session
                     try {
                         localStorage.setItem('nairobi_vibe_session', JSON.stringify(sessionData));
                     } catch (e) {}
@@ -882,7 +489,6 @@
                 
                 let errorMsg = error.message || 'Login failed. Please try again.';
                 
-                // Show specific error messages
                 if (errorMsg.includes('Invalid login credentials')) {
                     errorMsg = 'Invalid email or password. Please try again.';
                 } else if (errorMsg.includes('Email not confirmed')) {
@@ -898,9 +504,6 @@
             }
         });
         
-        // ============================================================
-        // SOCIAL LOGIN (Coming Soon)
-        // ============================================================
         document.getElementById('googleLogin').addEventListener('click', function() {
             showToast('Google login coming soon! 🔜', 'info');
         });
@@ -909,9 +512,6 @@
             showToast('Facebook login coming soon! 🔜', 'info');
         });
         
-        // ============================================================
-        // FORGOT PASSWORD
-        // ============================================================
         forgotPassword.addEventListener('click', async function(e) {
             e.preventDefault();
             const emailValue = email.value.trim();
@@ -934,9 +534,6 @@
             }
         });
         
-        // ============================================================
-        // TOAST NOTIFICATION
-        // ============================================================
         function showToast(message, type = 'info') {
             toastMessage.textContent = message;
             toast.className = 'toast ' + type;
@@ -952,9 +549,6 @@
             toast.classList.remove('show');
         });
         
-        // ============================================================
-        // KEYBOARD SHORTCUTS
-        // ============================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 toast.classList.remove('show');
@@ -962,16 +556,7 @@
             }
         });
         
-        // ============================================================
-        // PREVENT FORM RESUBMISSION
-        // ============================================================
-        if (window.history && window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
-        
-        console.log('✅ Login Page Loaded Successfully!');
-        console.log('🔐 Supabase Integration: Active with NEW keys');
-        console.log('🎨 Design: Clean, Professional, Responsive');
+        console.log('✅ Login Page Loaded - NEW Supabase keys');
         console.log('🔗 Redirect URL:', redirectUrl);
         
     });
