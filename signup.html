@@ -9,67 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG - NEW KEYS -->
-    <script>
-        const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
-        
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
-        window.supabaseFunctions = {
-            supabase: supabase,
-            signUp: async (email, password, userData) => {
-                const { data, error } = await supabase.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        data: userData
-                    }
-                });
-                return { data, error };
-            },
-            signIn: async (email, password) => {
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                return { data, error };
-            },
-            signOut: async () => {
-                const { error } = await supabase.auth.signOut();
-                return { error };
-            },
-            getSession: async () => {
-                const { data, error } = await supabase.auth.getSession();
-                return { data, error };
-            },
-            createProfile: async (profileData) => {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .insert([profileData]);
-                return { data, error };
-            },
-            getProfile: async (userId) => {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('user_id', userId)
-                    .single();
-                return { data, error };
-            },
-            updateProfile: async (userId, updates) => {
-                const { data, error } = await supabase
-                    .from('profiles')
-                    .update(updates)
-                    .eq('user_id', userId);
-                return { data, error };
-            }
-        };
-        
-        console.log('✅ Supabase initialized with NEW keys!');
-        console.log('🔗 URL:', SUPABASE_URL);
-    </script>
-    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -355,10 +294,7 @@
                 <i class="fas fa-check-circle"></i>
             </div>
             <h2>Account Created Successfully!</h2>
-            <p>
-                Welcome to Nairobi Vibe! Please check your email to confirm your account.
-                Once confirmed, you can login and start exploring.
-            </p>
+            <p>Welcome to Nairobi Vibe! You can now login to your account.</p>
             <a href="login.html" class="btn-dashboard">
                 <i class="fas fa-sign-in-alt"></i> Go to Login
             </a>
@@ -375,6 +311,47 @@
     <span class="toast-close" id="toastClose">&times;</span>
     <span id="toastMessage">Notification</span>
 </div>
+
+<script>
+    // ============================================================
+    // SUPABASE CONFIG - DECLARED ONCE ONLY
+    // ============================================================
+    var SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+    var SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
+    
+    var supabaseClient = null;
+    
+    // Wait for the SDK to be available
+    function initSupabase() {
+        try {
+            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                    auth: {
+                        persistSession: true,
+                        autoRefreshToken: true,
+                        detectSessionInUrl: true
+                    }
+                });
+                console.log('✅ Supabase initialized');
+                console.log('🔗 URL:', SUPABASE_URL);
+                return true;
+            }
+            console.log('⚠️ Supabase SDK not yet loaded');
+            return false;
+        } catch (e) {
+            console.error('❌ Supabase init error:', e);
+            return false;
+        }
+    }
+    
+    // Try immediate init
+    if (!initSupabase()) {
+        // Retry on DOM ready
+        document.addEventListener('DOMContentLoaded', initSupabase);
+        // Final retry after 1 second
+        setTimeout(initSupabase, 1000);
+    }
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -399,33 +376,9 @@
         const passwordBar = document.getElementById('passwordBar');
         const passwordHint = document.getElementById('passwordHint');
         
-        if (typeof window.supabaseFunctions === 'undefined') {
-            console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
-            const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
-            const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
-            
-            if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                window.supabaseFunctions = {
-                    supabase: supabase,
-                    signUp: async (email, password, userData) => {
-                        const { data, error } = await supabase.auth.signUp({
-                            email: email,
-                            password: password,
-                            options: {
-                                data: userData
-                            }
-                        });
-                        return { data, error };
-                    }
-                };
-                console.log('✅ Supabase re-initialized successfully!');
-            } else {
-                showToast('System error. Please refresh the page.', 'error');
-                return;
-            }
-        }
-        
+        // ============================================================
+        // PASSWORD TOGGLE
+        // ============================================================
         togglePassword.addEventListener('click', function() {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
@@ -433,6 +386,9 @@
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
         
+        // ============================================================
+        // PASSWORD STRENGTH
+        // ============================================================
         password.addEventListener('input', function() {
             const val = this.value;
             const bar = passwordBar;
@@ -458,7 +414,7 @@
             } else if (strength === 3) {
                 bar.style.width = '50%';
                 bar.className = 'bar medium';
-                passwordHint.textContent = 'Medium - Add uppercase letters and symbols for stronger password';
+                passwordHint.textContent = 'Medium - Add uppercase letters and symbols';
                 passwordHint.style.color = '#f39c12';
             } else if (strength === 4) {
                 bar.style.width = '75%';
@@ -473,6 +429,9 @@
             }
         });
         
+        // ============================================================
+        // VALIDATION
+        // ============================================================
         fullName.addEventListener('blur', function() {
             validateField(this, 'nameGroup', 'nameError', this.value.trim().length >= 2);
         });
@@ -518,6 +477,9 @@
             }
         }
         
+        // ============================================================
+        // FORM SUBMIT
+        // ============================================================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -571,6 +533,15 @@
                 return;
             }
             
+            // CHECK SUPABASE IS READY
+            if (!supabaseClient) {
+                initSupabase();
+                if (!supabaseClient) {
+                    showToast('System not ready. Please refresh the page.', 'error');
+                    return;
+                }
+            }
+            
             registerBtn.disabled = true;
             btnText.textContent = 'Creating Account...';
             btnLoader.classList.add('show');
@@ -585,14 +556,17 @@
                 };
                 
                 console.log('📝 Registering with Supabase...');
+                console.log('📧 Email:', email.value.trim());
                 
-                const { data, error } = await window.supabaseFunctions.supabase.auth.signUp({
+                const { data, error } = await supabaseClient.auth.signUp({
                     email: email.value.trim(),
                     password: password.value,
                     options: {
                         data: userData
                     }
                 });
+                
+                console.log('Response:', { data, error });
                 
                 if (error) throw error;
                 
@@ -602,11 +576,23 @@
                 document.querySelector('.login-link').style.display = 'none';
                 successMessage.classList.add('show');
                 
-                showToast('Registration successful! Check your email for confirmation 🎉', 'success');
+                showToast('Account created successfully! 🎉', 'success');
                 
             } catch (error) {
                 console.error('❌ Registration error:', error);
-                showToast(error.message || 'Registration failed. Please try again.', 'error');
+                
+                let errorMsg = error.message || 'Registration failed. Please try again.';
+                
+                // Friendlier error messages
+                if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
+                    errorMsg = 'Cannot connect to server. Please check your internet.';
+                } else if (errorMsg.includes('already registered')) {
+                    errorMsg = 'This email is already registered. Please login instead.';
+                } else if (errorMsg.includes('Password should be')) {
+                    errorMsg = 'Password must be at least 6 characters.';
+                }
+                
+                showToast(errorMsg, 'error');
                 
                 registerBtn.disabled = false;
                 btnText.textContent = 'Create Account';
@@ -615,6 +601,9 @@
             }
         });
         
+        // ============================================================
+        // TOAST
+        // ============================================================
         function showToast(message, type = 'info') {
             toastMessage.textContent = message;
             toast.className = 'toast ' + type;
@@ -636,7 +625,7 @@
             }
         });
         
-        console.log('✅ Registration Page Loaded - NEW Supabase keys');
+        console.log('✅ Registration Page Loaded');
         
     });
 </script>
