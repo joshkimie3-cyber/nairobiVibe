@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>My Profile - Nairobi Vibe</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG -->
+    <!-- SUPABASE CONFIG - NEW KEYS -->
     <script>
-        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+        const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
         
         let supabase = null;
         let supabaseReady = false;
@@ -47,7 +42,7 @@
                         }
                     };
                     
-                    console.log('✅ Supabase initialized');
+                    console.log('✅ Supabase initialized with NEW keys');
                     return true;
                 }
                 return false;
@@ -85,7 +80,6 @@
             padding-bottom: 70px;
         }
         
-        /* ---------- HEADER ---------- */
         .site-header {
             background: linear-gradient(135deg, #E0006C, #b30057);
             padding: 8px 14px;
@@ -116,9 +110,7 @@
             min-height: 30px;
             transition: all 0.3s ease;
         }
-        .site-header .user-info .logout-btn:active { background: rgba(255,255,255,0.3); }
         
-        /* ---------- LOGIN PROMPT ---------- */
         .login-prompt {
             background: #fff;
             border-radius: 12px;
@@ -154,10 +146,8 @@
             font-size: 12px;
         }
         
-        /* ---------- CONTAINER ---------- */
         .site-content { max-width: 1200px; margin: 0 auto; padding: 10px; }
         
-        /* ---------- PROFILE HEADER ---------- */
         .profile-header {
             background: #fff;
             border-radius: 10px;
@@ -180,7 +170,6 @@
             margin-left: 6px;
         }
         
-        /* ---------- STATUS BANNER ---------- */
         .status-banner {
             border-left: 3px solid #ffc107;
             padding: 8px 14px;
@@ -207,12 +196,9 @@
             font-size: 10px;
             cursor: pointer;
             min-height: 28px;
-            transition: all 0.3s ease;
         }
-        .status-banner .btn-activate:active { transform: scale(0.95); }
         .status-banner .btn-activate:disabled { opacity: 0.5; cursor: not-allowed; }
         
-        /* ---------- WALLET SECTION ---------- */
         .wallet-section {
             background: #fff;
             border-radius: 10px;
@@ -241,9 +227,7 @@
             font-size: 10px;
             cursor: pointer;
             min-height: 28px;
-            transition: all 0.3s ease;
         }
-        .wallet-header .btn-add-fund:active { transform: scale(0.95); }
         
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
@@ -262,7 +246,7 @@
             background: #f8f9fa;
             border-radius: 6px;
         }
-        .wallet-stats .stat-item label { display: block; font-size: 7px; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+        .wallet-stats .stat-item label { display: block; font-size: 7px; color: #999; font-weight: 600; text-transform: uppercase; }
         .wallet-stats .stat-item span { font-size: 14px; font-weight: 700; color: #333; }
         
         .wallet-footer {
@@ -276,7 +260,6 @@
             border-top: 1px solid #eee;
         }
         .wallet-footer .chat-status { font-size: 10px; color: #666; }
-        .wallet-footer .chat-status i { margin-right: 3px; }
         .wallet-footer .btn-chat-activate {
             background: #17a2b8;
             color: #fff;
@@ -290,7 +273,6 @@
         }
         .wallet-footer .inbox-link { color: #E0006C; font-weight: 600; text-decoration: none; font-size: 10px; }
         
-        /* ---------- PHOTO SECTION ---------- */
         .photo-section {
             background: #fff;
             border-radius: 10px;
@@ -329,9 +311,7 @@
             font-size: 10px;
             cursor: pointer;
             min-height: 28px;
-            transition: all 0.3s ease;
         }
-        .photo-section .photo-upload .btn-upload:active { transform: scale(0.95); }
         .photo-section .photo-required {
             font-size: 9px;
             color: #dc3545;
@@ -406,7 +386,6 @@
             min-height: 26px;
         }
         
-        /* ---------- NAV TABS ---------- */
         .nav-tabs {
             background: #fff;
             border-radius: 10px;
@@ -418,7 +397,6 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid #eee;
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
         }
         .nav-tabs::-webkit-scrollbar { display: none; }
         .nav-tabs .tab-link {
@@ -432,12 +410,9 @@
             min-height: 28px;
             display: flex;
             align-items: center;
-            transition: all 0.3s ease;
         }
-        .nav-tabs .tab-link:active { background: #f5f5f5; }
         .nav-tabs .tab-link.active { background: #E0006C; color: #fff; }
         
-        /* ---------- PROFILE FORM ---------- */
         .profile-form {
             background: #fff;
             border-radius: 10px;
@@ -466,12 +441,7 @@
             font-weight: 600;
         }
         
-        /* ----- PROFILE FIELDS TABLE ----- */
-        .profile-fields {
-            width: 100%;
-            border: none;
-            border-collapse: collapse;
-        }
+        .profile-fields { width: 100%; border: none; border-collapse: collapse; }
         .profile-fields tr { border-bottom: 1px dotted #e8e8e8; }
         .profile-fields tr:last-child { border-bottom: none; }
         .profile-fields th {
@@ -514,20 +484,13 @@
             background: #fff;
             box-shadow: 0 0 0 3px rgba(224,0,108,0.08);
         }
-        .profile-fields td textarea { resize: vertical; min-height: 40px; }
         
-        /* ----- PROFILE TYPE - COMPACT ----- */
-        .type-selector {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
+        .type-selector { display: flex; gap: 4px; flex-wrap: wrap; }
         .type-selector .type-opt {
             padding: 3px 10px;
             border: 2px solid #ddd;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
             background: #fafafa;
             font-size: 10px;
             font-weight: 600;
@@ -536,7 +499,6 @@
             gap: 4px;
             min-height: 28px;
         }
-        .type-selector .type-opt:active { border-color: #E0006C; }
         .type-selector .type-opt.active { border-color: #E0006C; background: #fce4ec; }
         .type-selector .type-opt .badge {
             font-size: 7px;
@@ -548,16 +510,12 @@
         .badge-reg { background: #6c757d; color: #fff; }
         .badge-vip { background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff; }
         
-        /* ============================================================
-           MEMBERSHIP PLANS - PROFESSIONAL CARDS
-           ============================================================ */
         .plans-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-bottom: 10px;
         }
-
         .plan-card {
             background: #fff;
             border: 2px solid #e8e8e8;
@@ -568,67 +526,19 @@
             overflow: hidden;
             min-height: 170px;
         }
-
-        .plan-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-
+        .plan-card:hover { transform: translateY(-3px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         .plan-card.active {
             border-color: #E0006C;
             box-shadow: 0 0 0 3px rgba(224,0,108,0.15), 0 4px 25px rgba(224,0,108,0.15);
             transform: translateY(-4px);
         }
-
-        .plan-card .plan-card-inner {
-            padding: 12px 8px 10px;
-            text-align: center;
-            position: relative;
-        }
-
-        .plan-card .plan-icon {
-            font-size: 22px;
-            color: #E0006C;
-            margin-bottom: 3px;
-        }
-
-        .plan-card.active .plan-icon {
-            color: #E0006C;
-        }
-
-        .plan-card .plan-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 1px;
-        }
-
-        .plan-card .plan-price {
-            font-size: 18px;
-            font-weight: 800;
-            color: #E0006C;
-            margin-bottom: 1px;
-        }
-
-        .plan-card .plan-duration {
-            font-size: 9px;
-            color: #999;
-            margin-bottom: 4px;
-        }
-
-        .plan-card .plan-features {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            margin: 3px 0 5px;
-        }
-
-        .plan-card .plan-features span {
-            font-size: 8px;
-            color: #666;
-            padding: 1px 0;
-        }
-
+        .plan-card .plan-card-inner { padding: 12px 8px 10px; text-align: center; position: relative; }
+        .plan-card .plan-icon { font-size: 22px; color: #E0006C; margin-bottom: 3px; }
+        .plan-card .plan-name { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 1px; }
+        .plan-card .plan-price { font-size: 18px; font-weight: 800; color: #E0006C; margin-bottom: 1px; }
+        .plan-card .plan-duration { font-size: 9px; color: #999; margin-bottom: 4px; }
+        .plan-card .plan-features { display: flex; flex-direction: column; gap: 1px; margin: 3px 0 5px; }
+        .plan-card .plan-features span { font-size: 8px; color: #666; padding: 1px 0; }
         .plan-card .plan-badge {
             display: inline-block;
             font-size: 7px;
@@ -636,9 +546,7 @@
             border-radius: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
-
         .plan-card .plan-check {
             position: absolute;
             top: 6px;
@@ -649,13 +557,7 @@
             opacity: 0;
             transform: scale(0.5);
         }
-
-        .plan-card.active .plan-check {
-            color: #E0006C;
-            opacity: 1;
-            transform: scale(1);
-        }
-
+        .plan-card.active .plan-check { color: #E0006C; opacity: 1; transform: scale(1); }
         .plan-card .plan-popular {
             position: absolute;
             top: 0;
@@ -667,9 +569,7 @@
             padding: 2px 10px;
             border-radius: 0 10px 0 10px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
-
         .plan-card .plan-best {
             position: absolute;
             top: 0;
@@ -681,15 +581,10 @@
             padding: 2px 10px;
             border-radius: 0 10px 0 10px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
-
-        .badge-reg { background: #6c757d; color: #fff; }
         .badge-prime { background: #007bff; color: #fff; }
         .badge-pvip { background: #8b5cf6; color: #fff; }
-        .badge-vip { background: linear-gradient(135deg, #f7053e, #d60435); color: #fff; }
         
-        /* ----- DURATION - COMPACT ROW ----- */
         .duration-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -703,25 +598,17 @@
             background: #fafafa;
             cursor: pointer;
             text-align: center;
-            transition: all 0.3s ease;
         }
-        .duration-row .dur-btn:active { border-color: #E0006C; }
         .duration-row .dur-btn.active { border-color: #E0006C; background: #fce4ec; }
         .duration-row .dur-btn .dday { font-size: 9px; font-weight: 700; color: #333; }
         .duration-row .dur-btn .dprice { font-size: 8px; font-weight: 600; color: #E0006C; }
         
-        /* ----- SERVICES - COMPACT ----- */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
             gap: 2px;
         }
-        .services-grid .svc-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 0;
-        }
+        .services-grid .svc-item { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
         .services-grid .svc-item input[type="checkbox"] {
             width: 13px;
             height: 13px;
@@ -730,27 +617,11 @@
         }
         .services-grid .svc-item label { font-size: 10px; color: #555; cursor: pointer; }
         
-        /* ----- OTHER FIELDS ----- */
-        .listing-opt {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 2px 0;
-        }
-        .listing-opt input[type="checkbox"] {
-            width: 13px;
-            height: 13px;
-            accent-color: #E0006C;
-            cursor: pointer;
-        }
+        .listing-opt { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
+        .listing-opt input[type="checkbox"] { width: 13px; height: 13px; accent-color: #E0006C; cursor: pointer; }
         .listing-opt label { font-size: 10px; color: #555; cursor: pointer; }
         
-        /* ----- SAVE BUTTON ----- */
-        .form-actions {
-            padding: 8px 14px 12px 14px;
-            text-align: center;
-            border-top: 1px solid #f0f0f0;
-        }
+        .form-actions { padding: 8px 14px 12px 14px; text-align: center; border-top: 1px solid #f0f0f0; }
         .btn-save {
             background: linear-gradient(135deg, #E0006C, #b30057);
             color: #fff;
@@ -764,12 +635,9 @@
             align-items: center;
             gap: 6px;
             min-height: 36px;
-            transition: all 0.3s ease;
         }
-        .btn-save:active { transform: scale(0.95); }
-        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
         
-        /* ---------- ABOUT SECTION ---------- */
         .about-section {
             background: #fff;
             border-radius: 10px;
@@ -781,7 +649,6 @@
         .about-section .about-title { font-size: 12px; font-weight: 800; color: #E0006C; margin-bottom: 4px; }
         .about-section .about-content { font-size: 10px; line-height: 1.4; color: #666; }
         
-        /* ---------- FOOTER ---------- */
         .site-footer {
             background: #1a1a2e;
             color: #ccc;
@@ -806,9 +673,7 @@
             font-size: 9px;
             color: #888;
         }
-        .site-footer .footer-bottom span { color: #E0006C; }
         
-        /* ---------- TOAST ---------- */
         .toast {
             position: fixed;
             top: 50px;
@@ -830,7 +695,6 @@
         .toast.info { background: linear-gradient(135deg, #17a2b8, #117a8b); }
         .toast .toast-close { float: right; margin-left: 8px; cursor: pointer; opacity: 0.8; font-size: 14px; }
         
-        /* ---------- BOTTOM NAV ---------- */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -857,13 +721,10 @@
             padding: 2px 6px;
             min-height: 32px;
             justify-content: center;
-            transition: all 0.3s ease;
         }
         .bottom-nav .nav-item.active { color: #E0006C; }
         .bottom-nav .nav-item i { font-size: 14px; }
-        .bottom-nav .nav-item:active { transform: scale(0.9); }
         
-        /* ---------- LOADER ---------- */
         .loader {
             display: none;
             width: 16px;
@@ -876,56 +737,26 @@
         .loader.show { display: inline-block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* ---------- RESPONSIVE ---------- */
         @media (max-width: 768px) {
-            .profile-fields th,
-            .profile-fields td {
-                display: block;
-                width: 100%;
-                text-align: left;
-                padding: 4px 8px;
+            .profile-fields th, .profile-fields td {
+                display: block; width: 100%;
+                text-align: left; padding: 4px 8px;
             }
             .profile-fields th { background: #f5f5f5; border-bottom: none; padding-bottom: 2px; }
-            .profile-fields td { padding-top: 2px; }
-            .profile-fields tr { border-bottom: 1px dotted #e8e8e8; }
-            .plans-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
+            .plans-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
             .plan-card { min-height: 150px; }
-            .plan-card .plan-price { font-size: 16px; }
-            .plan-card .plan-features span { font-size: 7px; }
             .duration-row { grid-template-columns: repeat(2, 1fr); }
             .site-header { flex-direction: column; text-align: center; }
-            .wallet-stats { flex-direction: column; }
-            .wallet-stats .stat-item { min-width: auto; }
             .site-footer .footer-content { grid-template-columns: 1fr; gap: 8px; }
-            .nav-tabs { flex-wrap: nowrap; overflow-x: auto; }
-            .photo-section .photo-grid { grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); }
-            .services-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
-            .type-selector { flex-wrap: wrap; }
         }
         
         @media (max-width: 480px) {
             .site-content { padding: 6px; }
-            .profile-header { padding: 8px 10px; }
-            .wallet-section { padding: 8px 10px; }
-            .photo-section { padding: 8px 10px; }
-            .profile-form { padding: 0; }
-            .profile-fields th,
-            .profile-fields td { padding: 3px 6px; }
-            .plans-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 6px;
-            }
+            .plans-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
             .plan-card { min-height: 130px; }
             .plan-card .plan-icon { font-size: 18px; }
             .plan-card .plan-name { font-size: 11px; }
             .plan-card .plan-price { font-size: 14px; }
-            .plan-card .plan-features span { font-size: 6px; }
-            .duration-row { grid-template-columns: 1fr 1fr; }
-            .profile-form .form-title { padding: 8px 10px; font-size: 12px; }
-            .form-actions { padding: 6px 10px 10px 10px; }
         }
         
         @media (min-width: 769px) {
@@ -940,9 +771,6 @@
 </head>
 <body>
 
-    <!-- ============================================================
-         HEADER
-         ============================================================ -->
     <header class="site-header">
         <div class="logo">
             <h1>Nairobi Vibe <span>Escorts</span></h1>
@@ -954,14 +782,8 @@
         </div>
     </header>
 
-    <!-- ============================================================
-         MAIN CONTENT
-         ============================================================ -->
     <div class="site-content">
 
-        <!-- ============================================================
-             LOGIN PROMPT
-             ============================================================ -->
         <div class="login-prompt" id="loginPrompt">
             <i class="fas fa-lock lock-icon"></i>
             <h3>Login Required</h3>
@@ -974,12 +796,8 @@
             </a>
         </div>
 
-        <!-- ============================================================
-             PROFILE CONTENT
-             ============================================================ -->
         <div id="profileContent" style="display:none;">
 
-            <!-- Profile Header -->
             <div class="profile-header">
                 <h2>
                     My Profile 
@@ -992,7 +810,6 @@
                 </div>
             </div>
 
-            <!-- Status Banner -->
             <div class="status-banner inactive" id="statusBanner">
                 <div class="status-text">
                     <i class="fas fa-circle"></i>
@@ -1001,7 +818,6 @@
                 <button class="btn-activate" id="activateBtn">Activate Now</button>
             </div>
 
-            <!-- Wallet Section -->
             <div class="wallet-section">
                 <div class="wallet-header">
                     <div class="wallet-balance">
@@ -1034,7 +850,6 @@
                 </div>
             </div>
 
-            <!-- Photo Section -->
             <div class="photo-section">
                 <div class="photo-upload">
                     <div class="file-input-wrapper">
@@ -1061,7 +876,6 @@
                 </div>
             </div>
 
-            <!-- Navigation Tabs -->
             <div class="nav-tabs">
                 <a href="#" class="tab-link active">Profile</a>
                 <a href="#" class="tab-link">Wallet</a>
@@ -1069,9 +883,6 @@
                 <a href="#" class="tab-link">Settings</a>
             </div>
 
-            <!-- ============================================================
-                 PROFILE FORM
-                 ============================================================ -->
             <form class="profile-form" id="profileForm">
                 <div class="form-title">
                     <span><i class="fas fa-user-edit"></i> My Profile</span>
@@ -1308,9 +1119,6 @@
                             <td><input type="text" id="profileNearby" placeholder="Nearby landmarks"></td>
                         </tr>
                         
-                        <!-- ============================================================
-                             PROFILE TYPE
-                             ============================================================ -->
                         <tr>
                             <th>Profile Type <span class="required">*</span></th>
                             <td>
@@ -1328,14 +1136,10 @@
                             </td>
                         </tr>
                         
-                        <!-- ============================================================
-                             MEMBERSHIP PLAN - PROFESSIONAL CARDS
-                             ============================================================ -->
                         <tr>
                             <th>Membership <span class="required">*</span></th>
                             <td>
                                 <div class="plans-grid" id="membershipPlans">
-                                    <!-- Regular Plan -->
                                     <div class="plan-card active" data-plan="regular" onclick="selectPlan('regular')">
                                         <div class="plan-card-inner">
                                             <div class="plan-icon"><i class="fas fa-user"></i></div>
@@ -1351,7 +1155,6 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Prime Plan -->
                                     <div class="plan-card" data-plan="prime" onclick="selectPlan('prime')">
                                         <div class="plan-card-inner">
                                             <div class="plan-popular">🔥 Popular</div>
@@ -1369,7 +1172,6 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Prime VIP Plan -->
                                     <div class="plan-card" data-plan="prime-vip" onclick="selectPlan('prime-vip')">
                                         <div class="plan-card-inner">
                                             <div class="plan-best">🌟 Best Value</div>
@@ -1388,7 +1190,6 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- VIP Plan -->
                                     <div class="plan-card" data-plan="vip" onclick="selectPlan('vip')">
                                         <div class="plan-card-inner">
                                             <div class="plan-icon"><i class="fas fa-gem"></i></div>
@@ -1415,9 +1216,6 @@
                             </td>
                         </tr>
                         
-                        <!-- ============================================================
-                             SERVICES
-                             ============================================================ -->
                         <tr>
                             <th>Services</th>
                             <td>
@@ -1441,9 +1239,6 @@
                             </td>
                         </tr>
                         
-                        <!-- ============================================================
-                             RATES
-                             ============================================================ -->
                         <tr>
                             <th>Incalls</th>
                             <td><input type="number" id="profileIncallsRate" placeholder="KSh/hr" style="width:100%; padding:4px 8px; border:1px solid #ddd; border-radius:4px; font-size:11px;"></td>
@@ -1453,9 +1248,6 @@
                             <td><input type="number" id="profileOutcallsRate" placeholder="KSh/hr" style="width:100%; padding:4px 8px; border:1px solid #ddd; border-radius:4px; font-size:11px;"></td>
                         </tr>
                         
-                        <!-- ============================================================
-                             LISTING OPTIONS
-                             ============================================================ -->
                         <tr>
                             <th>Listing</th>
                             <td>
@@ -1477,7 +1269,6 @@
                 </div>
             </form>
 
-            <!-- About Section -->
             <div class="about-section">
                 <div class="about-title">About</div>
                 <div class="about-content" id="aboutContent">
@@ -1486,13 +1277,10 @@
                 </div>
             </div>
 
-        </div><!-- end profileContent -->
+        </div>
 
     </div>
 
-    <!-- ============================================================
-         BOTTOM NAVIGATION
-         ============================================================ -->
     <div class="bottom-nav">
         <div class="nav-item" onclick="window.location.href='index.html'">
             <i class="fas fa-home"></i><span>Home</span>
@@ -1508,9 +1296,6 @@
         </div>
     </div>
 
-    <!-- ============================================================
-         FOOTER
-         ============================================================ -->
     <footer class="site-footer">
         <div class="footer-content">
             <div>
@@ -1535,23 +1320,14 @@
         </div>
     </footer>
 
-    <!-- ============================================================
-         TOAST NOTIFICATION
-         ============================================================ -->
     <div class="toast" id="toast">
         <span class="toast-close" id="toastClose">&times;</span>
         <span id="toastMessage">Notification</span>
     </div>
 
-    <!-- ============================================================
-     JAVASCRIPT - WITH PROFESSIONAL PLAN CARDS
-     ============================================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // ============================================================
-            // MEMBERSHIP PLAN DATA
-            // ============================================================
             const membershipData = {
                 regular: { durations: [{ days: 3, price: 400 }, { days: 7, price: 700 }, { days: 15, price: 1300 }, { days: 30, price: 2000 }] },
                 prime: { durations: [{ days: 3, price: 500 }, { days: 7, price: 950 }, { days: 15, price: 1800 }, { days: 30, price: 3000 }] },
@@ -1570,14 +1346,10 @@
             let existingProfileData = null;
             let isEditMode = false;
 
-            // ============================================================
-            // SELECT PLAN - WITH VISUAL FEEDBACK
-            // ============================================================
             window.selectPlan = function(plan) {
                 currentPlan = plan;
                 document.getElementById('selectedPlan').value = plan;
                 
-                // Update visual selection on cards
                 document.querySelectorAll('.plan-card').forEach(card => {
                     card.classList.remove('active');
                     if (card.dataset.plan === plan) {
@@ -1587,7 +1359,6 @@
                 
                 updateDurations(plan);
                 
-                // Toast notification for plan selection
                 const planNames = {
                     'regular': 'Regular',
                     'prime': 'Prime',
@@ -1597,9 +1368,6 @@
                 showToast(`✅ Selected ${planNames[plan] || plan} plan`, 'success');
             };
 
-            // ============================================================
-            // UPDATE DURATIONS
-            // ============================================================
             function updateDurations(plan) {
                 const data = membershipData[plan];
                 if (!data) return;
@@ -1627,9 +1395,6 @@
                 document.getElementById('selectedPrice').value = first.price;
             }
 
-            // ============================================================
-            // SELECT DURATION
-            // ============================================================
             function selectDuration(days, price) {
                 currentDuration = days;
                 currentPrice = price;
@@ -1642,9 +1407,6 @@
                 });
             }
 
-            // ============================================================
-            // PROFILE TYPE SELECTOR
-            // ============================================================
             window.selectProfileType = function(type) {
                 document.getElementById('profileType').value = type;
                 document.querySelectorAll('.type-opt').forEach(opt => {
@@ -1653,9 +1415,6 @@
                 });
             };
 
-            // ============================================================
-            // ELEMENTS
-            // ============================================================
             const profileForm = document.getElementById('profileForm');
             const saveBtn = document.getElementById('saveProfileBtn');
             const saveBtnText = document.getElementById('saveBtnText');
@@ -1678,13 +1437,10 @@
             const editBadge = document.getElementById('editBadge');
             const editModeBadge = document.getElementById('editModeBadge');
             
-            // ============================================================
-            // CHECK SUPABASE
-            // ============================================================
             if (typeof window.supabaseFunctions === 'undefined') {
                 console.warn('⚠️ Supabase functions not loaded. Re-initializing...');
-                const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-                const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+                const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+                const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
                 
                 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1709,16 +1465,10 @@
                     console.log('✅ Supabase re-initialized successfully!');
                 } else {
                     showToast('System error. Please refresh the page.', 'error');
-                    console.error('❌ Supabase failed to load');
                     return;
                 }
-            } else {
-                console.log('✅ Supabase is ready');
             }
             
-            // ============================================================
-            // CHECK SESSION
-            // ============================================================
             function checkSession() {
                 try {
                     const session = localStorage.getItem('nairobi_vibe_session');
@@ -1733,15 +1483,11 @@
                         profileContent.style.display = 'none';
                     }
                 } catch (e) {
-                    console.log('Session error:', e);
                     loginPrompt.style.display = 'block';
                     profileContent.style.display = 'none';
                 }
             }
             
-            // ============================================================
-            // LOAD USER PROFILE
-            // ============================================================
             async function loadUserProfile() {
                 if (!currentUser) return;
                 
@@ -1781,8 +1527,6 @@
                         uploadedPhotos = (data.photos && Array.isArray(data.photos)) ? data.photos : [];
                         renderPhotos();
                         
-                        console.log('✅ Profile loaded - EDIT MODE ACTIVE (no charges for edits)');
-                        
                     } else {
                         isEditMode = false;
                         editBadge.style.display = 'none';
@@ -1791,10 +1535,8 @@
                         updateStatusBanner('inactive');
                         uploadedPhotos = [];
                         renderPhotos();
-                        console.log('🆕 New profile - will charge membership fee');
                     }
                 } catch (error) {
-                    console.log('No existing profile found or error:', error);
                     isEditMode = false;
                     editBadge.style.display = 'none';
                     editModeBadge.style.display = 'none';
@@ -1830,7 +1572,6 @@
                 if (data.profile_type) selectProfileType(data.profile_type);
                 
                 if (data.membership_plan) {
-                    // Update plan card visual
                     document.querySelectorAll('.plan-card').forEach(card => {
                         card.classList.remove('active');
                         if (card.dataset.plan === data.membership_plan) {
@@ -1860,9 +1601,6 @@
                 updateAboutSection(data);
             }
             
-            // ============================================================
-            // PHOTO FUNCTIONS
-            // ============================================================
             function renderPhotos() {
                 photoGrid.innerHTML = '';
                 
@@ -1939,9 +1677,6 @@
                 this.value = '';
             });
             
-            // ============================================================
-            // UPDATE STATUS BANNER
-            // ============================================================
             function updateStatusBanner(status) {
                 if (status === 'active') {
                     statusBanner.className = 'status-banner active';
@@ -1961,9 +1696,6 @@
                 }
             }
             
-            // ============================================================
-            // UPDATE ABOUT SECTION
-            // ============================================================
             function updateAboutSection(data) {
                 const name = data.full_name || currentUser.name || 'User';
                 const age = data.age || '18';
@@ -1976,9 +1708,6 @@
                 document.getElementById('aboutLocation').textContent = location;
             }
             
-            // ============================================================
-            // ACTIVATE BUTTON
-            // ============================================================
             activateBtn.addEventListener('click', function() {
                 if (this.disabled) return;
                 if (profileStatus === 'active') {
@@ -2004,9 +1733,6 @@
                 }
             }
 
-            // ============================================================
-            // ADD FUND BUTTON
-            // ============================================================
             addFundBtn.addEventListener('click', function() {
                 if (!currentUser) {
                     showToast('Please login first', 'error');
@@ -2015,9 +1741,6 @@
                 window.location.href = 'checkout-mpesa.html?user_id=' + currentUser.id;
             });
             
-            // ============================================================
-            // SAVE PROFILE
-            // ============================================================
             profileForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
@@ -2034,7 +1757,6 @@
                     return;
                 }
                 
-                // Only charge if this is a NEW profile (not edit)
                 let newBalance = currentWalletBalance;
                 let chargeAmount = 0;
                 let isNewProfile = !isEditMode;
@@ -2174,9 +1896,6 @@
                 }
             });
             
-            // ============================================================
-            // OTHER BUTTONS
-            // ============================================================
             document.getElementById('activateChatBtn').addEventListener('click', function() {
                 showToast('💬 Chat coming soon!', 'info');
             });
@@ -2184,9 +1903,6 @@
                 showToast('✅ Verification coming soon!', 'info');
             });
             
-            // ============================================================
-            // LOGOUT
-            // ============================================================
             logoutBtn.addEventListener('click', async function() {
                 try {
                     await window.supabaseFunctions.signOut();
@@ -2197,9 +1913,6 @@
                 setTimeout(() => location.reload(), 800);
             });
             
-            // ============================================================
-            // TOAST
-            // ============================================================
             function showToast(message, type = 'info') {
                 toastMessage.textContent = message;
                 toast.className = 'toast ' + type;
@@ -2209,21 +1922,12 @@
             }
             toastClose.addEventListener('click', () => toast.classList.remove('show'));
             
-            // ============================================================
-            // SET CURRENT YEAR
-            // ============================================================
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             
-            // ============================================================
-            // INIT
-            // ============================================================
             checkSession();
             updateDurations('regular');
             
-            console.log('✅ My Profile - Professional Plan Cards Active');
-            console.log('📸 Photo required: At least 1 photo');
-            console.log('💰 New profiles: Charged, Existing profiles: Free edits');
-            console.log('🎯 Plan cards with visual feedback');
+            console.log('✅ My Profile - NEW Supabase keys active');
             
         });
     </script>
