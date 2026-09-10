@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Add Funds - Nairobi Vibe</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -389,18 +384,19 @@
             const instructions = document.getElementById('instructions');
 
             // ============================================================
-            // SUPABASE - DIRECT INITIALIZATION
+            // SUPABASE - NEW KEYS
             // ============================================================
             console.log('🔍 DEBUG: Initializing Supabase...');
-            const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-            const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+            const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+            const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
             
             let supabase = null;
             
             try {
                 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    console.log('✅ Supabase client created successfully!');
+                    console.log('✅ Supabase client created successfully with NEW keys!');
+                    console.log('🔗 URL:', SUPABASE_URL);
                 } else {
                     console.error('❌ Supabase library not found!');
                     showToast('System error. Please refresh.', 'error');
@@ -410,9 +406,6 @@
                 showToast('System error. Please refresh.', 'error');
             }
 
-            // ============================================================
-            // QUICK AMOUNT SETTER
-            // ============================================================
             window.setAmount = function(amount) {
                 amountInput.value = amount;
                 amountInput.focus();
@@ -425,9 +418,6 @@
                 });
             };
 
-            // ============================================================
-            // GET USER DATA
-            // ============================================================
             function getUserData() {
                 const session = localStorage.getItem('nairobi_vibe_session');
                 if (session) {
@@ -454,9 +444,6 @@
             console.log('🔍 DEBUG: User Name:', userName);
             console.log('🔍 DEBUG: User Email:', userEmail);
 
-            // ============================================================
-            // PHONE INPUT FORMATTING
-            // ============================================================
             phoneInput.addEventListener('input', function() {
                 this.value = this.value.replace(/\D/g, '');
                 if (this.value.length > 9) {
@@ -470,9 +457,6 @@
                 }
             });
 
-            // ============================================================
-            // AMOUNT VALIDATION
-            // ============================================================
             amountInput.addEventListener('input', function() {
                 if (this.value < 0) this.value = '';
                 if (this.value.length > 1 && this.value.startsWith('0')) {
@@ -480,15 +464,8 @@
                 }
             });
 
-            // ============================================================
-            // SAVE PAYMENT - DIRECT APPROACH
-            // ============================================================
             async function savePayment(userId, phone, transactionCode, amount) {
                 console.log('🔍 DEBUG: savePayment() called');
-                console.log('🔍 DEBUG: userId:', userId);
-                console.log('🔍 DEBUG: phone:', phone);
-                console.log('🔍 DEBUG: transactionCode:', transactionCode);
-                console.log('🔍 DEBUG: amount:', amount);
                 
                 if (!supabase) {
                     console.error('❌ Supabase not initialized!');
@@ -501,7 +478,6 @@
                 }
                 
                 try {
-                    // STEP 1: Check if profile exists
                     console.log('🔍 DEBUG: Checking for existing profile...');
                     const { data: existingProfiles, error: fetchError } = await supabase
                         .from('profiles')
@@ -523,7 +499,6 @@
                     let result;
                     
                     if (!existingProfiles || existingProfiles.length === 0) {
-                        // STEP 2: Create new profile
                         console.log('🔍 DEBUG: Creating new profile...');
                         const newProfile = {
                             user_id: userId,
@@ -551,7 +526,6 @@
                         console.log('🔍 DEBUG: Insert result:', { data, error });
                         result = { data, error };
                     } else {
-                        // STEP 3: Update existing profile
                         console.log('🔍 DEBUG: Updating existing profile...');
                         const existingId = existingProfiles[0].id;
                         const updateData = {
@@ -562,7 +536,6 @@
                             wallet_approval_date: now,
                             updated_at: now
                         };
-                        console.log('🔍 DEBUG: Update data:', updateData);
                         
                         const { data, error } = await supabase
                             .from('profiles')
@@ -588,41 +561,29 @@
                 }
             }
 
-            // ============================================================
-            // CONFIRM BUTTON
-            // ============================================================
             confirmBtn.addEventListener('click', async function() {
                 const phone = phoneInput.value.trim();
                 const transactionCode = transactionInput.value.trim();
                 const amount = amountInput.value.trim();
 
-                console.log('🔍 DEBUG: Confirm button clicked');
-                console.log('🔍 DEBUG: Phone:', phone);
-                console.log('🔍 DEBUG: Transaction:', transactionCode);
-                console.log('🔍 DEBUG: Amount:', amount);
-
-                // Validate amount
                 if (!amount || parseInt(amount) < 100) {
                     showToast('Please enter a valid amount (minimum KSh100)', 'error');
                     amountInput.focus();
                     return;
                 }
 
-                // Validate phone
                 if (phone.length < 9) {
                     showToast('Please enter a valid phone number (e.g., 722xxxxxx)', 'error');
                     phoneInput.focus();
                     return;
                 }
 
-                // Validate transaction code
                 if (transactionCode.length < 5) {
                     showToast('Please enter your M-PESA transaction code', 'error');
                     transactionInput.focus();
                     return;
                 }
 
-                // Check session
                 const session = localStorage.getItem('nairobi_vibe_session');
                 if (!session) {
                     showToast('Please login to continue', 'error');
@@ -632,7 +593,6 @@
                     return;
                 }
 
-                // Get userId
                 let currentUserId = getUserIdFromURL();
                 if (!currentUserId && userData) {
                     currentUserId = userData.id;
@@ -643,7 +603,6 @@
                     return;
                 }
 
-                // Show loading
                 confirmBtn.disabled = true;
                 confirmBtnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
                 confirmLoader.classList.add('show');
@@ -697,9 +656,6 @@
                 }
             });
 
-            // ============================================================
-            // TOAST
-            // ============================================================
             function showToast(message, type = 'info') {
                 toastMessage.textContent = message;
                 toast.className = 'toast ' + type;
@@ -712,9 +668,6 @@
                 }, 4000);
             }
 
-            // ============================================================
-            // ENTER KEY SUPPORT
-            // ============================================================
             phoneInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -736,9 +689,7 @@
                 }
             });
 
-            console.log('✅ Payment Page Loaded Successfully!');
-            console.log('📋 Till Number: 4159500');
-            console.log('👤 Account Name: Mercy Chepkemoi');
+            console.log('✅ Payment Page Loaded - NEW Supabase keys');
             
         });
     </script>
