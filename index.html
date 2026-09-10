@@ -591,7 +591,7 @@
         var CACHE_DURATION = 300000;
         var QUERY_LIMIT = 60;
         var DEBOUNCE_DELAY = 400;
-        var QUERY_TIMEOUT = 15000; // INCREASED from 8s to 15s
+        var QUERY_TIMEOUT = 15000;
         
         var hamburger = document.getElementById('hamburger');
         var navMenu = document.getElementById('navMenu');
@@ -981,13 +981,11 @@
             if (isLoading) return;
             isLoading = true;
             
-            // Only show skeletons if no data yet
             if (allEscorts.length === 0) {
                 renderSkeletons();
             }
             
             try {
-                // Check cache first
                 if (!searchTerm) {
                     var cached = getCachedEscorts();
                     if (cached && cached.escorts && cached.escorts.length > 0) {
@@ -997,7 +995,6 @@
                         renderPage();
                         updateStats(totalCount);
                         console.log('📦 Loaded from cache (' + allEscorts.length + ' escorts)');
-                        // Continue to fetch fresh data
                     }
                 }
                 
@@ -1018,11 +1015,15 @@
                     }
                 }
                 
-                // Single query with count
+                // ============================================================
+                // FIXED QUERY: Only approved, active, non-admin profiles
+                // ============================================================
                 var query = supabaseClient
                     .from('profiles')
                     .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at', { count: 'exact' })
-                    .eq('status', 'approved');
+                    .eq('status', 'approved')
+                    .eq('is_active', true)
+                    .neq('role', 'admin');
                 
                 if (searchTerm) {
                     query = query.or('full_name.ilike.%' + searchTerm + '%,location.ilike.%' + searchTerm + '%,area.ilike.%' + searchTerm + '%');
@@ -1033,7 +1034,6 @@
                     currentSearchTerm = '';
                 }
                 
-                // Longer timeout
                 var timeoutPromise = new Promise(function(resolve) {
                     setTimeout(function() {
                         resolve({ data: null, error: { message: 'timeout' }, count: 0, _timeout: true });
@@ -1047,10 +1047,8 @@
                 
                 if (result._timeout) {
                     console.warn('⏱️ Query timed out');
-                    // If we have cache, keep it. Otherwise show friendly message
                     if (allEscorts.length === 0) {
                         escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-spinner fa-spin empty-icon"></i><h4>Loading...</h4><p>Please wait</p></div>';
-                        // Retry
                         setTimeout(function() {
                             isLoading = false;
                             loadEscorts(searchTerm);
@@ -1225,25 +1223,21 @@
         // ============================================================
         checkSession();
         
-        // Show cache immediately if available
-        var immediateCache = getCachedEscorts();
-        if (immediateCache && immediateCache.escorts && immediateCache.escorts.length > 0) {
-            allEscorts = immediateCache.escorts;
-            totalCount = immediateCache.count || immediateCache.escorts.length;
-            currentPage = 1;
-            renderPage();
-            updateStats(totalCount);
-            console.log('⚡ Instant cache load');
-        } else {
-            renderSkeletons();
-        }
+        // Clear old cache since we changed filters
+        try {
+            localStorage.removeItem('nv_escorts_cache');
+            localStorage.removeItem('nv_escorts_cache_v2');
+        } catch(e) {}
+        
+        renderSkeletons();
         
         setTimeout(function() {
             loadEscorts('');
             animateStats();
         }, 100);
         
-        console.log('🔥 Nairobi Vibe - Updated with NEW Supabase keys');
+        console.log('🔥 Nairobi Vibe - Homepage updated');
+        console.log('✅ Filter: Only approved + active + non-admin profiles');
         
     })();
 </script>
