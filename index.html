@@ -550,9 +550,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-    // ============================================================
-    // SUPABASE CONFIG - NEW KEYS
-    // ============================================================
     var SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
     var SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
     
@@ -565,7 +562,7 @@
                 auth: { persistSession: false, autoRefreshToken: false }
             });
             supabaseReady = true;
-            console.log('✅ Supabase initialized with NEW keys');
+            console.log('✅ Supabase initialized');
         }
     } catch(e) {
         console.error('❌ Supabase init error:', e);
@@ -577,13 +574,9 @@
                 auth: { persistSession: false, autoRefreshToken: false }
             });
             supabaseReady = true;
-            console.log('✅ Supabase initialized (DOM ready)');
         }
     });
     
-    // ============================================================
-    // MAIN APP
-    // ============================================================
     (function() {
         'use strict';
         
@@ -623,7 +616,7 @@
         
         function getCachedEscorts() {
             try {
-                var cached = localStorage.getItem('nv_escorts_cache_v2');
+                var cached = localStorage.getItem('nv_escorts_cache_v3');
                 if (cached) {
                     var data = JSON.parse(cached);
                     var age = Date.now() - data.timestamp;
@@ -639,7 +632,7 @@
         
         function cacheEscorts(escorts, count) {
             try {
-                localStorage.setItem('nv_escorts_cache_v2', JSON.stringify({
+                localStorage.setItem('nv_escorts_cache_v3', JSON.stringify({
                     escorts: escorts,
                     count: count,
                     timestamp: Date.now()
@@ -994,7 +987,7 @@
                         currentPage = 1;
                         renderPage();
                         updateStats(totalCount);
-                        console.log('📦 Loaded from cache (' + allEscorts.length + ' escorts)');
+                        console.log('📦 Loaded from cache');
                     }
                 }
                 
@@ -1016,14 +1009,13 @@
                 }
                 
                 // ============================================================
-                // FIXED QUERY: Only approved, active, non-admin profiles
+                // SIMPLE QUERY - only filter by status
+                // Exclude admin/inactive on the CLIENT SIDE (safer)
                 // ============================================================
                 var query = supabaseClient
                     .from('profiles')
-                    .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at', { count: 'exact' })
-                    .eq('status', 'approved')
-                    .eq('is_active', true)
-                    .neq('role', 'admin');
+                    .select('*', { count: 'exact' })
+                    .eq('status', 'approved');
                 
                 if (searchTerm) {
                     query = query.or('full_name.ilike.%' + searchTerm + '%,location.ilike.%' + searchTerm + '%,area.ilike.%' + searchTerm + '%');
@@ -1069,8 +1061,20 @@
                     return;
                 }
                 
-                var escorts = result.data || [];
-                totalCount = result.count || escorts.length;
+                // ============================================================
+                // CLIENT-SIDE FILTER - exclude admin and inactive
+                // ============================================================
+                var escorts = (result.data || []).filter(function(e) {
+                    // Exclude admin users
+                    if (e.role === 'admin') return false;
+                    // Exclude explicitly inactive profiles
+                    if (e.is_active === false) return false;
+                    // Must have a name
+                    if (!e.full_name || e.full_name.trim() === '') return false;
+                    return true;
+                });
+                
+                totalCount = escorts.length;
                 
                 if (escorts.length > 0) {
                     allEscorts = escorts;
@@ -1080,7 +1084,7 @@
                     currentPage = 1;
                     renderPage();
                     updateStats(totalCount);
-                    console.log('✅ Loaded ' + escorts.length + ' escorts, total: ' + totalCount);
+                    console.log('✅ Loaded ' + escorts.length + ' escorts');
                 } else {
                     allEscorts = [];
                     totalCount = 0;
@@ -1141,6 +1145,7 @@
                     localStorage.removeItem('nairobi_vibe_session');
                     localStorage.removeItem('nairobi_vibe_admin_session');
                     localStorage.removeItem('nv_escorts_cache_v2');
+                    localStorage.removeItem('nv_escorts_cache_v3');
                     localStorage.removeItem('nv_escorts_cache');
                 } catch (e) {}
                 showToast('Logged out successfully', 'success');
@@ -1223,7 +1228,7 @@
         // ============================================================
         checkSession();
         
-        // Clear old cache since we changed filters
+        // Clear old caches
         try {
             localStorage.removeItem('nv_escorts_cache');
             localStorage.removeItem('nv_escorts_cache_v2');
@@ -1236,8 +1241,7 @@
             animateStats();
         }, 100);
         
-        console.log('🔥 Nairobi Vibe - Homepage updated');
-        console.log('✅ Filter: Only approved + active + non-admin profiles');
+        console.log('🔥 Nairobi Vibe - Simple query + client-side filter');
         
     })();
 </script>
