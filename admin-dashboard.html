@@ -522,6 +522,7 @@
         .member-table .badge-pill.status-pending_review { background: #cce5ff; color: #004085; }
         .member-table .badge-pill.status-approved { background: #d4edda; color: #155724; }
         .member-table .badge-pill.status-rejected { background: #f8d7da; color: #721c24; }
+        .member-table .badge-pill.status-wallet_only { background: #e0f2fe; color: #0369a1; }
         .member-table .badge-pill.role-badge { background: #fce4ec; color: #E0006C; }
         
         .member-table .wallet-amount {
@@ -588,7 +589,6 @@
             border-color: #E0006C;
         }
         
-        /* ---------- MODAL ---------- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -836,7 +836,6 @@
             animation: pulse 1s ease-in-out infinite;
         }
         
-        /* ---------- LIVE UPDATE INDICATOR ---------- */
         .live-indicator {
             position: fixed;
             bottom: 80px;
@@ -885,7 +884,6 @@
         
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Highlight new rows */
         @keyframes newRowHighlight {
             0% { background: #d4edda; }
             100% { background: transparent; }
@@ -971,9 +969,6 @@
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- ============================================================
-     LIVE UPDATE INDICATOR (Replaces countdown)
-     ============================================================ -->
 <div class="live-indicator" id="liveIndicator">
     <span class="live-dot"></span>
     <span id="liveText">LIVE</span>
@@ -1425,7 +1420,6 @@
             if (e.key === 'Escape') closeSidebar();
         });
         
-        // CHECK SUPABASE (fallback)
         if (typeof window.supabaseFunctions === 'undefined' || !window.supabaseFunctions.supabase) {
             console.warn('⚠️ Supabase not loaded. Re-initializing...');
             try {
@@ -1561,9 +1555,6 @@
             else if (page === 'members') renderAllMembers();
         };
         
-        // ============================================================
-        // LIVE UPDATE INDICATOR
-        // ============================================================
         function showUpdating() {
             if (liveIndicator) {
                 liveIndicator.classList.add('updating');
@@ -1578,9 +1569,6 @@
             }
         }
         
-        // ============================================================
-        // SETUP REALTIME - INSTANT UPDATES ON DATA CHANGE
-        // ============================================================
         function setupRealtime() {
             if (supabaseChannel) {
                 supabaseChannel.unsubscribe();
@@ -1592,22 +1580,29 @@
                     { event: '*', schema: 'public', table: 'profiles' }, 
                     (payload) => {
                         console.log('🔄 Realtime update:', payload.eventType);
-                        // Silent refresh - no toast unless it's a new pending item
                         loadUsers(true);
                         
                         if (payload.eventType === 'INSERT') {
                             const newData = payload.new;
-                            if (newData) {
+                            if (newData && newData.status !== 'wallet_only') {
                                 playNotificationSound();
                                 showToast('🔔 New member registered!', 'warning');
                                 sendBrowserNotification('New Member', 
                                     `${newData.full_name || 'Someone'} just signed up.`);
+                            } else if (newData && newData.wallet_approval_status === 'pending') {
+                                playNotificationSound();
+                                showToast('💰 New wallet payment received!', 'warning');
+                                sendBrowserNotification('New Payment', 
+                                    `Payment request from ${newData.full_name || 'User'}`);
                             }
                         } else if (payload.eventType === 'UPDATE') {
                             const newData = payload.new;
                             if (newData && newData.status === 'pending_review') {
                                 playNotificationSound();
-                                showToast('🔔 New profile submitted for review!', 'warning');
+                                showToast('🔔 New profile submitted!', 'warning');
+                            } else if (newData && newData.wallet_approval_status === 'pending') {
+                                playNotificationSound();
+                                showToast('💰 New wallet payment!', 'warning');
                             }
                         }
                     }
@@ -1617,14 +1612,11 @@
                 });
         }
         
-        // ============================================================
-        // AUTO-REFRESH (Fallback every 15 seconds)
-        // ============================================================
         function startAutoRefresh() {
             setInterval(() => {
                 console.log('🔄 Auto-refresh (silent)...');
-                loadUsers(true); // silent = true
-            }, 15000); // Every 15 seconds
+                loadUsers(true);
+            }, 15000);
         }
         
         function playNotificationSound() {
@@ -1709,8 +1701,34 @@
         }
         
         // ============================================================
-        // LOAD USERS - WITH SILENT MODE
+        // HELPER: Check if a profile is wallet-only (payment request only)
         // ============================================================
+        function isWalletOnly(user) {
+            // Explicit wallet_only status
+            if (user.status === 'wallet_only') return true;
+            
+            // Legacy detection: has wallet data but no proper profile name
+            if ((user.wallet_amount > 0 || user.wallet_transaction) && 
+                (!user.full_name || user.full_name === '' || user.full_name === 'User')) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // ============================================================
+        // HELPER: Check if a profile is a real member profile
+        // ============================================================
+        function isRealMember(user) {
+            // Exclude wallet-only
+            if (isWalletOnly(user)) return false;
+            
+            // Exclude admin
+            if (user.role === 'admin') return false;
+            
+            return true;
+        }
+        
         async function loadUsers(silent) {
             if (isUpdating) return;
             isUpdating = true;
@@ -1725,16 +1743,12 @@
                 
                 if (error) throw error;
                 
-                // Detect new users for highlighting
                 const newUsers = (data || []).filter(u => !previousUserIds.has(u.id));
                 const isFirstLoad = previousUserIds.size === 0;
                 
                 allUsers = data || [];
-                
-                // Update the tracked IDs
                 previousUserIds = new Set(allUsers.map(u => u.id));
                 
-                // Re-render everything
                 updateStats();
                 renderMembers();
                 renderWalletHistory();
@@ -1742,7 +1756,6 @@
                 updateBadges();
                 initCharts();
                 
-                // Highlight new rows
                 if (!isFirstLoad && newUsers.length > 0 && silent) {
                     setTimeout(() => {
                         document.querySelectorAll('.member-table tbody tr').forEach(row => {
@@ -1769,13 +1782,24 @@
         }
         
         function updateStats() {
-            const total = allUsers.length;
-            const pending = allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length;
-            const approved = allUsers.filter(u => u.status === 'approved').length;
-            const rejected = allUsers.filter(u => u.status === 'rejected').length;
+            const total = allUsers.filter(u => isRealMember(u)).length;
+            
+            // Pending only counts REAL member profiles (not wallet-only)
+            const pending = allUsers.filter(u => 
+                isRealMember(u) && (u.status === 'pending_review' || u.status === 'pending')
+            ).length;
+            
+            const approved = allUsers.filter(u => 
+                isRealMember(u) && u.status === 'approved'
+            ).length;
+            
+            const rejected = allUsers.filter(u => 
+                isRealMember(u) && u.status === 'rejected'
+            ).length;
             
             const today = new Date();
             const newTodayCount = allUsers.filter(u => {
+                if (!isRealMember(u)) return false;
                 const created = new Date(u.created_at);
                 return created.toDateString() === today.toDateString();
             }).length;
@@ -1801,7 +1825,10 @@
         }
         
         function updateBadges() {
-            const pending = allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length;
+            const pending = allUsers.filter(u => 
+                isRealMember(u) && (u.status === 'pending_review' || u.status === 'pending')
+            ).length;
+            
             const walletPending = allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length;
             
             pendingBadge.textContent = pending || '';
@@ -1820,12 +1847,18 @@
             });
         }
         
+        // ============================================================
+        // DASHBOARD: PROFILE APPROVALS (EXCLUDES wallet_only)
+        // ============================================================
         function renderMembers() {
             const searchTerm = searchInput.value.toLowerCase();
             const statusFilter = filterStatus.value;
             const planFilter = filterPlan.value;
             
             let filtered = allUsers.filter(user => {
+                // EXCLUDE wallet_only from dashboard approvals
+                if (isWalletOnly(user)) return false;
+                
                 const matchesSearch = 
                     (user.full_name || '').toLowerCase().includes(searchTerm) ||
                     (user.email || '').toLowerCase().includes(searchTerm) ||
@@ -1905,6 +1938,9 @@
             renderMembers();
         };
         
+        // ============================================================
+        // WALLET APPROVALS (SHOWS ALL wallet activity including wallet_only)
+        // ============================================================
         function renderWalletHistory() {
             const searchTerm = walletSearchInput.value.toLowerCase();
             const statusFilter = walletFilterStatus.value;
@@ -2009,16 +2045,17 @@
             renderWalletHistory();
         };
         
+        // ============================================================
+        // ALL MEMBERS (EXCLUDES wallet_only AND admin)
+        // ============================================================
         function renderAllMembers() {
             const searchTerm = membersSearchInput.value.toLowerCase();
             const statusFilter = membersFilterStatus.value;
             const roleFilter = membersFilterRole.value;
             
             let filtered = allUsers.filter(user => {
-                const isWalletOnly = (user.wallet_amount > 0 || user.wallet_transaction) && 
-                                     (!user.full_name || user.full_name === '' || user.full_name === 'User');
-                
-                if (isWalletOnly) return false;
+                // EXCLUDE wallet_only
+                if (isWalletOnly(user)) return false;
                 
                 const matchesSearch = 
                     (user.full_name || '').toLowerCase().includes(searchTerm) ||
@@ -2224,8 +2261,7 @@
                 if (error) throw error;
                 
                 await window.supabaseFunctions.logActivity(
-                    currentEditUserId,
-                    'profile_updated',
+                    currentEditUserId, 'profile_updated',
                     `Admin updated profile for ${updatedData.full_name}`
                 );
                 
@@ -2234,7 +2270,6 @@
                 await loadUsers();
                 
             } catch (error) {
-                console.error('❌ Update error:', error);
                 showToast('Error updating user: ' + error.message, 'error');
             } finally {
                 editSaveBtn.disabled = false;
@@ -2396,7 +2431,9 @@
         });
         
         notificationBtn.addEventListener('click', () => {
-            const pending = allUsers.filter(u => u.status === 'pending_review' || u.status === 'pending').length;
+            const pending = allUsers.filter(u => 
+                isRealMember(u) && (u.status === 'pending_review' || u.status === 'pending')
+            ).length;
             const walletPending = allUsers.filter(u => u.wallet_approval_status === 'pending' && u.wallet_amount > 0).length;
             
             if (pending > 0 || walletPending > 0) {
@@ -2458,6 +2495,7 @@
                 const date = new Date(now);
                 date.setDate(date.getDate() - i);
                 const count = allUsers.filter(u => {
+                    if (!isRealMember(u)) return false;
                     const created = new Date(u.created_at);
                     return created.toDateString() === date.toDateString();
                 }).length;
@@ -2490,20 +2528,15 @@
             }
         });
         
-        // ============================================================
-        // INIT
-        // ============================================================
         async function initDashboard() {
             await loadUsers();
             setupRealtime();
-            
-            // Start silent auto-refresh every 15 seconds
             startAutoRefresh();
             
             console.log('✅ Admin Dashboard Loaded - LIVE MODE');
-            console.log('📡 Realtime: ACTIVE (instant updates)');
+            console.log('📡 Realtime: ACTIVE');
             console.log('🔄 Auto-refresh: ACTIVE (every 15s)');
-            console.log('✨ Live indicator shows current status');
+            console.log('✅ FIX: Wallet-only profiles excluded from Members');
         }
         
         initDashboard();
