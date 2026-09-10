@@ -5,24 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Nairobi Vibe</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- ============================================================
-         SUPABASE CONFIG - FIXED
+         SUPABASE CONFIG - NEW KEYS
          ============================================================ -->
     <script>
-        // ============================================================
-        // YOUR SUPABASE KEYS
-        // ============================================================
-        const SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+        const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
         
         let supabaseReady = false;
         
@@ -40,9 +32,7 @@
                             });
                             return { data, error };
                         },
-                        // FIX: This function should be called AFTER sign-in, using the user's session.
                         getProfile: async (userId) => {
-                            // We use the supabase client which now has the user's session
                             const { data, error } = await window.supabaseFunctions.supabase
                                 .from('profiles')
                                 .select('*')
@@ -51,7 +41,6 @@
                             return { data, error };
                         },
                         logActivity: async (userId, action, details) => {
-                            // Also use the authenticated client
                             const { data, error } = await window.supabaseFunctions.supabase
                                 .from('activity_logs')
                                 .insert([{
@@ -65,7 +54,7 @@
                     };
                     
                     supabaseReady = true;
-                    console.log('✅ Supabase initialized!');
+                    console.log('✅ Supabase initialized with NEW keys!');
                     console.log('🔗 URL:', SUPABASE_URL);
                     return true;
                 }
@@ -76,7 +65,6 @@
             }
         }
         
-        // Try to initialize
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             initSupabase();
         }
@@ -374,15 +362,12 @@
         const alertText = document.getElementById('alertText');
         const alertClose = document.getElementById('alertClose');
         
-        // ============================================================
-        // CHECK SUPABASE
-        // ============================================================
         if (typeof window.supabaseFunctions === 'undefined') {
             console.warn('⚠️ Supabase not loaded. Re-initializing...');
             try {
                 const supabase = window.supabase.createClient(
-                    'https://ndoctdhfkbawxinhvfwk.supabase.co',
-                    'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX'
+                    'https://upnymrrbwlkcwoswpzbe.supabase.co',
+                    'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf'
                 );
                 window.supabaseFunctions = {
                     supabase: supabase,
@@ -393,7 +378,6 @@
                         });
                         return { data, error };
                     },
-                    // FIX: This function will use the authenticated client session
                     getProfile: async (userId) => {
                         const { data, error } = await window.supabaseFunctions.supabase
                             .from('profiles')
@@ -420,9 +404,6 @@
             }
         }
         
-        // ============================================================
-        // CHECK FOR SESSION EXPIRED
-        // ============================================================
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('expired') === 'true') {
             alertBanner.classList.add('show');
@@ -433,9 +414,6 @@
             alertBanner.classList.remove('show');
         });
         
-        // ============================================================
-        // PASSWORD TOGGLE
-        // ============================================================
         togglePassword.addEventListener('click', function() {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
@@ -443,9 +421,6 @@
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
         
-        // ============================================================
-        // VALIDATION
-        // ============================================================
         email.addEventListener('blur', function() {
             const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
             validateField(this, 'emailGroup', 'emailError', isValid);
@@ -476,9 +451,6 @@
             }
         }
         
-        // ============================================================
-        // SAVED EMAIL
-        // ============================================================
         try {
             const savedEmail = localStorage.getItem('admin_remember_email');
             if (savedEmail) {
@@ -487,13 +459,9 @@
             }
         } catch (e) {}
         
-        // ============================================================
-        // LOGIN FORM SUBMISSION
-        // ============================================================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Validate
             let isValid = true;
             
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
@@ -520,9 +488,6 @@
                 return;
             }
             
-            // ============================================================
-            // AUTHENTICATE
-            // ============================================================
             loginBtn.disabled = true;
             btnText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
             btnLoader.classList.add('show');
@@ -534,7 +499,6 @@
             }
             
             try {
-                // Step 1: Sign in with Supabase - THIS SETS THE SESSION
                 const { data, error } = await window.supabaseFunctions.signIn(
                     email.value.trim(),
                     password.value
@@ -543,34 +507,27 @@
                 if (error) throw error;
                 
                 if (data && data.user) {
-                    // Step 2: Now that we are logged in, fetch the profile using the authenticated client
-                    // The session is now active, so this query should work
                     const { data: profileData, error: profileError } = await window.supabaseFunctions.getProfile(data.user.id);
                     
                     if (profileError || !profileData) {
                         console.error('Profile fetch error:', profileError);
-                        // This could mean the user doesn't have a profile record, or RLS is still blocking.
-                        // We'll provide a clear message to the admin.
                         showToast('User profile not found. Please create a profile in Supabase first.', 'error');
                         resetButton();
                         return;
                     }
                     
-                    // Step 3: Check if user is admin
                     if (profileData.role !== 'admin') {
                         showToast('Access denied. You are not an admin.', 'error');
                         resetButton();
                         return;
                     }
                     
-                    // Step 4: Check status
                     if (profileData.status === 'pending') {
                         showToast('Your admin account is pending approval.', 'error');
                         resetButton();
                         return;
                     }
                     
-                    // Step 5: Success - Create session
                     const sessionData = {
                         id: data.user.id,
                         email: data.user.email,
@@ -620,9 +577,6 @@
             btnLoader.classList.remove('show');
         }
         
-        // ============================================================
-        // TOAST
-        // ============================================================
         function showToast(message, type = 'info') {
             toastMessage.textContent = message;
             toast.className = 'toast ' + type;
@@ -644,10 +598,7 @@
             }
         });
         
-        console.log('✅ Admin Login Page Ready');
-        console.log('📧 Email: admin@nairovibe.com');
-        console.log('🔑 Password: Admin@123!');
-        console.log('💡 Profile fetch will use the authenticated session.');
+        console.log('✅ Admin Login Page Ready - NEW Supabase keys');
         
     });
 </script>
