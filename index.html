@@ -9,12 +9,12 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="https://ndoctdhfkbawxinhvfwk.supabase.co">
+    <link rel="dns-prefetch" href="https://upnymrrbwlkcwoswpzbe.supabase.co">
     
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://ndoctdhfkbawxinhvfwk.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://upnymrrbwlkcwoswpzbe.supabase.co" crossorigin>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -551,10 +551,10 @@
 
 <script>
     // ============================================================
-    // SUPABASE CONFIG
+    // SUPABASE CONFIG - NEW KEYS
     // ============================================================
-    var SUPABASE_URL = 'https://ndoctdhfkbawxinhvfwk.supabase.co';
-    var SUPABASE_ANON_KEY = 'sb_publishable_msRNHHQX53W6IVbl3QMaSg_ym64nVZX';
+    var SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
+    var SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
     
     var supabaseClient = null;
     var supabaseReady = false;
@@ -565,7 +565,7 @@
                 auth: { persistSession: false, autoRefreshToken: false }
             });
             supabaseReady = true;
-            console.log('✅ Supabase initialized');
+            console.log('✅ Supabase initialized with NEW keys');
         }
     } catch(e) {
         console.error('❌ Supabase init error:', e);
@@ -582,7 +582,7 @@
     });
     
     // ============================================================
-    // MAIN APP - SUPER FAST VERSION
+    // MAIN APP
     // ============================================================
     (function() {
         'use strict';
@@ -591,9 +591,8 @@
         var CACHE_DURATION = 300000;
         var QUERY_LIMIT = 60;
         var DEBOUNCE_DELAY = 400;
-        var QUERY_TIMEOUT = 8000;
+        var QUERY_TIMEOUT = 15000; // INCREASED from 8s to 15s
         
-        // DOM Elements
         var hamburger = document.getElementById('hamburger');
         var navMenu = document.getElementById('navMenu');
         var heroSearch = document.getElementById('heroSearch');
@@ -614,7 +613,6 @@
         var modalContent = document.getElementById('modalContent');
         var modalCloseBtn = document.getElementById('modalCloseBtn');
         
-        // State
         var allEscorts = [];
         var currentPage = 1;
         var isSearching = false;
@@ -623,12 +621,9 @@
         var debounceTimer = null;
         var totalCount = 0;
         
-        // ============================================================
-        // CACHE
-        // ============================================================
         function getCachedEscorts() {
             try {
-                var cached = localStorage.getItem('nv_escorts_cache');
+                var cached = localStorage.getItem('nv_escorts_cache_v2');
                 if (cached) {
                     var data = JSON.parse(cached);
                     var age = Date.now() - data.timestamp;
@@ -644,7 +639,7 @@
         
         function cacheEscorts(escorts, count) {
             try {
-                localStorage.setItem('nv_escorts_cache', JSON.stringify({
+                localStorage.setItem('nv_escorts_cache_v2', JSON.stringify({
                     escorts: escorts,
                     count: count,
                     timestamp: Date.now()
@@ -652,9 +647,6 @@
             } catch (e) {}
         }
         
-        // ============================================================
-        // RENDER SKELETONS
-        // ============================================================
         function renderSkeletons() {
             var html = '';
             html += '<div class="skeleton-card">' +
@@ -700,9 +692,6 @@
             paginationContainer.innerHTML = '';
         }
         
-        // ============================================================
-        // BIO GENERATOR
-        // ============================================================
         function generateUniqueBio(escort) {
             var name = escort.full_name || 'A beautiful escort';
             var age = escort.age || Math.floor(Math.random() * 15) + 20;
@@ -746,9 +735,6 @@
             return cleaned;
         }
         
-        // ============================================================
-        // PHOTO MODAL
-        // ============================================================
         function openPhotoModal(escort) {
             if (!escort) return;
             
@@ -825,9 +811,6 @@
             if (e.key === 'Escape') closePhotoModal();
         });
         
-        // ============================================================
-        // RENDER CARDS
-        // ============================================================
         function renderFullCard(escort) {
             var photoHtml = '';
             if (escort.photos && escort.photos.length > 0) {
@@ -934,9 +917,6 @@
             }
         };
         
-        // ============================================================
-        // PAGINATION
-        // ============================================================
         function renderPagination(total) {
             var totalPages = Math.ceil(total / ITEMS_PER_PAGE);
             if (totalPages <= 1) {
@@ -996,15 +976,15 @@
             renderPagination(totalCount);
         }
         
-        // ============================================================
-        // LOAD ESCORTS - SINGLE QUERY (SUPER FAST)
-        // ============================================================
         async function loadEscorts(searchTerm) {
             searchTerm = searchTerm || '';
             if (isLoading) return;
             isLoading = true;
             
-            renderSkeletons();
+            // Only show skeletons if no data yet
+            if (allEscorts.length === 0) {
+                renderSkeletons();
+            }
             
             try {
                 // Check cache first
@@ -1016,13 +996,11 @@
                         currentPage = 1;
                         renderPage();
                         updateStats(totalCount);
-                        isLoading = false;
                         console.log('📦 Loaded from cache (' + allEscorts.length + ' escorts)');
-                        return;
+                        // Continue to fetch fresh data
                     }
                 }
                 
-                // Ensure Supabase is ready
                 if (!supabaseReady || !supabaseClient) {
                     if (typeof supabase !== 'undefined' && supabase.createClient) {
                         supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -1032,16 +1010,15 @@
                     }
                     
                     if (!supabaseReady) {
-                        setTimeout(function() { loadEscorts(searchTerm); }, 1000);
-                        isLoading = false;
+                        setTimeout(function() { 
+                            isLoading = false;
+                            loadEscorts(searchTerm); 
+                        }, 1000);
                         return;
                     }
                 }
                 
-                // ============================================================
-                // SINGLE QUERY - Get data AND count in one shot
-                // Only filter by status='approved' (removed is_active filter)
-                // ============================================================
+                // Single query with count
                 var query = supabaseClient
                     .from('profiles')
                     .select('id,full_name,phone_number,location,area,age,gender,nationality,county,city_town,photos,services,incalls_rate,outcalls_rate,wallet_balance,membership_plan,created_at', { count: 'exact' })
@@ -1056,7 +1033,7 @@
                     currentSearchTerm = '';
                 }
                 
-                // Add timeout to prevent hanging
+                // Longer timeout
                 var timeoutPromise = new Promise(function(resolve) {
                     setTimeout(function() {
                         resolve({ data: null, error: { message: 'timeout' }, count: 0, _timeout: true });
@@ -1070,15 +1047,15 @@
                 
                 if (result._timeout) {
                     console.warn('⏱️ Query timed out');
-                    var cached2 = getCachedEscorts();
-                    if (cached2 && cached2.escorts) {
-                        allEscorts = cached2.escorts;
-                        totalCount = cached2.count || cached2.escorts.length;
-                        currentPage = 1;
-                        renderPage();
-                        updateStats(totalCount);
-                    } else {
-                        escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Connection slow</h4><p>Please refresh the page.</p></div>';
+                    // If we have cache, keep it. Otherwise show friendly message
+                    if (allEscorts.length === 0) {
+                        escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-spinner fa-spin empty-icon"></i><h4>Loading...</h4><p>Please wait</p></div>';
+                        // Retry
+                        setTimeout(function() {
+                            isLoading = false;
+                            loadEscorts(searchTerm);
+                        }, 2000);
+                        return;
                     }
                     isLoading = false;
                     return;
@@ -1086,15 +1063,8 @@
                 
                 if (result.error && result.error.message !== 'timeout') {
                     console.error('❌ Query error:', result.error);
-                    var cached3 = getCachedEscorts();
-                    if (cached3 && cached3.escorts) {
-                        allEscorts = cached3.escorts;
-                        totalCount = cached3.count || cached3.escorts.length;
-                        currentPage = 1;
-                        renderPage();
-                        updateStats(totalCount);
-                    } else {
-                        escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Error loading escorts</h4><p>Please refresh the page.</p></div>';
+                    if (allEscorts.length === 0) {
+                        escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Error loading</h4><p>Please refresh the page.</p></div>';
                         paginationContainer.innerHTML = '';
                     }
                     isLoading = false;
@@ -1123,14 +1093,7 @@
                 
             } catch (error) {
                 console.error('❌ Error loading escorts:', error);
-                var cached4 = getCachedEscorts();
-                if (cached4 && cached4.escorts) {
-                    allEscorts = cached4.escorts;
-                    totalCount = cached4.count || cached4.escorts.length;
-                    currentPage = 1;
-                    renderPage();
-                    updateStats(totalCount);
-                } else {
+                if (allEscorts.length === 0) {
                     escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Connection Error</h4><p>Please check your internet and refresh.</p></div>';
                     paginationContainer.innerHTML = '';
                 }
@@ -1159,9 +1122,6 @@
             }, DEBOUNCE_DELAY);
         }
         
-        // ============================================================
-        // MENU
-        // ============================================================
         if (hamburger) {
             hamburger.addEventListener('click', function() {
                 navMenu.classList.toggle('show');
@@ -1176,15 +1136,13 @@
             }
         });
         
-        // ============================================================
-        // LOGOUT
-        // ============================================================
         if (logoutBtn) {
             logoutBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 try {
                     localStorage.removeItem('nairobi_vibe_session');
                     localStorage.removeItem('nairobi_vibe_admin_session');
+                    localStorage.removeItem('nv_escorts_cache_v2');
                     localStorage.removeItem('nv_escorts_cache');
                 } catch (e) {}
                 showToast('Logged out successfully', 'success');
@@ -1192,17 +1150,11 @@
             });
         }
         
-        // ============================================================
-        // SEARCH EVENTS
-        // ============================================================
         if (heroSearchBtn) heroSearchBtn.addEventListener('click', performSearch);
         if (heroSearch) {
             heroSearch.addEventListener('keyup', performSearch);
         }
         
-        // ============================================================
-        // TAG CLICKS
-        // ============================================================
         document.querySelectorAll('.location-tags .tag, .county-grid .county-item, .town-grid .town-item').forEach(function(el) {
             el.addEventListener('click', function() {
                 var text = this.textContent.trim();
@@ -1211,9 +1163,6 @@
             });
         });
         
-        // ============================================================
-        // TOAST
-        // ============================================================
         function showToast(message, type) {
             type = type || 'info';
             if (toastMessage) toastMessage.textContent = message;
@@ -1272,12 +1221,11 @@
         }
         
         // ============================================================
-        // INIT - FAST
+        // INIT
         // ============================================================
         checkSession();
-        renderSkeletons();
         
-        // Show cache IMMEDIATELY if available (no delay)
+        // Show cache immediately if available
         var immediateCache = getCachedEscorts();
         if (immediateCache && immediateCache.escorts && immediateCache.escorts.length > 0) {
             allEscorts = immediateCache.escorts;
@@ -1286,18 +1234,16 @@
             renderPage();
             updateStats(totalCount);
             console.log('⚡ Instant cache load');
+        } else {
+            renderSkeletons();
         }
         
-        // Fetch fresh data in background
         setTimeout(function() {
             loadEscorts('');
             animateStats();
         }, 100);
         
-        console.log('🔥 Nairobi Vibe - SUPER FAST Homepage');
-        console.log('⚡ Single query (no double fetch)');
-        console.log('💾 Instant cache load');
-        console.log('⏱️ 8s query timeout');
+        console.log('🔥 Nairobi Vibe - Updated with NEW Supabase keys');
         
     })();
 </script>
