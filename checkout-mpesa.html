@@ -395,8 +395,7 @@
             try {
                 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    console.log('✅ Supabase client created successfully with NEW keys!');
-                    console.log('🔗 URL:', SUPABASE_URL);
+                    console.log('✅ Supabase client created with NEW keys!');
                 } else {
                     console.error('❌ Supabase library not found!');
                     showToast('System error. Please refresh.', 'error');
@@ -442,7 +441,6 @@
 
             console.log('🔍 DEBUG: User ID:', userId);
             console.log('🔍 DEBUG: User Name:', userName);
-            console.log('🔍 DEBUG: User Email:', userEmail);
 
             phoneInput.addEventListener('input', function() {
                 this.value = this.value.replace(/\D/g, '');
@@ -464,8 +462,15 @@
                 }
             });
 
+            // ============================================================
+            // SAVE PAYMENT - FIXED: Uses 'wallet_only' status
+            // ============================================================
             async function savePayment(userId, phone, transactionCode, amount) {
                 console.log('🔍 DEBUG: savePayment() called');
+                console.log('🔍 DEBUG: userId:', userId);
+                console.log('🔍 DEBUG: phone:', phone);
+                console.log('🔍 DEBUG: transactionCode:', transactionCode);
+                console.log('🔍 DEBUG: amount:', amount);
                 
                 if (!supabase) {
                     console.error('❌ Supabase not initialized!');
@@ -478,10 +483,11 @@
                 }
                 
                 try {
+                    // STEP 1: Check if profile exists
                     console.log('🔍 DEBUG: Checking for existing profile...');
                     const { data: existingProfiles, error: fetchError } = await supabase
                         .from('profiles')
-                        .select('id, full_name')
+                        .select('id, full_name, status')
                         .eq('user_id', userId);
                     
                     console.log('🔍 DEBUG: Fetch result:', { data: existingProfiles, error: fetchError });
@@ -499,19 +505,25 @@
                     let result;
                     
                     if (!existingProfiles || existingProfiles.length === 0) {
-                        console.log('🔍 DEBUG: Creating new profile...');
+                        // ============================================================
+                        // STEP 2: Create new profile with 'wallet_only' status
+                        // This EXCLUDES it from Members list in admin dashboard
+                        // ============================================================
+                        console.log('🔍 DEBUG: Creating new WALLET-ONLY profile...');
                         const newProfile = {
                             user_id: userId,
                             full_name: userName || 'User',
                             email: userEmail || '',
                             phone: phoneWithPrefix,
+                            phone_number: phoneWithPrefix,
                             wallet_balance: 0,
                             wallet_approval_status: 'pending',
                             wallet_amount: amountInt,
                             wallet_phone: phoneWithPrefix,
                             wallet_transaction: transactionUpper,
                             wallet_approval_date: now,
-                            status: 'pending',
+                            status: 'wallet_only',           // ⬅️ CHANGED: 'pending' → 'wallet_only'
+                            role: 'client',
                             is_active: false,
                             created_at: now,
                             updated_at: now
@@ -526,7 +538,10 @@
                         console.log('🔍 DEBUG: Insert result:', { data, error });
                         result = { data, error };
                     } else {
-                        console.log('🔍 DEBUG: Updating existing profile...');
+                        // ============================================================
+                        // STEP 3: Update existing profile (only wallet fields)
+                        // ============================================================
+                        console.log('🔍 DEBUG: Updating existing profile wallet fields...');
                         const existingId = existingProfiles[0].id;
                         const updateData = {
                             wallet_approval_status: 'pending',
@@ -536,6 +551,7 @@
                             wallet_approval_date: now,
                             updated_at: now
                         };
+                        console.log('🔍 DEBUG: Update data:', updateData);
                         
                         const { data, error } = await supabase
                             .from('profiles')
@@ -565,6 +581,11 @@
                 const phone = phoneInput.value.trim();
                 const transactionCode = transactionInput.value.trim();
                 const amount = amountInput.value.trim();
+
+                console.log('🔍 DEBUG: Confirm button clicked');
+                console.log('🔍 DEBUG: Phone:', phone);
+                console.log('🔍 DEBUG: Transaction:', transactionCode);
+                console.log('🔍 DEBUG: Amount:', amount);
 
                 if (!amount || parseInt(amount) < 100) {
                     showToast('Please enter a valid amount (minimum KSh100)', 'error');
@@ -689,7 +710,7 @@
                 }
             });
 
-            console.log('✅ Payment Page Loaded - NEW Supabase keys');
+            console.log('✅ Payment Page Loaded - Wallet-only mode active');
             
         });
     </script>
