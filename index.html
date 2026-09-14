@@ -81,8 +81,8 @@
         .escort-card-full{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);transition:all .3s ease;width:100%}
         .escort-card-full:active{transform:scale(.98)}
         .escort-card-full .card-inner{display:flex;flex-direction:column}
-        .escort-card-full .card-image{width:100%;height:250px;background:linear-gradient(135deg,#1a0528,#2f074e);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer}
-        .escort-card-full .card-image img{width:100%;height:100%;object-fit:contain}
+        .escort-card-full .card-image{width:100%;height:auto;aspect-ratio:1 / 1;background:linear-gradient(135deg,#1a0528,#2f074e);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer}
+        .escort-card-full .card-image img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
         .escort-card-full .card-image .placeholder-icon{font-size:60px;color:#E0006C;opacity:.5}
         .escort-card-full .card-body{padding:14px 16px;flex:1}
         .escort-card-full .card-body .name{font-size:18px;font-weight:700;color:#333}
@@ -93,7 +93,7 @@
         .escort-card-full .card-body .location-tag i{color:#E0006C;margin-right:3px}
         
         .action-buttons-row{display:flex;gap:8px;margin-top:8px}
-        .action-buttons-row .btn-call{flex:1;background:linear-gradient(135deg,#25d366,#1da851);color:#fff;border:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;text-decoration:none;letter-spacing:0.3px}
+        .action-buttons-row .btn-call{flex:1;background:linear-gradient(135deg,#E0006C,#b30057);color:#fff;border:none;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;text-decoration:none;letter-spacing:0.3px}
         .action-buttons-row .btn-call:hover{opacity:.9}
         .action-buttons-row .btn-call:active{transform:scale(.96)}
         .action-buttons-row .btn-call i{font-size:15px}
@@ -103,7 +103,7 @@
         .action-buttons-row .btn-whatsapp i{font-size:16px}
         
         .action-buttons-row.small{gap:6px;margin-top:6px}
-        .action-buttons-row.small .btn-call-sm{flex:1;background:linear-gradient(135deg,#25d366,#1da851);color:#fff;border:none;padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:32px;text-decoration:none;letter-spacing:0.2px}
+        .action-buttons-row.small .btn-call-sm{flex:1;background:linear-gradient(135deg,#E0006C,#b30057);color:#fff;border:none;padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:32px;text-decoration:none;letter-spacing:0.2px}
         .action-buttons-row.small .btn-call-sm:active{transform:scale(.95)}
         .action-buttons-row.small .btn-call-sm i{font-size:12px}
         .action-buttons-row.small .btn-whatsapp-sm{flex:1;background:linear-gradient(135deg,#25d366,#128C7E);color:#fff;border:none;padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .3s ease;display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:32px;text-decoration:none;letter-spacing:0.2px}
@@ -112,8 +112,8 @@
         
         .escort-card-small{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);transition:all .3s ease;display:flex;flex-direction:column}
         .escort-card-small:active{transform:scale(.95)}
-        .escort-card-small .card-image{width:100%;height:160px;background:linear-gradient(135deg,#1a0528,#2f074e);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
-        .escort-card-small .card-image img{width:100%;height:100%;object-fit:contain}
+        .escort-card-small .card-image{width:100%;height:auto;aspect-ratio:1 / 1;background:linear-gradient(135deg,#1a0528,#2f074e);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
+        .escort-card-small .card-image img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
         .escort-card-small .card-image .placeholder-icon{font-size:40px;color:#E0006C;opacity:.5}
         .escort-card-small .card-body{padding:10px 12px 12px;flex:1;display:flex;flex-direction:column}
         .escort-card-small .card-body .name{font-size:14px;font-weight:700;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -128,7 +128,7 @@
         .photo-modal .modal-close{position:sticky;top:0;right:0;float:right;background:rgba(224,0,108,.9);color:#fff;border:none;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;margin:10px 10px 0 0;z-index:10;transition:all .3s ease;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(224,0,108,.3)}
         .photo-modal .modal-close:active{transform:scale(.9)}
         .photo-modal .modal-image{width:100%;height:380px;background:linear-gradient(135deg,#1a0528,#2f074e);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:-50px;border-radius:20px 20px 0 0}
-        .photo-modal .modal-image img{width:100%;height:100%;object-fit:contain}
+        .photo-modal .modal-image img{width:100%;height:100%;object-fit:contain;display:block}
         .photo-modal .modal-image .placeholder-icon{font-size:80px;color:#E0006C;opacity:.3}
         .photo-modal .modal-content{padding:20px 24px 24px}
         .photo-modal .modal-content .escort-name{font-size:24px;font-weight:800;color:#333;margin-bottom:2px;display:flex;align-items:center;gap:10px}
@@ -147,7 +147,7 @@
         .photo-modal .modal-content .services-list .service-tag{background:linear-gradient(135deg,#fce4ec,#f8d7da);color:#E0006C;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid rgba(224,0,108,.1)}
         
         .modal-actions{display:flex;flex-direction:column;gap:10px;margin-top:4px}
-        .modal-actions .btn-modal-call{width:100%;padding:14px;background:linear-gradient(135deg,#25d366,#1da851);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;text-decoration:none;letter-spacing:0.3px}
+        .modal-actions .btn-modal-call{width:100%;padding:14px;background:linear-gradient(135deg,#E0006C,#b30057);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;text-decoration:none;letter-spacing:0.3px}
         .modal-actions .btn-modal-call:active{transform:scale(.97)}
         .modal-actions .btn-modal-call i{font-size:18px}
         .modal-actions .btn-modal-whatsapp{width:100%;padding:14px;background:linear-gradient(135deg,#25d366,#128C7E);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s ease;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;text-decoration:none;letter-spacing:0.3px}
@@ -184,13 +184,6 @@
         .toast.warning{background:#f39c12}
         @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
         
-        .pagination-container{display:flex;justify-content:center;align-items:center;gap:8px;padding:12px 0 5px;flex-wrap:wrap}
-        .pagination-container .page-btn{background:#fff;border:2px solid #eee;border-radius:8px;padding:4px 14px;font-size:12px;font-weight:600;color:#555;cursor:pointer;min-height:34px;transition:all .3s ease}
-        .pagination-container .page-btn:active{transform:scale(.95)}
-        .pagination-container .page-btn.active{background:#E0006C;color:#fff;border-color:#E0006C}
-        .pagination-container .page-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
-        .pagination-container .page-info{font-size:11px;color:#999;padding:0 8px;font-weight:600}
-        
         .skeleton-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08);width:100%;animation:pulse-skeleton 1.5s ease-in-out infinite}
         .skeleton-card .skeleton-image{width:100%;height:250px;background:#e8e8e8}
         .skeleton-card .skeleton-body{padding:14px 16px}
@@ -209,13 +202,13 @@
         .skeleton-small .skeleton-line.medium{width:70%}
         .skeleton-small .skeleton-line.button{height:34px;width:100%;border-radius:20px}
         
-        @media(min-width:600px){.hero-section{padding:30px 25px;min-height:220px}.hero-section h1{font-size:26px}.hero-section p{font-size:14px}.escort-card-full .card-image{height:300px}.escort-card-full .card-inner{flex-direction:row}.escort-card-full .card-image{width:40%;height:auto;min-height:280px}.escort-card-full .card-body{width:60%;padding:20px 24px}.escort-card-small .card-image{height:200px}.photo-modal .modal-image{height:400px}}
+        @media(min-width:600px){.hero-section{padding:30px 25px;min-height:220px}.hero-section h1{font-size:26px}.hero-section p{font-size:14px}.escort-card-full .card-inner{flex-direction:row}.escort-card-full .card-image{width:40%;height:auto;aspect-ratio:1 / 1;min-height:280px}.escort-card-full .card-body{width:60%;padding:20px 24px}.photo-modal .modal-image{height:400px}}
         @media(min-width:768px){.hero-section h1{font-size:30px}.hero-section .hero-image{display:block;position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:100px;opacity:.08}.footer-inner{grid-template-columns:repeat(4,1fr)}}
-        @media(min-width:992px){.nav-menu{display:flex!important;flex-direction:row;width:auto;padding:0;gap:2px}.nav-menu>li{width:auto}.nav-menu>li>a{padding:8px 12px;font-size:13px}.hamburger{display:none}.hero-section{padding:40px 35px;min-height:260px}.hero-section h1{font-size:36px}.hero-section .hero-image{font-size:140px}.bottom-nav{display:none}body{padding-bottom:0}.escort-card-full .card-image{width:35%}.escort-card-full .card-body{width:65%}.escort-card-full .card-image{min-height:320px}.escort-card-small .card-image{height:220px}.photo-modal{max-width:550px}.photo-modal .modal-image{height:450px}}
+        @media(min-width:992px){.nav-menu{display:flex!important;flex-direction:row;width:auto;padding:0;gap:2px}.nav-menu>li{width:auto}.nav-menu>li>a{padding:8px 12px;font-size:13px}.hamburger{display:none}.hero-section{padding:40px 35px;min-height:260px}.hero-section h1{font-size:36px}.hero-section .hero-image{font-size:140px}.bottom-nav{display:none}body{padding-bottom:0}.escort-card-full .card-image{width:35%}.escort-card-full .card-body{width:65%}.escort-card-full .card-image{min-height:320px}.photo-modal{max-width:550px}.photo-modal .modal-image{height:450px}}
         @media(min-width:1200px){.escort-row{grid-template-columns:1fr 1fr}}
         
         @media (max-width: 480px) {
-            .action-buttons-row{flex-direction:column;gap:6px}
+            .action-buttons-row{flex-direction:row;gap:6px}
             .action-buttons-row .btn-call,.action-buttons-row .btn-whatsapp{font-size:12px;padding:8px 14px;min-height:38px}
             .action-buttons-row.small .btn-call-sm,.action-buttons-row.small .btn-whatsapp-sm{font-size:10px;padding:5px 8px;min-height:30px}
             .modal-actions .btn-modal-call,.modal-actions .btn-modal-whatsapp{font-size:14px;padding:12px;min-height:44px}
@@ -477,7 +470,6 @@
             <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="escort-grid" id="escortGrid"></div>
-        <div class="pagination-container" id="paginationContainer"></div>
     </section>
 
 </div>
@@ -580,9 +572,8 @@
     (function() {
         'use strict';
         
-        var ITEMS_PER_PAGE = 6;
         var CACHE_DURATION = 300000;
-        var QUERY_LIMIT = 60;
+        var QUERY_LIMIT = 200;
         var DEBOUNCE_DELAY = 400;
         var QUERY_TIMEOUT = 15000;
         
@@ -599,7 +590,6 @@
         var logoutBtn = document.getElementById('logoutBtn');
         var escortGrid = document.getElementById('escortGrid');
         var statEscorts = document.getElementById('statEscorts');
-        var paginationContainer = document.getElementById('paginationContainer');
         
         var photoModal = document.getElementById('photoModal');
         var modalImage = document.getElementById('modalImage');
@@ -607,7 +597,6 @@
         var modalCloseBtn = document.getElementById('modalCloseBtn');
         
         var allEscorts = [];
-        var currentPage = 1;
         var isSearching = false;
         var currentSearchTerm = '';
         var isLoading = false;
@@ -682,7 +671,6 @@
             html += '</div>';
             
             escortGrid.innerHTML = html;
-            paginationContainer.innerHTML = '';
         }
         
         function generateUniqueBio(escort) {
@@ -869,38 +857,6 @@
                 '</div>';
         }
         
-        function renderEscorts(escorts, total) {
-            if (!escorts || escorts.length === 0) {
-                escortGrid.innerHTML = 
-                    '<div class="escort-grid-empty">' +
-                        '<i class="fas fa-users empty-icon"></i>' +
-                        '<h4>No Escorts Available</h4>' +
-                        '<p>Check back soon for new listings!</p><br>' +
-                        '<a href="myprofile.html" class="btn-primary" style="padding:8px 20px; font-size:12px;">' +
-                            '<i class="fas fa-pen-fancy"></i> Create Profile' +
-                        '</a>' +
-                    '</div>';
-                paginationContainer.innerHTML = '';
-                return;
-            }
-            
-            var html = '';
-            var itemsToShow = escorts.slice(0, ITEMS_PER_PAGE);
-            
-            for (var i = 0; i < itemsToShow.length; i++) {
-                if (i % 3 === 0) {
-                    html += renderFullCard(itemsToShow[i]);
-                } else {
-                    if (i % 3 === 1) html += '<div class="escort-row">';
-                    html += renderSmallCard(itemsToShow[i]);
-                    if (i % 3 === 2 || i === itemsToShow.length - 1) html += '</div>';
-                }
-            }
-            
-            escortGrid.innerHTML = html;
-            renderPagination(total || escorts.length);
-        }
-        
         window.openPhotoModalFromId = function(id) {
             for (var i = 0; i < allEscorts.length; i++) {
                 if (allEscorts[i].id === id) {
@@ -910,63 +866,32 @@
             }
         };
         
-        function renderPagination(total) {
-            var totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-            if (totalPages <= 1) {
-                paginationContainer.innerHTML = '';
+        function renderAllEscorts() {
+            if (!allEscorts || allEscorts.length === 0) {
+                escortGrid.innerHTML = 
+                    '<div class="escort-grid-empty">' +
+                        '<i class="fas fa-users empty-icon"></i>' +
+                        '<h4>No Escorts Available</h4>' +
+                        '<p>Check back soon for new listings!</p><br>' +
+                        '<a href="myprofile.html" class="btn-primary" style="padding:8px 20px; font-size:12px;">' +
+                            '<i class="fas fa-pen-fancy"></i> Create Profile' +
+                        '</a>' +
+                    '</div>';
                 return;
             }
             
             var html = '';
-            html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '><i class="fas fa-chevron-left"></i></button>';
-            
-            var startPage = Math.max(1, currentPage - 2);
-            var endPage = Math.min(totalPages, currentPage + 2);
-            
-            if (startPage > 1) {
-                html += '<button class="page-btn" onclick="goToPage(1)">1</button>';
-                if (startPage > 2) html += '<span class="page-info">...</span>';
-            }
-            
-            for (var i = startPage; i <= endPage; i++) {
-                html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-            }
-            
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) html += '<span class="page-info">...</span>';
-                html += '<button class="page-btn" onclick="goToPage(' + totalPages + ')">' + totalPages + '</button>';
-            }
-            
-            html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '><i class="fas fa-chevron-right"></i></button>';
-            
-            paginationContainer.innerHTML = html;
-        }
-        
-        window.goToPage = function(page) {
-            var totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
-            if (page < 1 || page > totalPages || page === currentPage) return;
-            currentPage = page;
-            renderPage();
-        };
-        
-        function renderPage() {
-            var start = (currentPage - 1) * ITEMS_PER_PAGE;
-            var end = Math.min(start + ITEMS_PER_PAGE, allEscorts.length);
-            var pageItems = allEscorts.slice(start, end);
-            
-            var html = '';
-            for (var i = 0; i < pageItems.length; i++) {
+            for (var i = 0; i < allEscorts.length; i++) {
                 if (i % 3 === 0) {
-                    html += renderFullCard(pageItems[i]);
+                    html += renderFullCard(allEscorts[i]);
                 } else {
                     if (i % 3 === 1) html += '<div class="escort-row">';
-                    html += renderSmallCard(pageItems[i]);
-                    if (i % 3 === 2 || i === pageItems.length - 1) html += '</div>';
+                    html += renderSmallCard(allEscorts[i]);
+                    if (i % 3 === 2 || i === allEscorts.length - 1) html += '</div>';
                 }
             }
             
             escortGrid.innerHTML = html;
-            renderPagination(totalCount);
         }
         
         async function loadEscorts(searchTerm) {
@@ -984,8 +909,7 @@
                     if (cached && cached.escorts && cached.escorts.length > 0) {
                         allEscorts = cached.escorts;
                         totalCount = cached.count || cached.escorts.length;
-                        currentPage = 1;
-                        renderPage();
+                        renderAllEscorts();
                         updateStats(totalCount);
                         console.log('📦 Loaded from cache');
                     }
@@ -1008,10 +932,6 @@
                     }
                 }
                 
-                // ============================================================
-                // SIMPLE QUERY - only filter by status
-                // Exclude admin/inactive on the CLIENT SIDE (safer)
-                // ============================================================
                 var query = supabaseClient
                     .from('profiles')
                     .select('*', { count: 'exact' })
@@ -1055,21 +975,14 @@
                     console.error('❌ Query error:', result.error);
                     if (allEscorts.length === 0) {
                         escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Error loading</h4><p>Please refresh the page.</p></div>';
-                        paginationContainer.innerHTML = '';
                     }
                     isLoading = false;
                     return;
                 }
                 
-                // ============================================================
-                // CLIENT-SIDE FILTER - exclude admin and inactive
-                // ============================================================
                 var escorts = (result.data || []).filter(function(e) {
-                    // Exclude admin users
                     if (e.role === 'admin') return false;
-                    // Exclude explicitly inactive profiles
                     if (e.is_active === false) return false;
-                    // Must have a name
                     if (!e.full_name || e.full_name.trim() === '') return false;
                     return true;
                 });
@@ -1081,15 +994,13 @@
                     if (!searchTerm) {
                         cacheEscorts(escorts, totalCount);
                     }
-                    currentPage = 1;
-                    renderPage();
+                    renderAllEscorts();
                     updateStats(totalCount);
                     console.log('✅ Loaded ' + escorts.length + ' escorts');
                 } else {
                     allEscorts = [];
                     totalCount = 0;
                     escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-users empty-icon"></i><h4>No Escorts Found</h4><p>Try adjusting your search or check back later.</p></div>';
-                    paginationContainer.innerHTML = '';
                     updateStats(0);
                 }
                 
@@ -1097,7 +1008,6 @@
                 console.error('❌ Error loading escorts:', error);
                 if (allEscorts.length === 0) {
                     escortGrid.innerHTML = '<div class="escort-grid-empty"><i class="fas fa-exclamation-circle empty-icon"></i><h4>Connection Error</h4><p>Please check your internet and refresh.</p></div>';
-                    paginationContainer.innerHTML = '';
                 }
             } finally {
                 isLoading = false;
@@ -1228,7 +1138,6 @@
         // ============================================================
         checkSession();
         
-        // Clear old caches
         try {
             localStorage.removeItem('nv_escorts_cache');
             localStorage.removeItem('nv_escorts_cache_v2');
@@ -1241,7 +1150,7 @@
             animateStats();
         }, 100);
         
-        console.log('🔥 Nairobi Vibe - Simple query + client-side filter');
+        console.log('🔥 Nairobi Vibe - Square 1:1 cards + contain modal');
         
     })();
 </script>
