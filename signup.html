@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Nairobi Vibe</title>
+    <meta name="description" content="Create your free Nairobi Vibe account to browse escorts across Kenya.">
+    
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://upnymrrbwlkcwoswpzbe.supabase.co">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://upnymrrbwlkcwoswpzbe.supabase.co" crossorigin>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,6 +31,8 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            font-size: 15px;
+            line-height: 1.5;
         }
         
         .register-wrapper { width: 100%; max-width: 500px; }
@@ -45,11 +58,11 @@
             font-size: 32px; font-weight: 800;
             line-height: 70px; text-align: center;
         }
-        .register-card .logo h1 { font-size: 24px; font-weight: 800; color: #E0006C; margin-top: 8px; }
-        .register-card .logo p { color: #888; font-size: 14px; }
+        .register-card .logo h1 { font-size: 26px; font-weight: 800; color: #E0006C; margin-top: 10px; }
+        .register-card .logo p { color: #888; font-size: 15px; margin-top: 4px; }
         
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-weight: 600; font-size: 14px; color: #333; margin-bottom: 5px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; font-size: 15px; color: #333; margin-bottom: 6px; }
         .form-group label .required { color: #e74c3c; margin-left: 2px; }
         .form-group .input-wrapper { position: relative; }
         .form-group .input-wrapper i {
@@ -58,9 +71,9 @@
         }
         .form-group .input-wrapper input,
         .form-group .input-wrapper select {
-            width: 100%; padding: 12px 15px 12px 45px;
+            width: 100%; padding: 13px 15px 13px 45px;
             border: 2px solid #e8e8e8; border-radius: 12px;
-            font-size: 15px; font-family: 'Open Sans', sans-serif;
+            font-size: 16px; font-family: 'Open Sans', sans-serif;
             transition: all 0.3s ease; background: #fafafa; color: #333;
         }
         .form-group .input-wrapper input:focus,
@@ -84,25 +97,25 @@
             width: 18px; height: 18px; margin-top: 2px;
             cursor: pointer; accent-color: #E0006C;
         }
-        .terms-group label { font-size: 13px; color: #666; line-height: 1.5; cursor: pointer; }
+        .terms-group label { font-size: 14px; color: #666; line-height: 1.5; cursor: pointer; }
         .terms-group label a { color: #E0006C; font-weight: 600; }
         
         .btn-register {
-            width: 100%; padding: 14px;
+            width: 100%; padding: 15px;
             background: linear-gradient(135deg, #E0006C, #b30057);
             color: #fff; border: none; border-radius: 12px;
-            font-size: 18px; font-weight: 700; cursor: pointer;
+            font-size: 17px; font-weight: 700; cursor: pointer;
             transition: all 0.3s ease;
             display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .btn-register:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(224, 0, 108, 0.4); }
         .btn-register:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         
-        .login-link { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
+        .login-link { text-align: center; margin-top: 20px; font-size: 15px; color: #666; }
         .login-link a { color: #E0006C; font-weight: 700; }
         
         .error-message {
-            color: #e74c3c; font-size: 12px;
+            color: #e74c3c; font-size: 13px;
             font-weight: 600; margin-top: 5px; display: none;
         }
         .error-message.show { display: block; }
@@ -116,14 +129,19 @@
         .success-message { display: none; text-align: center; padding: 30px 20px; }
         .success-message.show { display: block; }
         .success-message .icon { font-size: 60px; color: #27ae60; margin-bottom: 15px; }
-        .success-message h2 { color: #27ae60; font-size: 24px; margin-bottom: 10px; }
+        .success-message h2 { color: #27ae60; font-size: 26px; margin-bottom: 10px; }
         .success-message p { color: #666; font-size: 15px; line-height: 1.6; }
         .success-message .btn-dashboard {
             display: inline-block; margin-top: 20px;
-            padding: 12px 30px;
+            padding: 13px 32px;
             background: linear-gradient(135deg, #27ae60, #1e8449);
             color: #fff; border-radius: 12px;
             font-weight: 700; text-decoration: none;
+            font-size: 15px;
+        }
+        .success-message .countdown {
+            display: block; margin-top: 12px;
+            font-size: 13px; color: #999;
         }
         
         .loader {
@@ -149,7 +167,7 @@
         .password-strength .bar.strong { width: 75%; background: #2ecc71; }
         .password-strength .bar.very-strong { width: 100%; background: #27ae60; }
         
-        .password-hint { font-size: 11px; color: #999; margin-top: 3px; }
+        .password-hint { font-size: 12px; color: #999; margin-top: 4px; }
         
         .toast {
             position: fixed; top: 20px; right: 20px;
@@ -170,7 +188,9 @@
         
         @media (max-width: 600px) {
             .register-card { padding: 30px 20px 30px; }
-            .register-card .logo h1 { font-size: 20px; }
+            .register-card .logo h1 { font-size: 22px; }
+            .form-group .input-wrapper input,
+            .form-group .input-wrapper select { font-size: 15px; }
         }
         
         ::-webkit-scrollbar { width: 6px; }
@@ -219,27 +239,58 @@
             </div>
             
             <div class="form-group">
-                <label>Location <span style="color:#999; font-weight:400;">(optional)</span></label>
+                <label>County / Location <span style="color:#999; font-weight:400;">(optional)</span></label>
                 <div class="input-wrapper">
                     <i class="fas fa-map-marker-alt"></i>
                     <select id="location">
-                        <option value="">Select your location</option>
-                        <option value="nairobi-cbd">Nairobi CBD</option>
-                        <option value="kilimani">Kilimani</option>
-                        <option value="westlands">Westlands</option>
-                        <option value="kasarani">Kasarani</option>
-                        <option value="south-b">South B</option>
-                        <option value="langata">Langata</option>
-                        <option value="mombasa">Mombasa</option>
-                        <option value="kisumu">Kisumu</option>
-                        <option value="nakuru">Nakuru</option>
-                        <option value="thika">Thika</option>
-                        <option value="ruiru">Ruiru</option>
-                        <option value="kiambu">Kiambu</option>
-                        <option value="machakos">Machakos</option>
-                        <option value="eldoret">Eldoret</option>
-                        <option value="meru">Meru</option>
-                        <option value="nyeri">Nyeri</option>
+                        <option value="">Select your county</option>
+                        <option value="Baringo">Baringo</option>
+                        <option value="Bomet">Bomet</option>
+                        <option value="Bungoma">Bungoma</option>
+                        <option value="Busia">Busia</option>
+                        <option value="Elgeyo-Marakwet">Elgeyo-Marakwet</option>
+                        <option value="Embu">Embu</option>
+                        <option value="Garissa">Garissa</option>
+                        <option value="Homa Bay">Homa Bay</option>
+                        <option value="Isiolo">Isiolo</option>
+                        <option value="Kajiado">Kajiado</option>
+                        <option value="Kakamega">Kakamega</option>
+                        <option value="Kericho">Kericho</option>
+                        <option value="Kiambu">Kiambu</option>
+                        <option value="Kilifi">Kilifi</option>
+                        <option value="Kirinyaga">Kirinyaga</option>
+                        <option value="Kisii">Kisii</option>
+                        <option value="Kisumu">Kisumu</option>
+                        <option value="Kitui">Kitui</option>
+                        <option value="Kwale">Kwale</option>
+                        <option value="Laikipia">Laikipia</option>
+                        <option value="Lamu">Lamu</option>
+                        <option value="Machakos">Machakos</option>
+                        <option value="Makueni">Makueni</option>
+                        <option value="Mandera">Mandera</option>
+                        <option value="Marsabit">Marsabit</option>
+                        <option value="Meru">Meru</option>
+                        <option value="Migori">Migori</option>
+                        <option value="Mombasa">Mombasa</option>
+                        <option value="Murang'a">Murang'a</option>
+                        <option value="Nairobi">Nairobi</option>
+                        <option value="Nakuru">Nakuru</option>
+                        <option value="Nandi">Nandi</option>
+                        <option value="Narok">Narok</option>
+                        <option value="Nyamira">Nyamira</option>
+                        <option value="Nyandarua">Nyandarua</option>
+                        <option value="Nyeri">Nyeri</option>
+                        <option value="Samburu">Samburu</option>
+                        <option value="Siaya">Siaya</option>
+                        <option value="Taita-Taveta">Taita-Taveta</option>
+                        <option value="Tana River">Tana River</option>
+                        <option value="Tharaka-Nithi">Tharaka-Nithi</option>
+                        <option value="Trans-Nzoia">Trans-Nzoia</option>
+                        <option value="Turkana">Turkana</option>
+                        <option value="Uasin Gishu">Uasin Gishu</option>
+                        <option value="Vihiga">Vihiga</option>
+                        <option value="Wajir">Wajir</option>
+                        <option value="West Pokot">West Pokot</option>
                     </select>
                     <i class="fas fa-chevron-down select-arrow"></i>
                 </div>
@@ -298,6 +349,7 @@
             <a href="login.html" class="btn-dashboard">
                 <i class="fas fa-sign-in-alt"></i> Go to Login
             </a>
+            <span class="countdown" id="redirectCountdown">Redirecting in 5 seconds...</span>
         </div>
         
         <div class="login-link">
@@ -313,15 +365,11 @@
 </div>
 
 <script>
-    // ============================================================
-    // SUPABASE CONFIG - DECLARED ONCE ONLY
-    // ============================================================
     var SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
     var SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
     
     var supabaseClient = null;
     
-    // Wait for the SDK to be available
     function initSupabase() {
         try {
             if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
@@ -333,10 +381,8 @@
                     }
                 });
                 console.log('✅ Supabase initialized');
-                console.log('🔗 URL:', SUPABASE_URL);
                 return true;
             }
-            console.log('⚠️ Supabase SDK not yet loaded');
             return false;
         } catch (e) {
             console.error('❌ Supabase init error:', e);
@@ -344,11 +390,8 @@
         }
     }
     
-    // Try immediate init
     if (!initSupabase()) {
-        // Retry on DOM ready
         document.addEventListener('DOMContentLoaded', initSupabase);
-        // Final retry after 1 second
         setTimeout(initSupabase, 1000);
     }
 </script>
@@ -376,9 +419,6 @@
         const passwordBar = document.getElementById('passwordBar');
         const passwordHint = document.getElementById('passwordHint');
         
-        // ============================================================
-        // PASSWORD TOGGLE
-        // ============================================================
         togglePassword.addEventListener('click', function() {
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
@@ -386,9 +426,6 @@
             this.querySelector('i').classList.toggle('fa-eye-slash');
         });
         
-        // ============================================================
-        // PASSWORD STRENGTH
-        // ============================================================
         password.addEventListener('input', function() {
             const val = this.value;
             const bar = passwordBar;
@@ -429,9 +466,6 @@
             }
         });
         
-        // ============================================================
-        // VALIDATION
-        // ============================================================
         fullName.addEventListener('blur', function() {
             validateField(this, 'nameGroup', 'nameError', this.value.trim().length >= 2);
         });
@@ -477,9 +511,6 @@
             }
         }
         
-        // ============================================================
-        // FORM SUBMIT
-        // ============================================================
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -533,7 +564,6 @@
                 return;
             }
             
-            // CHECK SUPABASE IS READY
             if (!supabaseClient) {
                 initSupabase();
                 if (!supabaseClient) {
@@ -555,9 +585,6 @@
                     role: 'user'
                 };
                 
-                console.log('📝 Registering with Supabase...');
-                console.log('📧 Email:', email.value.trim());
-                
                 const { data, error } = await supabaseClient.auth.signUp({
                     email: email.value.trim(),
                     password: password.value,
@@ -566,11 +593,7 @@
                     }
                 });
                 
-                console.log('Response:', { data, error });
-                
                 if (error) throw error;
-                
-                console.log('✅ Registration successful:', data);
                 
                 form.style.display = 'none';
                 document.querySelector('.login-link').style.display = 'none';
@@ -578,12 +601,26 @@
                 
                 showToast('Account created successfully! 🎉', 'success');
                 
+                // ============================================================
+                // AUTO-REDIRECT TO LOGIN AFTER 5 SECONDS
+                // ============================================================
+                let countdown = 5;
+                const countdownEl = document.getElementById('redirectCountdown');
+                const interval = setInterval(function() {
+                    countdown--;
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        window.location.href = 'login.html';
+                    } else {
+                        countdownEl.textContent = 'Redirecting in ' + countdown + ' seconds...';
+                    }
+                }, 1000);
+                
             } catch (error) {
                 console.error('❌ Registration error:', error);
                 
                 let errorMsg = error.message || 'Registration failed. Please try again.';
                 
-                // Friendlier error messages
                 if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
                     errorMsg = 'Cannot connect to server. Please check your internet.';
                 } else if (errorMsg.includes('already registered')) {
@@ -601,9 +638,6 @@
             }
         });
         
-        // ============================================================
-        // TOAST
-        // ============================================================
         function showToast(message, type = 'info') {
             toastMessage.textContent = message;
             toast.className = 'toast ' + type;
