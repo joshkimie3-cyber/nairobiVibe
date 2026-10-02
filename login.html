@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Nairobi Vibe</title>
+    <meta name="description" content="Login to your Nairobi Vibe account to manage your profile.">
+    
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://upnymrrbwlkcwoswpzbe.supabase.co">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://upnymrrbwlkcwoswpzbe.supabase.co" crossorigin>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        // ============================================================
-        // SUPABASE CONFIG - NEW KEYS
-        // ============================================================
         const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
         
@@ -47,8 +55,7 @@
             }
         };
         
-        console.log('✅ Supabase initialized with NEW keys!');
-        console.log('🔗 URL:', SUPABASE_URL);
+        console.log('✅ Supabase initialized');
     </script>
     
     <style>
@@ -62,6 +69,8 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            font-size: 15px;
+            line-height: 1.5;
         }
         
         .login-wrapper { width: 100%; max-width: 440px; }
@@ -87,8 +96,8 @@
             font-size: 32px; font-weight: 800;
             line-height: 70px; text-align: center;
         }
-        .login-card .logo h1 { font-size: 24px; font-weight: 800; color: #E0006C; margin-top: 8px; }
-        .login-card .logo p { color: #888; font-size: 14px; }
+        .login-card .logo h1 { font-size: 26px; font-weight: 800; color: #E0006C; margin-top: 10px; }
+        .login-card .logo p { color: #888; font-size: 15px; margin-top: 4px; }
         
         .alert-banner {
             background: #fff3cd; border-left: 4px solid #ffc107;
@@ -98,11 +107,11 @@
         }
         .alert-banner.show { display: flex; }
         .alert-banner i { color: #ffc107; font-size: 18px; }
-        .alert-banner .alert-text { font-size: 13px; color: #856404; flex: 1; }
+        .alert-banner .alert-text { font-size: 14px; color: #856404; flex: 1; }
         .alert-banner .alert-close { cursor: pointer; color: #856404; font-size: 18px; opacity: 0.7; }
         
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-weight: 600; font-size: 14px; color: #333; margin-bottom: 5px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; font-size: 15px; color: #333; margin-bottom: 6px; }
         .form-group label .required { color: #e74c3c; margin-left: 2px; }
         .form-group .input-wrapper { position: relative; }
         .form-group .input-wrapper i {
@@ -110,9 +119,9 @@
             transform: translateY(-50%); color: #999; font-size: 16px;
         }
         .form-group .input-wrapper input {
-            width: 100%; padding: 12px 15px 12px 45px;
+            width: 100%; padding: 13px 15px 13px 45px;
             border: 2px solid #e8e8e8; border-radius: 12px;
-            font-size: 15px; font-family: 'Open Sans', sans-serif;
+            font-size: 16px; font-family: 'Open Sans', sans-serif;
             transition: all 0.3s ease; background: #fafafa; color: #333;
         }
         .form-group .input-wrapper input:focus {
@@ -127,7 +136,7 @@
         
         .form-options {
             display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 20px;
+            align-items: center; margin-bottom: 22px;
         }
         .remember-me { display: flex; align-items: center; gap: 8px; }
         .remember-me input[type="checkbox"] {
@@ -137,10 +146,10 @@
         .forgot-link { font-size: 14px; color: #E0006C; font-weight: 600; }
         
         .btn-login {
-            width: 100%; padding: 14px;
+            width: 100%; padding: 15px;
             background: linear-gradient(135deg, #E0006C, #b30057);
             color: #fff; border: none; border-radius: 12px;
-            font-size: 18px; font-weight: 700; cursor: pointer;
+            font-size: 17px; font-weight: 700; cursor: pointer;
             transition: all 0.3s ease;
             display: flex; align-items: center; justify-content: center; gap: 10px;
         }
@@ -149,7 +158,7 @@
         
         .divider {
             display: flex; align-items: center;
-            margin: 20px 0; color: #999; font-size: 13px;
+            margin: 22px 0; color: #999; font-size: 14px;
         }
         .divider::before, .divider::after {
             content: ''; flex: 1; height: 1px; background: #e8e8e8;
@@ -159,23 +168,23 @@
         
         .social-login { display: flex; gap: 12px; margin-bottom: 20px; }
         .social-login .social-btn {
-            flex: 1; padding: 10px;
+            flex: 1; padding: 12px;
             border: 2px solid #e8e8e8; border-radius: 12px;
             background: #fafafa; cursor: pointer;
             transition: all 0.3s ease;
             display: flex; align-items: center; justify-content: center;
-            gap: 8px; font-weight: 600; font-size: 14px; color: #333;
+            gap: 8px; font-weight: 600; font-size: 15px; color: #333;
         }
         .social-login .social-btn:hover { border-color: #E0006C; transform: translateY(-2px); }
         .social-login .social-btn i { font-size: 20px; }
         .social-login .social-btn.google i { color: #DB4437; }
         .social-login .social-btn.facebook i { color: #4267B2; }
         
-        .register-link { text-align: center; font-size: 14px; color: #666; }
+        .register-link { text-align: center; font-size: 15px; color: #666; }
         .register-link a { color: #E0006C; font-weight: 700; }
         
         .error-message {
-            color: #e74c3c; font-size: 12px;
+            color: #e74c3c; font-size: 13px;
             font-weight: 600; margin-top: 5px; display: none;
         }
         .error-message.show { display: block; }
@@ -214,8 +223,9 @@
             .login-card { padding: 30px 20px 25px; }
             .social-login { flex-direction: column; }
             .form-options { flex-direction: column; gap: 10px; align-items: flex-start; }
-            .login-card .logo h1 { font-size: 20px; }
-            .btn-login { font-size: 16px; padding: 12px; }
+            .login-card .logo h1 { font-size: 22px; }
+            .btn-login { font-size: 16px; padding: 13px; }
+            .form-group .input-wrapper input { font-size: 15px; }
         }
         
         ::-webkit-scrollbar { width: 6px; }
@@ -349,7 +359,6 @@
                         return { data, error };
                     }
                 };
-                console.log('✅ Supabase re-initialized successfully!');
             } else {
                 showToast('System error. Please refresh the page.', 'error');
                 return;
@@ -556,7 +565,7 @@
             }
         });
         
-        console.log('✅ Login Page Loaded - NEW Supabase keys');
+        console.log('✅ Login Page Loaded');
         console.log('🔗 Redirect URL:', redirectUrl);
         
     });
