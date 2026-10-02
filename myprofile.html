@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- SUPABASE CONFIG - NEW KEYS -->
     <script>
         const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
@@ -42,7 +41,7 @@
                         }
                     };
                     
-                    console.log('✅ Supabase initialized with NEW keys');
+                    console.log('✅ Supabase initialized');
                     return true;
                 }
                 return false;
@@ -69,8 +68,8 @@
         body {
             font-family: 'Open Sans', Arial, sans-serif;
             background: #f0f2f5;
-            font-size: 12px;
-            line-height: 1.4;
+            font-size: 14px;
+            line-height: 1.5;
             color: #333;
             overflow-x: hidden;
             padding-bottom: 70px;
@@ -78,7 +77,7 @@
         
         .site-header {
             background: linear-gradient(135deg, #E0006C, #b30057);
-            padding: 8px 14px;
+            padding: 10px 14px;
             color: #fff;
             display: flex;
             align-items: center;
@@ -97,34 +96,34 @@
             padding: 6px 12px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 5px;
-            min-height: 32px;
+            min-height: 34px;
             transition: all 0.3s ease;
             text-decoration: none;
         }
         .site-header .back-home-btn:active { background: rgba(255,255,255,0.3); transform: scale(0.95); }
-        .site-header .back-home-btn i { font-size: 12px; }
+        .site-header .back-home-btn i { font-size: 13px; }
         
         .site-header .logo { display: flex; align-items: center; gap: 6px; }
-        .site-header .logo h1 { font-size: 15px; font-weight: 800; }
-        .site-header .logo span { font-size: 9px; opacity: 0.8; }
+        .site-header .logo h1 { font-size: 17px; font-weight: 800; }
+        .site-header .logo span { font-size: 11px; opacity: 0.8; }
         
         .site-header .user-info { display: flex; align-items: center; gap: 8px; }
-        .site-header .user-info img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
-        .site-header .user-info .username { font-weight: 600; font-size: 11px; display: none; }
+        .site-header .user-info img { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+        .site-header .user-info .username { font-weight: 600; font-size: 13px; display: none; }
         .site-header .user-info .logout-btn {
             background: rgba(255,255,255,0.15);
             border: none;
             color: #fff;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 10px;
-            min-height: 30px;
+            font-size: 12px;
+            min-height: 32px;
             transition: all 0.3s ease;
         }
         
@@ -135,13 +134,13 @@
         .live-status {
             background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
             border-left: 4px solid #27ae60;
-            padding: 8px 14px;
+            padding: 10px 14px;
             border-radius: 8px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 11px;
+            font-size: 13px;
             color: #155724;
             font-weight: 600;
             box-shadow: 0 2px 8px rgba(39,174,96,0.15);
@@ -179,28 +178,28 @@
             display: none;
         }
         .login-prompt .lock-icon { font-size: 40px; color: #E0006C; margin-bottom: 8px; display: block; }
-        .login-prompt h3 { font-size: 18px; font-weight: 800; color: #333; margin-bottom: 4px; }
-        .login-prompt p { color: #666; font-size: 12px; margin-bottom: 12px; line-height: 1.4; }
+        .login-prompt h3 { font-size: 19px; font-weight: 800; color: #333; margin-bottom: 4px; }
+        .login-prompt p { color: #666; font-size: 14px; margin-bottom: 12px; line-height: 1.5; }
         .login-prompt .btn-login-prompt {
             background: linear-gradient(135deg, #E0006C, #b30057);
             color: #fff;
             border: none;
             padding: 8px 25px;
             border-radius: 25px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
             display: inline-block;
             text-decoration: none;
-            min-height: 38px;
-            line-height: 22px;
+            min-height: 40px;
+            line-height: 24px;
         }
         .login-prompt .register-link-prompt {
             display: block;
             margin-top: 10px;
             color: #E0006C;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
         }
         
         .site-content { max-width: 1200px; margin: 0 auto; padding: 10px; }
@@ -208,28 +207,145 @@
         .profile-header {
             background: #fff;
             border-radius: 10px;
-            padding: 12px 16px;
+            padding: 14px 16px;
             margin-bottom: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid #eee;
         }
-        .profile-header h2 { font-size: 16px; font-weight: 800; color: #E0006C; }
-        .profile-header .breadcrumb { font-size: 10px; color: #999; margin-top: 2px; }
+        .profile-header h2 { font-size: 19px; font-weight: 800; color: #E0006C; }
+        .profile-header .breadcrumb { font-size: 12px; color: #999; margin-top: 2px; }
         .profile-header .breadcrumb span { color: #E0006C; }
         .profile-header .edit-badge {
             display: inline-block;
             background: #28a745;
             color: #fff;
-            font-size: 8px;
+            font-size: 10px;
             padding: 2px 10px;
             border-radius: 12px;
             font-weight: 700;
             margin-left: 6px;
         }
         
+        /* ============================================================
+           STATS ROW - Calls & Views (PRIVATE)
+           ============================================================ */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .stats-row .stat-box {
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s ease;
+        }
+        .stats-row .stat-box:hover { transform: translateY(-2px); }
+        .stats-row .stat-box .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .stats-row .stat-box.calls .stat-icon {
+            background: linear-gradient(135deg, #E0006C, #b30057);
+            color: #fff;
+        }
+        .stats-row .stat-box.views .stat-icon {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff;
+        }
+        .stats-row .stat-box .stat-info { flex: 1; min-width: 0; }
+        .stats-row .stat-box .stat-label {
+            font-size: 11px;
+            color: #999;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .stats-row .stat-box .stat-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #333;
+            line-height: 1;
+        }
+        .stats-row .stat-box .stat-value small {
+            font-size: 11px;
+            color: #999;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        @media (min-width: 600px) {
+            .stats-row .stat-box .stat-value { font-size: 26px; }
+            .stats-row .stat-box { padding: 14px 18px; }
+        }
+        
+        /* ============================================================
+           WALLET TOP-UP PROMPT
+           ============================================================ */
+        .topup-prompt {
+            background: linear-gradient(135deg, #fff8e1, #ffe9b3);
+            border-left: 4px solid #f39c12;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: none;
+            align-items: flex-start;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(243,156,18,0.15);
+        }
+        .topup-prompt.show { display: flex; }
+        .topup-prompt .topup-icon {
+            font-size: 24px;
+            color: #f39c12;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .topup-prompt .topup-content { flex: 1; }
+        .topup-prompt .topup-content .topup-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #7a4f00;
+            margin-bottom: 4px;
+        }
+        .topup-prompt .topup-content .topup-text {
+            font-size: 13px;
+            color: #7a4f00;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .topup-prompt .topup-content .btn-topup {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 36px;
+            transition: all 0.3s ease;
+        }
+        .topup-prompt .topup-content .btn-topup:active { transform: scale(0.95); }
+        
         .status-banner {
             border-left: 3px solid #ffc107;
-            padding: 8px 14px;
+            padding: 10px 14px;
             border-radius: 6px;
             margin-bottom: 8px;
             display: flex;
@@ -241,25 +357,25 @@
         .status-banner.inactive { background: #f8d7da; border-left-color: #dc3545; }
         .status-banner.active { background: #d4edda; border-left-color: #28a745; }
         .status-banner.pending { background: #fff3cd; border-left-color: #ffc107; }
-        .status-banner .status-text { font-size: 11px; font-weight: 600; }
+        .status-banner .status-text { font-size: 13px; font-weight: 600; }
         .status-banner .status-text i { margin-right: 4px; }
         .status-banner .btn-activate {
             background: #E0006C;
             color: #fff;
             border: none;
-            padding: 4px 14px;
+            padding: 5px 14px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 10px;
+            font-size: 12px;
             cursor: pointer;
-            min-height: 28px;
+            min-height: 30px;
         }
         .status-banner .btn-activate:disabled { opacity: 0.5; cursor: not-allowed; }
         
         .wallet-section {
             background: #fff;
             border-radius: 10px;
-            padding: 10px 14px;
+            padding: 12px 14px;
             margin-bottom: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid #eee;
@@ -270,20 +386,20 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
-        .wallet-header .wallet-balance { font-size: 12px; font-weight: 700; color: #E0006C; }
-        .wallet-header .wallet-balance span { font-size: 18px; }
+        .wallet-header .wallet-balance { font-size: 14px; font-weight: 700; color: #E0006C; }
+        .wallet-header .wallet-balance span { font-size: 20px; }
         .wallet-header .btn-add-fund {
             background: #28a745;
             color: #fff;
             border: none;
-            padding: 4px 14px;
+            padding: 5px 14px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 10px;
+            font-size: 12px;
             cursor: pointer;
-            min-height: 28px;
+            min-height: 30px;
         }
         
         @keyframes pulse {
@@ -295,45 +411,45 @@
         .wallet-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
+            gap: 6px;
         }
         .wallet-stats .stat-item {
             text-align: center;
-            padding: 4px;
+            padding: 6px;
             background: #f8f9fa;
             border-radius: 6px;
         }
-        .wallet-stats .stat-item label { display: block; font-size: 7px; color: #999; font-weight: 600; text-transform: uppercase; }
-        .wallet-stats .stat-item span { font-size: 14px; font-weight: 700; color: #333; }
+        .wallet-stats .stat-item label { display: block; font-size: 10px; color: #999; font-weight: 600; text-transform: uppercase; }
+        .wallet-stats .stat-item span { font-size: 16px; font-weight: 700; color: #333; }
         
         .wallet-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 6px;
-            padding-top: 6px;
+            gap: 6px;
+            margin-top: 8px;
+            padding-top: 8px;
             border-top: 1px solid #eee;
         }
-        .wallet-footer .chat-status { font-size: 10px; color: #666; }
+        .wallet-footer .chat-status { font-size: 12px; color: #666; }
         .wallet-footer .btn-chat-activate {
             background: #17a2b8;
             color: #fff;
             border: none;
-            padding: 3px 12px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 9px;
+            font-size: 11px;
             cursor: pointer;
-            min-height: 26px;
+            min-height: 28px;
         }
-        .wallet-footer .inbox-link { color: #E0006C; font-weight: 600; text-decoration: none; font-size: 10px; }
+        .wallet-footer .inbox-link { color: #E0006C; font-weight: 600; text-decoration: none; font-size: 12px; }
         
         .photo-section {
             background: #fff;
             border-radius: 10px;
-            padding: 10px 14px;
+            padding: 12px 14px;
             margin-bottom: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid #eee;
@@ -362,24 +478,24 @@
             background: #E0006C;
             color: #fff;
             border: none;
-            padding: 4px 14px;
+            padding: 5px 14px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 10px;
+            font-size: 12px;
             cursor: pointer;
-            min-height: 28px;
+            min-height: 30px;
         }
         .photo-section .photo-required {
-            font-size: 9px;
+            font-size: 11px;
             color: #dc3545;
             font-weight: 600;
         }
         
         .photo-section .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
             gap: 6px;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .photo-section .photo-grid .photo-item {
             aspect-ratio: 1;
@@ -389,12 +505,12 @@
             align-items: center;
             justify-content: center;
             color: #ccc;
-            font-size: 8px;
+            font-size: 10px;
             border: 2px dashed #ddd;
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            min-height: 65px;
+            min-height: 75px;
         }
         .photo-section .photo-grid .photo-item img { width: 100%; height: 100%; object-fit: cover; }
         .photo-section .photo-grid .photo-item .delete-photo {
@@ -405,18 +521,18 @@
             color: #fff;
             border: none;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
-            font-size: 8px;
+            font-size: 10px;
             display: none;
             align-items: center;
             justify-content: center;
         }
         .photo-section .photo-grid .photo-item:hover .delete-photo { display: flex; }
         .photo-section .photo-grid .photo-item .add-icon { display: flex; flex-direction: column; align-items: center; color: #ccc; }
-        .photo-section .photo-grid .photo-item .add-icon i { font-size: 18px; }
-        .photo-section .photo-grid .photo-item .add-icon span { font-size: 7px; margin-top: 2px; }
+        .photo-section .photo-grid .photo-item .add-icon i { font-size: 20px; }
+        .photo-section .photo-grid .photo-item .add-icon span { font-size: 9px; margin-top: 2px; }
         .photo-section .photo-grid.no-photos .photo-item { border-color: #dc3545; background: #fff5f5; }
         
         @keyframes photoWarnFlash {
@@ -428,34 +544,34 @@
             animation: photoWarnFlash 0.6s ease 3;
         }
         
-        .photo-section .video-section { margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee; }
+        .photo-section .video-section { margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
         .photo-section .video-section .verify-notice {
             background: #fff3cd;
-            padding: 6px 12px;
+            padding: 8px 12px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 6px;
         }
-        .photo-section .video-section .verify-notice span { font-size: 10px; color: #856404; }
+        .photo-section .video-section .verify-notice span { font-size: 12px; color: #856404; }
         .photo-section .video-section .verify-notice .btn-verify {
             background: #007bff;
             color: #fff;
             border: none;
-            padding: 3px 12px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 9px;
+            font-size: 11px;
             cursor: pointer;
-            min-height: 26px;
+            min-height: 28px;
         }
         
         .nav-tabs {
             background: #fff;
             border-radius: 10px;
-            padding: 4px 8px;
+            padding: 5px 8px;
             margin-bottom: 8px;
             display: flex;
             flex-wrap: nowrap;
@@ -466,14 +582,14 @@
         }
         .nav-tabs::-webkit-scrollbar { display: none; }
         .nav-tabs .tab-link {
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 16px;
-            font-size: 9px;
+            font-size: 12px;
             font-weight: 600;
             color: #666;
             text-decoration: none;
             white-space: nowrap;
-            min-height: 28px;
+            min-height: 30px;
             display: flex;
             align-items: center;
         }
@@ -488,10 +604,10 @@
             overflow: hidden;
         }
         .profile-form .form-title {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 800;
             color: #E0006C;
-            padding: 10px 14px;
+            padding: 12px 14px;
             border-bottom: 2px solid #f0f0f0;
             background: #fafafa;
             display: flex;
@@ -499,7 +615,7 @@
             justify-content: space-between;
         }
         .profile-form .form-title .edit-mode-badge {
-            font-size: 8px;
+            font-size: 10px;
             background: #28a745;
             color: #fff;
             padding: 2px 12px;
@@ -513,9 +629,9 @@
         .profile-fields th {
             width: 30%;
             text-align: right;
-            padding: 6px 10px 6px 6px;
+            padding: 8px 10px 8px 6px;
             font-weight: 600;
-            font-size: 11px;
+            font-size: 13px;
             color: #555;
             background: #fafafa;
             border: none;
@@ -523,7 +639,7 @@
         }
         .profile-fields td {
             width: 70%;
-            padding: 4px 10px 4px 6px;
+            padding: 6px 10px 6px 6px;
             text-align: left;
             border: none;
             vertical-align: middle;
@@ -533,10 +649,10 @@
         .profile-fields td select,
         .profile-fields td textarea {
             width: 100%;
-            padding: 5px 8px;
+            padding: 7px 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 11px;
+            font-size: 13px;
             font-family: 'Open Sans', Arial, sans-serif;
             background: #fafafa;
             transition: all 0.3s ease;
@@ -553,21 +669,21 @@
         
         .type-selector { display: flex; gap: 4px; flex-wrap: wrap; }
         .type-selector .type-opt {
-            padding: 3px 10px;
+            padding: 5px 12px;
             border: 2px solid #ddd;
             border-radius: 4px;
             cursor: pointer;
             background: #fafafa;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 4px;
-            min-height: 28px;
+            min-height: 30px;
         }
         .type-selector .type-opt.active { border-color: #E0006C; background: #fce4ec; }
         .type-selector .type-opt .badge {
-            font-size: 7px;
+            font-size: 9px;
             padding: 1px 6px;
             border-radius: 8px;
             font-weight: 700;
@@ -590,7 +706,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            min-height: 170px;
+            min-height: 180px;
         }
         .plan-card:hover { transform: translateY(-3px); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
         .plan-card.active {
@@ -598,16 +714,16 @@
             box-shadow: 0 0 0 3px rgba(224,0,108,0.15), 0 4px 25px rgba(224,0,108,0.15);
             transform: translateY(-4px);
         }
-        .plan-card .plan-card-inner { padding: 12px 8px 10px; text-align: center; position: relative; }
-        .plan-card .plan-icon { font-size: 22px; color: #E0006C; margin-bottom: 3px; }
-        .plan-card .plan-name { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 1px; }
-        .plan-card .plan-price { font-size: 18px; font-weight: 800; color: #E0006C; margin-bottom: 1px; }
-        .plan-card .plan-duration { font-size: 9px; color: #999; margin-bottom: 4px; }
-        .plan-card .plan-features { display: flex; flex-direction: column; gap: 1px; margin: 3px 0 5px; }
-        .plan-card .plan-features span { font-size: 8px; color: #666; padding: 1px 0; }
+        .plan-card .plan-card-inner { padding: 14px 10px 12px; text-align: center; position: relative; }
+        .plan-card .plan-icon { font-size: 24px; color: #E0006C; margin-bottom: 4px; }
+        .plan-card .plan-name { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 2px; }
+        .plan-card .plan-price { font-size: 20px; font-weight: 800; color: #E0006C; margin-bottom: 2px; }
+        .plan-card .plan-duration { font-size: 11px; color: #999; margin-bottom: 6px; }
+        .plan-card .plan-features { display: flex; flex-direction: column; gap: 2px; margin: 4px 0 6px; }
+        .plan-card .plan-features span { font-size: 10px; color: #666; padding: 1px 0; }
         .plan-card .plan-badge {
             display: inline-block;
-            font-size: 7px;
+            font-size: 9px;
             padding: 2px 10px;
             border-radius: 10px;
             font-weight: 700;
@@ -617,7 +733,7 @@
             position: absolute;
             top: 6px;
             right: 6px;
-            font-size: 16px;
+            font-size: 18px;
             color: #ddd;
             transition: all 0.3s ease;
             opacity: 0;
@@ -630,7 +746,7 @@
             right: 0;
             background: linear-gradient(135deg, #f39c12, #e67e22);
             color: #fff;
-            font-size: 7px;
+            font-size: 9px;
             font-weight: 700;
             padding: 2px 10px;
             border-radius: 0 10px 0 10px;
@@ -642,7 +758,7 @@
             right: 0;
             background: linear-gradient(135deg, #8b5cf6, #6d28d9);
             color: #fff;
-            font-size: 7px;
+            font-size: 9px;
             font-weight: 700;
             padding: 2px 10px;
             border-radius: 0 10px 0 10px;
@@ -654,11 +770,11 @@
         .duration-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
-            margin-top: 2px;
+            gap: 6px;
+            margin-top: 4px;
         }
         .duration-row .dur-btn {
-            padding: 3px 2px;
+            padding: 5px 4px;
             border: 2px solid #ddd;
             border-radius: 4px;
             background: #fafafa;
@@ -666,54 +782,54 @@
             text-align: center;
         }
         .duration-row .dur-btn.active { border-color: #E0006C; background: #fce4ec; }
-        .duration-row .dur-btn .dday { font-size: 9px; font-weight: 700; color: #333; }
-        .duration-row .dur-btn .dprice { font-size: 8px; font-weight: 600; color: #E0006C; }
+        .duration-row .dur-btn .dday { font-size: 12px; font-weight: 700; color: #333; }
+        .duration-row .dur-btn .dprice { font-size: 11px; font-weight: 600; color: #E0006C; }
         
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 2px;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 4px;
         }
-        .services-grid .svc-item { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
+        .services-grid .svc-item { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
         .services-grid .svc-item input[type="checkbox"] {
-            width: 13px;
-            height: 13px;
+            width: 16px;
+            height: 16px;
             accent-color: #E0006C;
             cursor: pointer;
         }
-        .services-grid .svc-item label { font-size: 10px; color: #555; cursor: pointer; }
+        .services-grid .svc-item label { font-size: 13px; color: #555; cursor: pointer; }
         
-        .listing-opt { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
-        .listing-opt input[type="checkbox"] { width: 13px; height: 13px; accent-color: #E0006C; cursor: pointer; }
-        .listing-opt label { font-size: 10px; color: #555; cursor: pointer; }
+        .listing-opt { display: flex; align-items: center; gap: 6px; padding: 3px 0; }
+        .listing-opt input[type="checkbox"] { width: 16px; height: 16px; accent-color: #E0006C; cursor: pointer; }
+        .listing-opt label { font-size: 13px; color: #555; cursor: pointer; }
         
-        .form-actions { padding: 8px 14px 12px 14px; text-align: center; border-top: 1px solid #f0f0f0; }
+        .form-actions { padding: 12px 14px 16px 14px; text-align: center; border-top: 1px solid #f0f0f0; }
         .btn-save {
             background: linear-gradient(135deg, #E0006C, #b30057);
             color: #fff;
             border: none;
-            padding: 8px 30px;
+            padding: 10px 34px;
             border-radius: 25px;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            min-height: 36px;
+            min-height: 40px;
         }
         .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
         
         .about-section {
             background: #fff;
             border-radius: 10px;
-            padding: 10px 14px;
+            padding: 12px 14px;
             margin-bottom: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid #eee;
         }
-        .about-section .about-title { font-size: 12px; font-weight: 800; color: #E0006C; margin-bottom: 4px; }
-        .about-section .about-content { font-size: 10px; line-height: 1.4; color: #666; }
+        .about-section .about-title { font-size: 14px; font-weight: 800; color: #E0006C; margin-bottom: 4px; }
+        .about-section .about-content { font-size: 13px; line-height: 1.5; color: #666; }
         
         .site-footer {
             background: #1a1a2e;
@@ -728,15 +844,15 @@
             grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
         }
-        .site-footer .footer-content h4 { color: #fff; font-size: 11px; margin-bottom: 4px; }
-        .site-footer .footer-content p { font-size: 9px; line-height: 1.4; color: #aaa; }
-        .site-footer .footer-content a { color: #E0006C; font-size: 9px; }
+        .site-footer .footer-content h4 { color: #fff; font-size: 13px; margin-bottom: 4px; }
+        .site-footer .footer-content p { font-size: 11px; line-height: 1.5; color: #aaa; }
+        .site-footer .footer-content a { color: #E0006C; font-size: 11px; }
         .site-footer .footer-bottom {
             text-align: center;
             padding-top: 8px;
             margin-top: 8px;
             border-top: 1px solid #333;
-            font-size: 9px;
+            font-size: 11px;
             color: #888;
         }
         
@@ -744,11 +860,11 @@
             position: fixed;
             top: 50px;
             right: 8px;
-            padding: 8px 14px;
+            padding: 10px 16px;
             border-radius: 8px;
             color: #fff;
             font-weight: 600;
-            font-size: 11px;
+            font-size: 13px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             transform: translateX(120%);
             transition: all 0.4s ease;
@@ -759,7 +875,7 @@
         .toast.success { background: linear-gradient(135deg, #27ae60, #1e8449); }
         .toast.error { background: linear-gradient(135deg, #dc3545, #c82333); }
         .toast.info { background: linear-gradient(135deg, #17a2b8, #117a8b); }
-        .toast .toast-close { float: right; margin-left: 8px; cursor: pointer; opacity: 0.8; font-size: 14px; }
+        .toast .toast-close { float: right; margin-left: 8px; cursor: pointer; opacity: 0.8; font-size: 16px; }
         
         .bottom-nav {
             position: fixed;
@@ -771,7 +887,7 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 2px 0 6px 0;
+            padding: 4px 0 8px 0;
             z-index: 999;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
         }
@@ -781,15 +897,15 @@
             align-items: center;
             gap: 1px;
             color: #999;
-            font-size: 7px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
-            padding: 2px 6px;
-            min-height: 32px;
+            padding: 4px 8px;
+            min-height: 40px;
             justify-content: center;
         }
         .bottom-nav .nav-item.active { color: #E0006C; }
-        .bottom-nav .nav-item i { font-size: 14px; }
+        .bottom-nav .nav-item i { font-size: 16px; }
         
         .loader {
             display: none;
@@ -806,11 +922,11 @@
         @media (max-width: 768px) {
             .profile-fields th, .profile-fields td {
                 display: block; width: 100%;
-                text-align: left; padding: 4px 8px;
+                text-align: left; padding: 6px 10px;
             }
             .profile-fields th { background: #f5f5f5; border-bottom: none; padding-bottom: 2px; }
             .plans-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-            .plan-card { min-height: 150px; }
+            .plan-card { min-height: 160px; }
             .duration-row { grid-template-columns: repeat(2, 1fr); }
             .site-header { flex-direction: column; text-align: center; }
             .site-footer .footer-content { grid-template-columns: 1fr; gap: 8px; }
@@ -819,10 +935,10 @@
         @media (max-width: 480px) {
             .site-content { padding: 6px; }
             .plans-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
-            .plan-card { min-height: 130px; }
-            .plan-card .plan-icon { font-size: 18px; }
-            .plan-card .plan-name { font-size: 11px; }
-            .plan-card .plan-price { font-size: 14px; }
+            .plan-card { min-height: 140px; }
+            .plan-card .plan-icon { font-size: 20px; }
+            .plan-card .plan-name { font-size: 12px; }
+            .plan-card .plan-price { font-size: 16px; }
         }
         
         @media (min-width: 769px) {
@@ -884,6 +1000,47 @@
                 </div>
             </div>
 
+            <!-- ============================================================
+                 PRIVATE STATS - Calls & Views
+                 ============================================================ -->
+            <div class="stats-row">
+                <div class="stat-box calls">
+                    <div class="stat-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-label">Total Calls</div>
+                        <div class="stat-value" id="callCount">0</div>
+                    </div>
+                </div>
+                <div class="stat-box views">
+                    <div class="stat-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-label">Profile Views</div>
+                        <div class="stat-value" id="viewCount">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================
+                 WALLET TOP-UP PROMPT (shown when balance is low)
+                 ============================================================ -->
+            <div class="topup-prompt" id="topupPrompt">
+                <i class="fas fa-exclamation-triangle topup-icon"></i>
+                <div class="topup-content">
+                    <div class="topup-title">Kindly Top Up Your Wallet</div>
+                    <div class="topup-text">
+                        You need to top up your wallet in order to create and publish your profile.
+                        Once your wallet has sufficient funds, you can select a plan and go live.
+                    </div>
+                    <button class="btn-topup" id="topupBtn">
+                        <i class="fas fa-plus-circle"></i> Top Up Wallet
+                    </button>
+                </div>
+            </div>
+
             <div class="status-banner inactive" id="statusBanner">
                 <div class="status-text">
                     <i class="fas fa-circle"></i>
@@ -930,7 +1087,7 @@
                         <button class="btn-upload"><i class="fas fa-camera"></i> Add Photos</button>
                         <input type="file" id="profilePhotoInput" accept="image/*" multiple>
                     </div>
-                    <span style="font-size:10px; color:#999;" id="photoCount">0 photos</span>
+                    <span style="font-size:12px; color:#999;" id="photoCount">0 photos</span>
                     <span class="photo-required" id="photoRequired" style="display:none;">⚠️ 1+ photo required</span>
                 </div>
                 <div class="photo-grid" id="photoGrid">
@@ -1307,19 +1464,19 @@
                                     <div class="svc-item"><input type="checkbox" value="Anal"><label>Anal</label></div>
                                     <div class="svc-item"><input type="checkbox" value="Massage"><label>Massage</label></div>
                                 </div>
-                                <div style="margin-top:4px;">
-                                    <input type="text" id="profileOtherServices" placeholder="Other services" style="width:100%; padding:4px 8px; border:1px solid #ddd; border-radius:4px; font-size:10px;">
+                                <div style="margin-top:6px;">
+                                    <input type="text" id="profileOtherServices" placeholder="Other services" style="width:100%; padding:6px 10px; border:1px solid #ddd; border-radius:4px; font-size:13px;">
                                 </div>
                             </td>
                         </tr>
                         
                         <tr>
                             <th>Incalls</th>
-                            <td><input type="number" id="profileIncallsRate" placeholder="KSh/hr" style="width:100%; padding:4px 8px; border:1px solid #ddd; border-radius:4px; font-size:11px;"></td>
+                            <td><input type="number" id="profileIncallsRate" placeholder="KSh/hr" style="width:100%; padding:6px 10px; border:1px solid #ddd; border-radius:4px; font-size:13px;"></td>
                         </tr>
                         <tr>
                             <th>Outcalls</th>
-                            <td><input type="number" id="profileOutcallsRate" placeholder="KSh/hr" style="width:100%; padding:4px 8px; border:1px solid #ddd; border-radius:4px; font-size:11px;"></td>
+                            <td><input type="number" id="profileOutcallsRate" placeholder="KSh/hr" style="width:100%; padding:6px 10px; border:1px solid #ddd; border-radius:4px; font-size:13px;"></td>
                         </tr>
                         
                         <tr>
@@ -1469,6 +1626,8 @@
                 currentPrice = first.price;
                 document.getElementById('selectedDuration').value = first.days;
                 document.getElementById('selectedPrice').value = first.price;
+                
+                checkTopupPrompt();
             }
 
             function selectDuration(days, price) {
@@ -1481,6 +1640,8 @@
                     btn.classList.remove('active');
                     if (parseInt(btn.dataset.days) === days) btn.classList.add('active');
                 });
+                
+                checkTopupPrompt();
             }
 
             window.selectProfileType = function(type) {
@@ -1510,11 +1671,42 @@
             const photoCount = document.getElementById('photoCount');
             const photoRequired = document.getElementById('photoRequired');
             const addFundBtn = document.getElementById('addFundBtn');
+            const topupBtn = document.getElementById('topupBtn');
+            const topupPrompt = document.getElementById('topupPrompt');
             const editBadge = document.getElementById('editBadge');
             const editModeBadge = document.getElementById('editModeBadge');
             const walletSection = document.getElementById('walletSection');
             const liveStatus = document.getElementById('liveStatus');
             const photoSection = document.getElementById('photoSection');
+            const callCountEl = document.getElementById('callCount');
+            const viewCountEl = document.getElementById('viewCount');
+            
+            // ============================================================
+            // TOP-UP PROMPT LOGIC
+            // ============================================================
+            function checkTopupPrompt() {
+                if (!topupPrompt) return;
+                
+                const requiredAmount = currentPrice || 400;
+                const hasEnough = currentWalletBalance >= requiredAmount;
+                const alreadyPublished = (profileStatus === 'active' || profileStatus === 'pending');
+                
+                if (!hasEnough && !alreadyPublished) {
+                    topupPrompt.classList.add('show');
+                } else {
+                    topupPrompt.classList.remove('show');
+                }
+            }
+            
+            if (topupBtn) {
+                topupBtn.addEventListener('click', function() {
+                    if (!currentUser) {
+                        showToast('Please login first', 'error');
+                        return;
+                    }
+                    window.location.href = 'checkout-mpesa.html?user_id=' + currentUser.id;
+                });
+            }
             
             if (typeof window.supabaseFunctions === 'undefined') {
                 const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
@@ -1586,7 +1778,6 @@
                             filter: 'user_id=eq.' + currentUser.id
                         },
                         (payload) => {
-                            console.log('🔄 Profile updated in realtime:', payload.new);
                             const newData = payload.new;
                             if (newData) {
                                 const newBalance = newData.wallet_balance || 0;
@@ -1594,6 +1785,7 @@
                                     lastWalletBalance = newBalance;
                                     currentWalletBalance = newBalance;
                                     updateWalletDisplay(newBalance);
+                                    checkTopupPrompt();
                                     
                                     if (walletSection) {
                                         walletSection.classList.add('wallet-updated');
@@ -1602,23 +1794,16 @@
                                     
                                     playNotificationSound();
                                     showToast(`💰 Wallet updated! KSh${newBalance}`, 'success');
-                                    
-                                    if ('Notification' in window && Notification.permission === 'granted') {
-                                        new Notification('💰 Wallet Approved!', {
-                                            body: 'Your wallet balance has been updated to KSh' + newBalance
-                                        });
-                                    }
                                 } else {
                                     lastWalletBalance = newBalance;
                                 }
                                 
                                 updateProfileFromRealtime(newData);
+                                updateStatsFromRealtime(newData);
                             }
                         }
                     )
-                    .subscribe((status) => {
-                        console.log('📡 Realtime status:', status);
-                    });
+                    .subscribe();
             }
             
             function updateProfileFromRealtime(data) {
@@ -1635,6 +1820,14 @@
                 
                 existingProfileData = data;
                 existingProfileId = data.id;
+                checkTopupPrompt();
+            }
+            
+            function updateStatsFromRealtime(data) {
+                const calls = data.call_count || 0;
+                const views = data.view_count || 0;
+                if (callCountEl) callCountEl.textContent = calls.toLocaleString();
+                if (viewCountEl) viewCountEl.textContent = views.toLocaleString();
             }
             
             function updateWalletDisplay(balance) {
@@ -1696,6 +1889,7 @@
                         currentWalletBalance = newBalance;
                         lastWalletBalance = newBalance;
                         updateWalletDisplay(newBalance);
+                        checkTopupPrompt();
                         
                         if (walletSection) {
                             walletSection.classList.add('wallet-updated');
@@ -1707,10 +1901,9 @@
                     }
                     
                     updateProfileFromRealtime(data);
+                    updateStatsFromRealtime(data);
                     
-                } catch (e) {
-                    console.log('Silent refresh error:', e);
-                }
+                } catch (e) {}
             }
             
             async function loadUserProfile() {
@@ -1769,6 +1962,9 @@
                             renderPhotos();
                         }
                         
+                        updateStatsFromRealtime(data);
+                        checkTopupPrompt();
+                        
                     } else {
                         isEditMode = false;
                         editBadge.style.display = 'none';
@@ -1777,6 +1973,7 @@
                         updateStatusBanner('inactive');
                         uploadedPhotos = [];
                         renderPhotos();
+                        checkTopupPrompt();
                     }
                 } catch (error) {
                     isEditMode = false;
@@ -1983,9 +2180,6 @@
                 window.location.href = 'checkout-mpesa.html?user_id=' + currentUser.id;
             });
             
-            // ============================================================
-            // ✅ FORM SUBMIT - CORRECTED WALLET DEDUCTION LOGIC
-            // ============================================================
             profileForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
@@ -1994,7 +2188,6 @@
                     return;
                 }
                 
-                // PHOTO VALIDATION
                 if (uploadedPhotos.length === 0) {
                     if (photoSection) {
                         photoSection.classList.add('photo-error');
@@ -2015,9 +2208,6 @@
                 
                 if (photoSection) photoSection.classList.remove('photo-error');
                 
-                // ============================================================
-                // STEP 1: GET FRESH WALLET BALANCE FROM DATABASE
-                // ============================================================
                 let freshWalletBalance = currentWalletBalance;
                 let freshProfileData = null;
                 
@@ -2033,16 +2223,9 @@
                         freshWalletBalance = freshData.wallet_balance || 0;
                         currentWalletBalance = freshWalletBalance;
                         lastWalletBalance = freshWalletBalance;
-                        console.log('💰 Fresh wallet balance from DB:', freshWalletBalance);
-                        console.log('📋 Fresh status:', freshData.status);
                     }
-                } catch (err) {
-                    console.log('Could not fetch fresh balance, using cached:', currentWalletBalance);
-                }
+                } catch (err) {}
                 
-                // ============================================================
-                // STEP 2: DETERMINE IF WE NEED TO CHARGE
-                // ============================================================
                 let chargeAmount = 0;
                 let newBalance = freshWalletBalance;
                 let isNewProfile = false;
@@ -2054,74 +2237,47 @@
                 const selectedPlan = document.getElementById('selectedPlan').value;
                 const selectedDays = parseInt(document.getElementById('selectedDuration').value) || 3;
                 
-                console.log('🎯 Current status:', currentStatus);
-                console.log('🎯 Selected plan:', selectedPlan, '| Days:', selectedDays, '| Price:', selectedPrice);
-                console.log('🎯 Previous plan:', previousPlan, '| Days:', previousDays);
-                
-                // DETERMINE IF CHARGE IS NEEDED
                 if (currentStatus === 'new' || !freshProfileData) {
-                    // No profile at all → NEW → CHARGE
                     isNewProfile = true;
-                    console.log('✅ Reason: No profile exists');
                 } else if (currentStatus === 'wallet_only') {
-                    // Paid wallet only, no real profile yet → CHARGE
                     isNewProfile = true;
-                    console.log('✅ Reason: Wallet-only profile (upgrading)');
                 } else if (currentStatus === 'inactive' || currentStatus === 'rejected') {
-                    // Was deactivated/rejected → Resubmitting → CHARGE
                     isNewProfile = true;
-                    console.log('✅ Reason: Resubmitting (status was ' + currentStatus + ')');
                 } else if (currentStatus === 'approved') {
-                    // Already published
-                    // Only charge if they CHANGED the plan/duration
                     if (previousPlan !== selectedPlan || previousDays !== selectedDays) {
                         isNewProfile = true;
-                        console.log('✅ Reason: Plan/duration changed on approved profile');
                     } else {
                         isNewProfile = false;
-                        console.log('✏️ Reason: Approved profile, editing only, no change to plan');
                     }
                 } else if (currentStatus === 'pending_review' || currentStatus === 'pending') {
-                    // Already submitted, being edited
-                    // Charge if they changed the plan/duration
                     if (previousPlan !== selectedPlan || previousDays !== selectedDays) {
                         isNewProfile = true;
-                        console.log('✅ Reason: Plan/duration changed on pending profile');
                     } else {
                         isNewProfile = false;
-                        console.log('✏️ Reason: Pending profile, editing only, no plan change');
                     }
                 } else {
                     isNewProfile = true;
-                    console.log('✅ Reason: Unknown status');
                 }
                 
-                // ============================================================
-                // STEP 3: PROCESS CHARGE OR EDIT
-                // ============================================================
                 if (isNewProfile) {
                     if (freshWalletBalance < selectedPrice) {
                         const shortfall = selectedPrice - freshWalletBalance;
                         showToast(`❌ Insufficient balance! Need KSh${shortfall} more.`, 'error');
                         addFundBtn.classList.add('wallet-warning');
                         setTimeout(() => addFundBtn.classList.remove('wallet-warning'), 3000);
-                        addFundBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        topupPrompt.classList.add('show');
+                        topupPrompt.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         return;
                     }
                     chargeAmount = selectedPrice;
                     newBalance = freshWalletBalance - selectedPrice;
-                    console.log(`💳 CHARGING: KSh${freshWalletBalance} - KSh${selectedPrice} = KSh${newBalance}`);
                     showToast(`💳 Charging KSh${chargeAmount} for membership`, 'info');
                 } else {
                     chargeAmount = 0;
                     newBalance = freshWalletBalance;
-                    console.log('✏️ No charge - editing existing profile');
                     showToast('✏️ Editing profile - No charge applied', 'info');
                 }
                 
-                // ============================================================
-                // STEP 4: SAVE TO DATABASE
-                // ============================================================
                 saveBtn.disabled = true;
                 saveBtnText.textContent = 'Saving...';
                 saveLoader.classList.add('show');
@@ -2131,6 +2287,10 @@
                 document.querySelectorAll('#servicesGrid input[type="checkbox"]:checked').forEach(cb => {
                     services.push(cb.value);
                 });
+                
+                // Calculate plan expiry
+                const planExpiresAt = new Date();
+                planExpiresAt.setDate(planExpiresAt.getDate() + selectedDays);
                 
                 const profileData = {
                     user_id: currentUser.id,
@@ -2155,9 +2315,12 @@
                     membership_days: selectedDays,
                     membership_price: selectedPrice,
                     photos: uploadedPhotos,
-                    wallet_balance: newBalance,   // ✅ Deducted balance
+                    wallet_balance: newBalance,
                     status: 'pending_review',
                     is_active: false,
+                    plan_name: selectedPlan,
+                    plan_started_at: new Date().toISOString(),
+                    plan_expires_at: planExpiresAt.toISOString(),
                     updated_at: new Date().toISOString()
                 };
                 
@@ -2166,8 +2329,6 @@
                     const profileIdToUpdate = existingProfileId || freshProfileData?.id;
                     
                     if (profileIdToUpdate) {
-                        // UPDATE existing profile
-                        console.log('📝 Updating profile ID:', profileIdToUpdate);
                         result = await window.supabaseFunctions.supabase
                             .from('profiles')
                             .update(profileData)
@@ -2175,13 +2336,8 @@
                             .select();
                         
                         if (result.error) throw result.error;
-                        
                         existingProfileId = profileIdToUpdate;
-                        console.log('✅ Profile updated');
-                        
                     } else {
-                        // INSERT new profile
-                        console.log('📝 Creating new profile');
                         profileData.created_at = new Date().toISOString();
                         
                         result = await window.supabaseFunctions.supabase
@@ -2190,14 +2346,9 @@
                             .select();
                         
                         if (result.error) throw result.error;
-                        
                         existingProfileId = result.data?.[0]?.id;
-                        console.log('✅ Profile created');
                     }
                     
-                    // ============================================================
-                    // STEP 5: VERIFY THE DEDUCTION SAVED CORRECTLY
-                    // ============================================================
                     const { data: verifyData } = await window.supabaseFunctions.supabase
                         .from('profiles')
                         .select('wallet_balance')
@@ -2205,16 +2356,7 @@
                         .single();
                     
                     const savedBalance = verifyData?.wallet_balance ?? newBalance;
-                    console.log('✅ Verified saved balance in DB:', savedBalance);
                     
-                    if (isNewProfile && savedBalance >= freshWalletBalance) {
-                        console.error('❌ WARNING: Balance was NOT deducted!');
-                        showToast('⚠️ Warning: Balance may not have been deducted.', 'error');
-                    }
-                    
-                    // ============================================================
-                    // STEP 6: UPDATE UI
-                    // ============================================================
                     currentWalletBalance = savedBalance;
                     lastWalletBalance = savedBalance;
                     updateWalletDisplay(savedBalance);
@@ -2227,17 +2369,18 @@
                     editModeBadge.style.display = 'inline-block';
                     
                     updateAboutSection(profileData);
+                    checkTopupPrompt();
                     
                     try {
                         await window.supabaseFunctions.logActivity(
                             currentUser.id,
                             'profile_submitted',
-                            `User ${profileData.full_name} submitted - Charged: KSh${chargeAmount} - New Balance: KSh${savedBalance}`
+                            `User ${profileData.full_name} submitted - Charged: KSh${chargeAmount}`
                         );
                     } catch (e) {}
                     
                     if (chargeAmount > 0) {
-                        showToast(`✅ Profile submitted! KSh${chargeAmount} deducted. Balance: KSh${savedBalance}`, 'success');
+                        showToast(`✅ Profile submitted! KSh${chargeAmount} deducted.`, 'success');
                     } else {
                         showToast(`✅ Profile updated successfully!`, 'success');
                     }
@@ -2250,7 +2393,6 @@
                     setTimeout(() => location.reload(), 2500);
                     
                 } catch (error) {
-                    console.error('❌ Save error:', error);
                     showToast('Error: ' + error.message, 'error');
                     saveBtn.disabled = false;
                     saveBtnText.textContent = 'Save Changes';
@@ -2297,7 +2439,7 @@
             checkSession();
             updateDurations('regular');
             
-            console.log('✅ My Profile - Corrected wallet deduction + Photo required + Home button');
+            console.log('✅ My Profile - Stats + Topup prompt + All counties + Polished');
             
         });
     </script>
