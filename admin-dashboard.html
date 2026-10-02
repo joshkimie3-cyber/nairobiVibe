@@ -5,14 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Admin Dashboard - Nairobi Vibe</title>
     
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://upnymrrbwlkcwoswpzbe.supabase.co">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://upnymrrbwlkcwoswpzbe.supabase.co" crossorigin>
+    
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- ============================================================
-         SUPABASE CONFIG - NEW KEYS
-         ============================================================ -->
     <script>
         const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
@@ -55,7 +64,7 @@
             }
         };
         
-        console.log('✅ Supabase initialized with NEW keys!');
+        console.log('✅ Supabase initialized');
     </script>
 
     <style>
@@ -64,13 +73,14 @@
         body {
             font-family: 'Open Sans', sans-serif;
             background: #f0f2f5;
-            font-size: 13px;
+            font-size: 14px;
             padding-bottom: 60px;
+            line-height: 1.5;
         }
         
         .admin-header {
             background: linear-gradient(135deg, #1a0528, #2f074e);
-            padding: 8px 16px;
+            padding: 10px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -89,27 +99,25 @@
         }
         
         .admin-header .logo .logo-icon {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             background: #fff;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 16px;
+            font-size: 17px;
             color: #E0006C;
         }
         
         .admin-header .logo h1 {
             color: #fff;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
         }
         
-        .admin-header .logo h1 span {
-            color: #FE5ACB;
-        }
+        .admin-header .logo h1 span { color: #FE5ACB; }
         
         .admin-header .header-right {
             display: flex;
@@ -121,7 +129,7 @@
         .admin-header .header-right .notification {
             position: relative;
             color: #fff;
-            font-size: 18px;
+            font-size: 19px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -132,7 +140,7 @@
             right: -8px;
             background: #e74c3c;
             color: #fff;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 700;
             padding: 1px 7px;
             border-radius: 50%;
@@ -154,34 +162,34 @@
         }
         
         .admin-header .header-right .admin-info .avatar {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: linear-gradient(135deg, #FE5ACB, #E0006C);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             color: #fff;
         }
         
         .admin-header .header-right .admin-info .details .name {
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
         }
         
         .admin-header .header-right .admin-info .details .role {
-            font-size: 10px;
+            font-size: 11px;
             color: #aaa;
         }
         
         .admin-header .header-right .logout-btn {
             color: #fff;
             background: rgba(255,255,255,0.12);
-            padding: 6px 14px;
+            padding: 7px 15px;
             border-radius: 25px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             border: none;
             cursor: pointer;
@@ -189,7 +197,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            min-height: 34px;
+            min-height: 36px;
         }
         
         .admin-header .header-right .logout-btn:hover {
@@ -217,7 +225,7 @@
         
         .admin-container {
             display: flex;
-            min-height: calc(100vh - 56px);
+            min-height: calc(100vh - 58px);
         }
         
         .admin-sidebar {
@@ -226,9 +234,9 @@
             padding: 15px 0;
             border-right: 1px solid #e8e8e8;
             flex-shrink: 0;
-            height: calc(100vh - 56px);
+            height: calc(100vh - 58px);
             position: sticky;
-            top: 56px;
+            top: 58px;
             overflow-y: auto;
             transition: all 0.3s ease;
         }
@@ -239,14 +247,14 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 20px;
+            padding: 11px 20px;
             color: #555;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
             text-decoration: none;
-            min-height: 44px;
+            min-height: 46px;
         }
         
         .admin-sidebar .sidebar-menu li a:hover,
@@ -258,7 +266,7 @@
         
         .admin-sidebar .sidebar-menu li a i {
             width: 20px;
-            font-size: 14px;
+            font-size: 15px;
             color: #999;
             text-align: center;
         }
@@ -269,9 +277,9 @@
             margin-left: auto;
             background: #e74c3c;
             color: #fff;
-            padding: 1px 10px;
+            padding: 2px 10px;
             border-radius: 12px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             animation: pulse 1s ease-in-out infinite;
         }
@@ -284,7 +292,7 @@
         
         .admin-sidebar .sidebar-menu .menu-label {
             padding: 8px 20px;
-            font-size: 10px;
+            font-size: 11px;
             text-transform: uppercase;
             color: #999;
             font-weight: 700;
@@ -293,7 +301,7 @@
         
         .admin-content {
             flex: 1;
-            padding: 16px;
+            padding: 18px;
             overflow-x: hidden;
             max-width: 100%;
         }
@@ -302,13 +310,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
             gap: 8px;
         }
         
         .page-title h2 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             color: #333;
         }
@@ -317,20 +325,20 @@
         
         .page-title .date {
             color: #888;
-            font-size: 12px;
+            font-size: 13px;
         }
         
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         
         .stat-card {
             background: #fff;
             border-radius: 12px;
-            padding: 12px 10px;
+            padding: 14px 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             display: flex;
             align-items: center;
@@ -339,13 +347,13 @@
         }
         
         .stat-card .icon {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 17px;
             flex-shrink: 0;
         }
         
@@ -357,13 +365,13 @@
         .stat-card .icon.red { background: #fce4ec; color: #e74c3c; }
         
         .stat-card .info h3 {
-            font-size: 17px;
+            font-size: 19px;
             font-weight: 800;
             color: #333;
         }
         
         .stat-card .info p {
-            font-size: 8px;
+            font-size: 10px;
             color: #888;
             font-weight: 600;
             text-transform: uppercase;
@@ -372,8 +380,8 @@
         .section-card {
             background: #fff;
             border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
@@ -381,13 +389,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
             gap: 6px;
         }
         
         .section-card .section-header h3 {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             color: #333;
         }
@@ -400,9 +408,9 @@
         .section-card .section-header .badge-count {
             background: #E0006C;
             color: #fff;
-            padding: 2px 12px;
+            padding: 3px 14px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
         }
         
@@ -417,14 +425,14 @@
         
         .filters input,
         .filters select {
-            padding: 6px 10px;
+            padding: 8px 12px;
             border: 2px solid #e8e8e8;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 13px;
             font-family: 'Open Sans', sans-serif;
             outline: none;
             background: #fff;
-            min-height: 36px;
+            min-height: 40px;
             flex: 1;
         }
         
@@ -442,25 +450,25 @@
         .member-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11px;
+            font-size: 13px;
             min-width: 600px;
         }
         
         .member-table thead { background: #f8f9fa; }
         
         .member-table thead th {
-            padding: 6px 10px;
+            padding: 10px 12px;
             text-align: left;
             font-weight: 700;
             color: #555;
-            font-size: 9px;
+            font-size: 11px;
             text-transform: uppercase;
             border-bottom: 2px solid #e8e8e8;
             white-space: nowrap;
         }
         
         .member-table tbody td {
-            padding: 6px 10px;
+            padding: 10px 12px;
             border-bottom: 1px solid #f0f0f0;
             color: #333;
             vertical-align: middle;
@@ -469,19 +477,19 @@
         .member-table .user-cell {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         
         .member-table .user-cell .avatar-sm {
-            width: 28px;
-            height: 28px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: #fce4ec;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 11px;
+            font-size: 13px;
             color: #E0006C;
             overflow: hidden;
             flex-shrink: 0;
@@ -495,18 +503,18 @@
         
         .member-table .user-cell .user-name {
             font-weight: 600;
-            font-size: 12px;
+            font-size: 14px;
         }
         
         .member-table .user-cell .user-email {
-            font-size: 9px;
+            font-size: 11px;
             color: #888;
         }
         
         .member-table .badge-pill {
-            padding: 2px 10px;
+            padding: 3px 12px;
             border-radius: 12px;
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             display: inline-block;
@@ -532,22 +540,22 @@
         
         .action-buttons {
             display: flex;
-            gap: 3px;
+            gap: 4px;
             flex-wrap: wrap;
         }
         
         .action-buttons button {
-            padding: 3px 8px;
+            padding: 5px 9px;
             border: none;
             border-radius: 5px;
-            font-size: 9px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 3px;
-            min-height: 26px;
+            min-height: 30px;
         }
         
         .action-buttons button:active { transform: scale(0.9); }
@@ -562,25 +570,25 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
+            margin-top: 12px;
             flex-wrap: wrap;
             gap: 6px;
         }
         
-        .pagination .info { font-size: 10px; color: #888; }
+        .pagination .info { font-size: 12px; color: #888; }
         
         .pagination .pages { display: flex; gap: 3px; flex-wrap: wrap; }
         
         .pagination .pages button {
-            padding: 3px 10px;
+            padding: 5px 12px;
             border: 1px solid #e8e8e8;
             border-radius: 6px;
             background: #fff;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             color: #666;
-            min-height: 28px;
+            min-height: 32px;
         }
         
         .pagination .pages button.active {
@@ -608,7 +616,7 @@
             border-radius: 16px;
             max-width: 500px;
             width: 100%;
-            padding: 20px;
+            padding: 22px;
             animation: modalSlide 0.3s ease;
             max-height: 90vh;
             overflow-y: auto;
@@ -623,26 +631,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
             border-bottom: 2px solid #f0f0f0;
         }
         
-        .modal-header h3 { font-size: 16px; font-weight: 700; color: #333; }
+        .modal-header h3 { font-size: 18px; font-weight: 700; color: #333; }
         .modal-header h3 i { color: #E0006C; margin-right: 6px; }
         
         .modal-header .close {
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
             color: #999;
             padding: 0 4px;
         }
         
-        .modal-body { margin-bottom: 12px; }
+        .modal-body { margin-bottom: 14px; }
         
         .modal-body .detail-row {
             display: flex;
-            padding: 4px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #f5f5f5;
             gap: 8px;
             flex-wrap: wrap;
@@ -651,29 +659,29 @@
         .modal-body .detail-row .label {
             font-weight: 600;
             color: #666;
-            min-width: 90px;
-            font-size: 11px;
+            min-width: 100px;
+            font-size: 13px;
         }
         
         .modal-body .detail-row .value {
             color: #333;
-            font-size: 11px;
+            font-size: 13px;
             word-break: break-word;
             flex: 1;
         }
         
         .photo-gallery {
-            margin: 10px 0;
-            padding: 10px;
+            margin: 12px 0;
+            padding: 12px;
             background: #f8f9fa;
             border-radius: 10px;
         }
         
         .photo-gallery .gallery-title {
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 700;
             color: #555;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -683,8 +691,8 @@
         
         .photo-gallery .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 5px;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 6px;
         }
         
         .photo-gallery .gallery-grid .gallery-img {
@@ -694,6 +702,12 @@
             cursor: pointer;
             border: 2px solid #e8e8e8;
             background: #f0f0f0;
+            transition: all 0.3s ease;
+        }
+        
+        .photo-gallery .gallery-grid .gallery-img:hover {
+            transform: scale(1.05);
+            border-color: #E0006C;
         }
         
         .photo-gallery .gallery-grid .gallery-img img {
@@ -703,12 +717,12 @@
         .photo-gallery .no-photos {
             text-align: center;
             color: #999;
-            font-size: 11px;
-            padding: 12px 0;
+            font-size: 13px;
+            padding: 14px 0;
         }
         
         .photo-gallery .no-photos i {
-            font-size: 24px;
+            font-size: 26px;
             display: block;
             margin-bottom: 4px;
             color: #ddd;
@@ -716,21 +730,21 @@
         
         .modal-footer {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             justify-content: flex-end;
-            padding-top: 10px;
+            padding-top: 12px;
             border-top: 2px solid #f0f0f0;
             flex-wrap: wrap;
         }
         
         .modal-footer button {
-            padding: 6px 18px;
+            padding: 8px 20px;
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
-            min-height: 34px;
+            min-height: 38px;
         }
         
         .modal-footer .btn-secondary { background: #e8e8e8; color: #666; }
@@ -757,7 +771,7 @@
         
         .image-viewer .close-viewer {
             position: absolute; top: 20px; right: 30px;
-            color: #fff; font-size: 36px; cursor: pointer;
+            color: #fff; font-size: 38px; cursor: pointer;
         }
         
         .empty-state {
@@ -766,18 +780,18 @@
             color: #999;
         }
         
-        .empty-state i { font-size: 32px; color: #ddd; margin-bottom: 8px; }
-        .empty-state h4 { font-size: 14px; color: #666; margin-bottom: 4px; }
-        .empty-state p { font-size: 11px; }
+        .empty-state i { font-size: 36px; color: #ddd; margin-bottom: 8px; }
+        .empty-state h4 { font-size: 16px; color: #666; margin-bottom: 4px; }
+        .empty-state p { font-size: 13px; }
         
         .toast {
             position: fixed;
             top: 15px; right: 15px;
-            padding: 12px 18px;
+            padding: 14px 20px;
             border-radius: 10px;
             color: #fff;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 14px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             transform: translateX(120%);
             transition: all 0.4s ease;
@@ -793,7 +807,7 @@
         
         .toast .toast-close {
             float: right; margin-left: 10px;
-            cursor: pointer; opacity: 0.8; font-size: 14px;
+            cursor: pointer; opacity: 0.8; font-size: 16px;
         }
         
         .bottom-nav {
@@ -815,22 +829,22 @@
             align-items: center;
             gap: 2px;
             color: #999;
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             padding: 4px 8px;
-            min-height: 36px;
+            min-height: 42px;
             justify-content: center;
             position: relative;
         }
         
         .bottom-nav .nav-item.active { color: #E0006C; }
-        .bottom-nav .nav-item i { font-size: 15px; }
+        .bottom-nav .nav-item i { font-size: 17px; }
         
         .bottom-nav .nav-item .badge {
             position: absolute; top: 0; right: 0;
             background: #e74c3c; color: #fff;
-            font-size: 8px; font-weight: 700;
+            font-size: 9px; font-weight: 700;
             padding: 1px 6px; border-radius: 50%;
             min-width: 16px; text-align: center;
             animation: pulse 1s ease-in-out infinite;
@@ -842,9 +856,9 @@
             right: 20px;
             background: rgba(39, 174, 96, 0.95);
             color: #fff;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: 12px;
             z-index: 100;
             backdrop-filter: blur(5px);
             display: flex;
@@ -893,14 +907,28 @@
             animation: newRowHighlight 3s ease;
         }
         
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-weight: 600; font-size: 13px; color: #555; margin-bottom: 4px; }
+        .form-group .required { color: #e74c3c; }
+        .form-control {
+            width: 100%; padding: 9px 12px;
+            border: 2px solid #e8e8e8; border-radius: 8px;
+            font-size: 14px; font-family: 'Open Sans', sans-serif;
+            transition: all 0.3s ease; background: #fafafa; color: #333;
+        }
+        .form-control:focus {
+            outline: none; border-color: #E0006C;
+            background: #fff; box-shadow: 0 0 0 4px rgba(224,0,108,0.1);
+        }
+        
         @media (min-width: 600px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-            .admin-content { padding: 20px; }
+            .admin-content { padding: 22px; }
         }
         
         @media (min-width: 992px) {
             .stats-grid { grid-template-columns: repeat(5, 1fr); }
-            .admin-content { padding: 24px; }
+            .admin-content { padding: 26px; }
             .admin-sidebar { display: block !important; }
             .live-indicator { bottom: 30px; right: 30px; }
         }
@@ -909,11 +937,11 @@
             .admin-sidebar {
                 display: none !important;
                 position: fixed;
-                top: 56px; left: 0; bottom: 0;
+                top: 58px; left: 0; bottom: 0;
                 width: 260px;
                 z-index: 1000;
                 box-shadow: 2px 0 30px rgba(0,0,0,0.2);
-                height: calc(100vh - 56px);
+                height: calc(100vh - 58px);
             }
             .admin-sidebar.show { display: block !important; }
             .sidebar-overlay {
@@ -927,23 +955,20 @@
         }
         
         @media (max-width: 768px) {
-            .admin-header { padding: 6px 12px; }
-            .admin-header .logo h1 { font-size: 14px; }
-            .admin-content { padding: 10px; }
+            .admin-header { padding: 8px 12px; }
+            .admin-header .logo h1 { font-size: 15px; }
+            .admin-content { padding: 12px; }
             .filters { flex-direction: column; }
             .filters input, .filters select { width: 100%; min-width: auto; }
             .admin-header .header-right .admin-info .details { display: none; }
-            .modal { padding: 16px; margin: 8px; }
+            .modal { padding: 18px; margin: 8px; }
             .modal-body .detail-row { flex-direction: column; gap: 2px; }
             .modal-body .detail-row .label { min-width: auto; }
             .bottom-nav { display: flex; }
             body { padding-bottom: 60px; }
-            .member-table { font-size: 10px; min-width: 500px; }
-            .member-table thead th, .member-table tbody td { padding: 4px 6px; }
-            .action-buttons button { padding: 2px 6px; font-size: 8px; min-height: 22px; }
-            .stat-card { padding: 10px 8px; }
-            .stat-card .icon { width: 32px; height: 32px; font-size: 13px; }
-            .stat-card .info h3 { font-size: 15px; }
+            .member-table { font-size: 12px; min-width: 550px; }
+            .member-table thead th, .member-table tbody td { padding: 6px 8px; }
+            .action-buttons button { padding: 4px 8px; font-size: 10px; min-height: 26px; }
         }
         
         @media (min-width: 769px) {
@@ -953,11 +978,11 @@
         
         @media (max-width: 400px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-            .stat-card .icon { width: 28px; height: 28px; font-size: 11px; }
-            .stat-card .info h3 { font-size: 13px; }
-            .stat-card .info p { font-size: 7px; }
-            .section-card { padding: 10px 12px; }
-            .member-table { font-size: 9px; min-width: 400px; }
+            .stat-card .icon { width: 34px; height: 34px; font-size: 13px; }
+            .stat-card .info h3 { font-size: 16px; }
+            .stat-card .info p { font-size: 9px; }
+            .section-card { padding: 12px 14px; }
+            .member-table { font-size: 11px; min-width: 500px; }
         }
         
         ::-webkit-scrollbar { width: 4px; }
@@ -1131,7 +1156,7 @@
                 <div class="section-header">
                     <h3><i class="fas fa-chart-line" style="color:#E0006C;"></i> Registration Trends</h3>
                 </div>
-                <div style="position:relative; height:200px;">
+                <div style="position:relative; height:220px;">
                     <canvas id="registrationsChart"></canvas>
                 </div>
             </div>
@@ -1320,22 +1345,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-weight: 600; font-size: 12px; color: #555; margin-bottom: 4px; }
-    .form-group .required { color: #e74c3c; }
-    .form-control {
-        width: 100%; padding: 8px 12px;
-        border: 2px solid #e8e8e8; border-radius: 8px;
-        font-size: 13px; font-family: 'Open Sans', sans-serif;
-        transition: all 0.3s ease; background: #fafafa; color: #333;
-    }
-    .form-control:focus {
-        outline: none; border-color: #E0006C;
-        background: #fff; box-shadow: 0 0 0 4px rgba(224,0,108,0.1);
-    }
-</style>
 
 <div class="modal-overlay" id="userModal">
     <div class="modal">
@@ -1700,32 +1709,18 @@
             return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
         }
         
-        // ============================================================
-        // HELPER: Check if a profile is wallet-only (payment request only)
-        // ============================================================
         function isWalletOnly(user) {
-            // Explicit wallet_only status
             if (user.status === 'wallet_only') return true;
-            
-            // Legacy detection: has wallet data but no proper profile name
             if ((user.wallet_amount > 0 || user.wallet_transaction) && 
                 (!user.full_name || user.full_name === '' || user.full_name === 'User')) {
                 return true;
             }
-            
             return false;
         }
         
-        // ============================================================
-        // HELPER: Check if a profile is a real member profile
-        // ============================================================
         function isRealMember(user) {
-            // Exclude wallet-only
             if (isWalletOnly(user)) return false;
-            
-            // Exclude admin
             if (user.role === 'admin') return false;
-            
             return true;
         }
         
@@ -1783,16 +1778,12 @@
         
         function updateStats() {
             const total = allUsers.filter(u => isRealMember(u)).length;
-            
-            // Pending only counts REAL member profiles (not wallet-only)
             const pending = allUsers.filter(u => 
                 isRealMember(u) && (u.status === 'pending_review' || u.status === 'pending')
             ).length;
-            
             const approved = allUsers.filter(u => 
                 isRealMember(u) && u.status === 'approved'
             ).length;
-            
             const rejected = allUsers.filter(u => 
                 isRealMember(u) && u.status === 'rejected'
             ).length;
@@ -1847,16 +1838,12 @@
             });
         }
         
-        // ============================================================
-        // DASHBOARD: PROFILE APPROVALS (EXCLUDES wallet_only)
-        // ============================================================
         function renderMembers() {
             const searchTerm = searchInput.value.toLowerCase();
             const statusFilter = filterStatus.value;
             const planFilter = filterPlan.value;
             
             let filtered = allUsers.filter(user => {
-                // EXCLUDE wallet_only from dashboard approvals
                 if (isWalletOnly(user)) return false;
                 
                 const matchesSearch = 
@@ -1938,9 +1925,6 @@
             renderMembers();
         };
         
-        // ============================================================
-        // WALLET APPROVALS (SHOWS ALL wallet activity including wallet_only)
-        // ============================================================
         function renderWalletHistory() {
             const searchTerm = walletSearchInput.value.toLowerCase();
             const statusFilter = walletFilterStatus.value;
@@ -2024,7 +2008,7 @@
                             </td>
                             <td><strong style="color:#E0006C;">KSh${user.wallet_amount || 0}</strong></td>
                             <td>${user.wallet_phone || 'N/A'}</td>
-                            <td><code style="font-size:10px;">${user.wallet_transaction || 'N/A'}</code></td>
+                            <td><code style="font-size:11px;">${user.wallet_transaction || 'N/A'}</code></td>
                             <td>${statusLabels[status] || statusLabels.pending}</td>
                             <td>${user.wallet_approval_date ? new Date(user.wallet_approval_date).toLocaleDateString() : formatDate(user.created_at)}</td>
                             <td>${actions}</td>
@@ -2045,16 +2029,12 @@
             renderWalletHistory();
         };
         
-        // ============================================================
-        // ALL MEMBERS (EXCLUDES wallet_only AND admin)
-        // ============================================================
         function renderAllMembers() {
             const searchTerm = membersSearchInput.value.toLowerCase();
             const statusFilter = membersFilterStatus.value;
             const roleFilter = membersFilterRole.value;
             
             let filtered = allUsers.filter(user => {
-                // EXCLUDE wallet_only
                 if (isWalletOnly(user)) return false;
                 
                 const matchesSearch = 
@@ -2536,7 +2516,6 @@
             console.log('✅ Admin Dashboard Loaded - LIVE MODE');
             console.log('📡 Realtime: ACTIVE');
             console.log('🔄 Auto-refresh: ACTIVE (every 15s)');
-            console.log('✅ FIX: Wallet-only profiles excluded from Members');
         }
         
         initDashboard();
