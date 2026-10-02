@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Add Funds - Nairobi Vibe</title>
+    <meta name="description" content="Add funds to your Nairobi Vibe wallet via M-PESA.">
+    
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://upnymrrbwlkcwoswpzbe.supabase.co">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://upnymrrbwlkcwoswpzbe.supabase.co" crossorigin>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,6 +30,8 @@
             overflow-x: hidden;
             min-height: 100vh;
             padding-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
         }
         
         .header {
@@ -42,15 +55,15 @@
         
         .logo { display: flex; align-items: center; gap: 8px; }
         .logo-img { width: 40px; height: 40px; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #E0006C; }
-        .logo-text { color: #fff; font-size: 16px; font-weight: 800; }
+        .logo-text { color: #fff; font-size: 17px; font-weight: 800; }
         .logo-text span { color: #FE5ACB; }
         
-        .back-link { color: #fff; font-size: 13px; font-weight: 600; padding: 6px 14px; background: rgba(255,255,255,0.15); border-radius: 20px; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+        .back-link { color: #fff; font-size: 14px; font-weight: 600; padding: 8px 16px; background: rgba(255,255,255,0.15); border-radius: 20px; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
         .back-link:active { transform: scale(0.95); }
         
         .main-content { max-width: 700px; margin: 0 auto; padding: 16px 14px; }
         
-        .breadcrumb { font-size: 12px; color: #999; margin-bottom: 14px; }
+        .breadcrumb { font-size: 13px; color: #999; margin-bottom: 14px; }
         .breadcrumb a { color: #E0006C; text-decoration: none; }
         .breadcrumb span { color: #666; }
         
@@ -66,81 +79,81 @@
             box-shadow: 0 2px 8px rgba(243, 156, 18, 0.15);
         }
         .contact-banner i { color: #f39c12; font-size: 22px; flex-shrink: 0; }
-        .contact-banner .contact-text { font-size: 13px; color: #856404; line-height: 1.5; }
+        .contact-banner .contact-text { font-size: 14px; color: #856404; line-height: 1.5; }
         .contact-banner .contact-text strong { color: #E0006C; }
         .contact-banner .contact-text a { color: #E0006C; font-weight: 700; text-decoration: none; }
         
         .payment-card {
             background: #fff;
             border-radius: 18px;
-            padding: 24px 20px;
+            padding: 26px 22px;
             box-shadow: 0 4px 25px rgba(0,0,0,0.08);
             border: 1px solid #eee;
             position: relative;
             overflow: hidden;
         }
         
-        .payment-title { font-size: 22px; font-weight: 800; color: #E0006C; margin-bottom: 4px; text-align: center; }
+        .payment-title { font-size: 24px; font-weight: 800; color: #E0006C; margin-bottom: 4px; text-align: center; }
         .payment-title i { color: #27ae60; margin-right: 8px; }
-        .payment-subtitle { font-size: 13px; color: #999; text-align: center; margin-bottom: 20px; }
+        .payment-subtitle { font-size: 14px; color: #999; text-align: center; margin-bottom: 22px; }
         
         .till-details {
             background: linear-gradient(145deg, #fce4ec, #f8d7da);
             border-radius: 16px;
-            padding: 22px 20px;
+            padding: 24px 20px;
             margin-bottom: 20px;
             text-align: center;
             border: 2px dashed #E0006C;
         }
-        .till-details .till-icon { font-size: 40px; color: #E0006C; margin-bottom: 6px; display: block; }
-        .till-details .till-label { font-size: 11px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
-        .till-details .till-number { font-size: 32px; font-weight: 800; color: #E0006C; letter-spacing: 4px; background: #fff; padding: 6px 20px; border-radius: 10px; display: inline-block; margin: 4px 0; box-shadow: 0 2px 10px rgba(224,0,108,0.15); }
-        .till-details .till-name { font-size: 16px; font-weight: 700; color: #333; }
-        .till-details .till-amount-label { font-size: 12px; color: #888; margin-top: 10px; font-weight: 600; }
+        .till-details .till-icon { font-size: 42px; color: #E0006C; margin-bottom: 6px; display: block; }
+        .till-details .till-label { font-size: 12px; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        .till-details .till-number { font-size: 34px; font-weight: 800; color: #E0006C; letter-spacing: 4px; background: #fff; padding: 6px 22px; border-radius: 10px; display: inline-block; margin: 6px 0; box-shadow: 0 2px 10px rgba(224,0,108,0.15); }
+        .till-details .till-name { font-size: 17px; font-weight: 700; color: #333; }
+        .till-details .till-amount-label { font-size: 13px; color: #888; margin-top: 12px; font-weight: 600; }
         .till-details .amount-input-wrap { margin-top: 8px; display: flex; justify-content: center; }
-        .till-details .amount-input-wrap input { width: 100%; max-width: 220px; padding: 12px 16px; border: 2px solid #ddd; border-radius: 12px; font-size: 18px; font-weight: 700; text-align: center; font-family: 'Open Sans', sans-serif; background: #fff; transition: all 0.3s ease; color: #E0006C; }
+        .till-details .amount-input-wrap input { width: 100%; max-width: 240px; padding: 14px 16px; border: 2px solid #ddd; border-radius: 12px; font-size: 19px; font-weight: 700; text-align: center; font-family: 'Open Sans', sans-serif; background: #fff; transition: all 0.3s ease; color: #E0006C; }
         .till-details .amount-input-wrap input:focus { outline: none; border-color: #E0006C; box-shadow: 0 0 0 4px rgba(224,0,108,0.1); }
-        .till-details .amount-input-wrap input::placeholder { color: #ccc; font-weight: 400; font-size: 14px; }
+        .till-details .amount-input-wrap input::placeholder { color: #ccc; font-weight: 400; font-size: 15px; }
         
-        .quick-amounts { display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
-        .quick-amounts .qa-btn { padding: 6px 16px; border: 2px solid #ddd; border-radius: 20px; background: #fafafa; font-size: 13px; font-weight: 600; color: #555; cursor: pointer; transition: all 0.3s ease; min-height: 36px; font-family: 'Open Sans', sans-serif; }
+        .quick-amounts { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+        .quick-amounts .qa-btn { padding: 8px 18px; border: 2px solid #ddd; border-radius: 20px; background: #fafafa; font-size: 14px; font-weight: 600; color: #555; cursor: pointer; transition: all 0.3s ease; min-height: 38px; font-family: 'Open Sans', sans-serif; }
         .quick-amounts .qa-btn:active { transform: scale(0.95); }
         .quick-amounts .qa-btn.active { border-color: #E0006C; background: #fce4ec; color: #E0006C; }
         
         .instructions {
             background: linear-gradient(135deg, #f0f7ff, #e3eef9);
             border-radius: 14px;
-            padding: 18px 18px 12px 18px;
+            padding: 18px 18px 14px 18px;
             margin-bottom: 20px;
             border-left: 4px solid #3498db;
         }
-        .instructions .step { display: flex; align-items: flex-start; gap: 12px; padding: 5px 0; font-size: 13px; color: #555; line-height: 1.5; }
-        .instructions .step .step-num { width: 26px; height: 26px; border-radius: 50%; background: #3498db; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+        .instructions .step { display: flex; align-items: flex-start; gap: 12px; padding: 6px 0; font-size: 14px; color: #555; line-height: 1.5; }
+        .instructions .step .step-num { width: 28px; height: 28px; border-radius: 50%; background: #3498db; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
         .instructions .step .step-text { flex: 1; }
         .instructions .step .step-text strong { color: #333; }
         .instructions .step .step-text .highlight-text { color: #E0006C; font-weight: 700; }
         
         .payment-form { margin-bottom: 20px; }
-        .payment-form .form-title { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .payment-form .form-title { font-size: 17px; font-weight: 700; color: #333; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
         .payment-form .form-title i { color: #27ae60; }
-        .payment-form .form-group { margin-bottom: 14px; }
-        .payment-form .form-group label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 5px; }
+        .payment-form .form-group { margin-bottom: 16px; }
+        .payment-form .form-group label { display: block; font-size: 14px; font-weight: 600; color: #555; margin-bottom: 6px; }
         .payment-form .form-group label .required { color: #e74c3c; }
         .payment-form .form-group .input-wrapper { position: relative; }
         .payment-form .form-group .input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #6fcf97; font-size: 16px; }
-        .payment-form .form-group .input-wrapper input { width: 100%; padding: 13px 14px 13px 46px; border: 2px solid #e8e8e8; border-radius: 12px; font-size: 15px; font-family: 'Open Sans', sans-serif; transition: all 0.3s ease; background: #fafafa; color: #333; -webkit-appearance: none; appearance: none; }
+        .payment-form .form-group .input-wrapper input { width: 100%; padding: 14px 14px 14px 46px; border: 2px solid #e8e8e8; border-radius: 12px; font-size: 16px; font-family: 'Open Sans', sans-serif; transition: all 0.3s ease; background: #fafafa; color: #333; -webkit-appearance: none; appearance: none; }
         .payment-form .form-group .input-wrapper input:focus { outline: none; border-color: #E0006C; background: #fff; box-shadow: 0 0 0 4px rgba(224,0,108,0.1); }
-        .payment-form .form-group .input-wrapper .phone-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #999; font-weight: 600; font-size: 13px; background: #f0f0f0; padding: 5px 10px 5px 12px; border-radius: 8px 0 0 8px; }
-        .payment-form .form-group .input-wrapper input.phone-with-prefix { padding-left: 72px; }
+        .payment-form .form-group .input-wrapper .phone-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #999; font-weight: 600; font-size: 14px; background: #f0f0f0; padding: 5px 10px 5px 12px; border-radius: 8px 0 0 8px; }
+        .payment-form .form-group .input-wrapper input.phone-with-prefix { padding-left: 74px; }
         
         .btn-confirm {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             background: linear-gradient(135deg, #6fcf97, #27ae60);
             color: #fff;
             border: none;
             border-radius: 14px;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -149,7 +162,7 @@
             justify-content: center;
             gap: 10px;
             box-shadow: 0 4px 15px rgba(39,174,96,0.3);
-            min-height: 56px;
+            min-height: 60px;
         }
         .btn-confirm:active { transform: scale(0.97); }
         .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
@@ -163,9 +176,9 @@
         .pending-state.show { display: block; animation: fadeUp 0.6s ease; }
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
         .pending-state .pending-icon { font-size: 64px; color: #f39c12; margin-bottom: 12px; }
-        .pending-state h3 { font-size: 20px; font-weight: 800; color: #f39c12; margin-bottom: 6px; }
-        .pending-state p { font-size: 14px; color: #666; line-height: 1.6; }
-        .pending-state .btn-dashboard { display: inline-block; margin-top: 16px; padding: 12px 35px; background: linear-gradient(135deg, #E0006C, #b30057); color: #fff; border-radius: 12px; font-weight: 700; font-size: 15px; text-decoration: none; transition: all 0.3s ease; }
+        .pending-state h3 { font-size: 22px; font-weight: 800; color: #f39c12; margin-bottom: 8px; }
+        .pending-state p { font-size: 15px; color: #666; line-height: 1.6; }
+        .pending-state .btn-dashboard { display: inline-block; margin-top: 18px; padding: 14px 36px; background: linear-gradient(135deg, #E0006C, #b30057); color: #fff; border-radius: 12px; font-weight: 700; font-size: 16px; text-decoration: none; transition: all 0.3s ease; }
         .pending-state .btn-dashboard:active { transform: scale(0.95); }
         
         .toast {
@@ -177,7 +190,7 @@
             border-radius: 14px;
             color: #fff;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
             opacity: 0;
             transition: all 0.4s ease;
@@ -197,34 +210,34 @@
             margin-top: 30px;
         }
         .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .footer-col h4 { color: #FE5ACB; font-size: 14px; margin-bottom: 6px; }
-        .footer-col p { font-size: 12px; line-height: 1.6; color: #aaa; }
-        .footer-col a { color: #FE5ACB; font-size: 12px; text-decoration: none; }
-        .footer-bottom { max-width: 1200px; margin: 15px auto 0; padding-top: 12px; border-top: 1px solid #2a1a3a; text-align: center; font-size: 11px; color: #666; }
+        .footer-col h4 { color: #FE5ACB; font-size: 15px; margin-bottom: 6px; }
+        .footer-col p { font-size: 13px; line-height: 1.6; color: #aaa; }
+        .footer-col a { color: #FE5ACB; font-size: 13px; text-decoration: none; }
+        .footer-bottom { max-width: 1200px; margin: 15px auto 0; padding-top: 12px; border-top: 1px solid #2a1a3a; text-align: center; font-size: 12px; color: #666; }
         .footer-bottom .social-icons { display: flex; justify-content: center; gap: 10px; margin-bottom: 8px; }
         .footer-bottom .social-icons a { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #2a1a3a; color: #FE5ACB; font-size: 15px; transition: all 0.3s ease; }
         .footer-bottom .social-icons a:active { background: #FE5ACB; color: #1a0528; }
         
         @media (max-width: 600px) {
-            .payment-card { padding: 18px 14px; border-radius: 14px; }
-            .payment-title { font-size: 20px; }
+            .payment-card { padding: 20px 16px; border-radius: 14px; }
+            .payment-title { font-size: 22px; }
             .contact-banner { flex-direction: column; text-align: center; padding: 12px 14px; }
-            .till-details .till-number { font-size: 26px; padding: 4px 14px; }
-            .till-details { padding: 18px 14px; }
-            .instructions .step { font-size: 12px; padding: 4px 0; }
+            .till-details .till-number { font-size: 28px; padding: 5px 16px; }
+            .till-details { padding: 20px 14px; }
+            .instructions .step { font-size: 13px; padding: 5px 0; }
             .header-inner { flex-wrap: nowrap; }
-            .logo-text { font-size: 14px; }
-            .back-link { font-size: 12px; padding: 4px 12px; }
+            .logo-text { font-size: 15px; }
+            .back-link { font-size: 13px; padding: 6px 14px; }
             .footer-inner { grid-template-columns: 1fr; gap: 15px; }
-            .quick-amounts .qa-btn { font-size: 12px; padding: 4px 12px; }
-            .btn-confirm { font-size: 16px; padding: 14px; min-height: 48px; }
+            .quick-amounts .qa-btn { font-size: 13px; padding: 6px 14px; }
+            .btn-confirm { font-size: 17px; padding: 16px; min-height: 54px; }
         }
         @media (max-width: 400px) {
-            .payment-title { font-size: 18px; }
-            .till-details .till-number { font-size: 22px; letter-spacing: 2px; }
-            .till-details .amount-input-wrap input { font-size: 16px; padding: 10px 12px; max-width: 180px; }
+            .payment-title { font-size: 20px; }
+            .till-details .till-number { font-size: 24px; letter-spacing: 2px; }
+            .till-details .amount-input-wrap input { font-size: 17px; padding: 12px 12px; max-width: 200px; }
             .main-content { padding: 12px 10px; }
-            .payment-card { padding: 14px 12px; }
+            .payment-card { padding: 16px 14px; }
         }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
@@ -326,7 +339,7 @@
                 <div class="pending-icon"><i class="fas fa-clock"></i></div>
                 <h3>Payment Sent for Approval! 🕐</h3>
                 <p>Your payment has been recorded and sent to admin for approval.</p>
-                <p style="font-size:13px; color:#999; margin-top:4px;">You'll be notified once approved.</p>
+                <p style="font-size:14px; color:#999; margin-top:4px;">You'll be notified once approved.</p>
                 <a href="myprofile.html" class="btn-dashboard">
                     <i class="fas fa-user"></i> Go to Profile
                 </a>
@@ -368,8 +381,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            console.log('🔍 DEBUG: Page loaded');
-
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             const confirmBtn = document.getElementById('confirmBtn');
@@ -383,10 +394,6 @@
             const paymentForm = document.getElementById('paymentForm');
             const instructions = document.getElementById('instructions');
 
-            // ============================================================
-            // SUPABASE - NEW KEYS
-            // ============================================================
-            console.log('🔍 DEBUG: Initializing Supabase...');
             const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
             const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
             
@@ -395,7 +402,7 @@
             try {
                 if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    console.log('✅ Supabase client created with NEW keys!');
+                    console.log('✅ Supabase client created');
                 } else {
                     console.error('❌ Supabase library not found!');
                     showToast('System error. Please refresh.', 'error');
@@ -439,9 +446,6 @@
             const userName = userData ? (userData.name || userData.full_name || 'User') : 'User';
             const userEmail = userData ? (userData.email || '') : '';
 
-            console.log('🔍 DEBUG: User ID:', userId);
-            console.log('🔍 DEBUG: User Name:', userName);
-
             phoneInput.addEventListener('input', function() {
                 this.value = this.value.replace(/\D/g, '');
                 if (this.value.length > 9) {
@@ -462,38 +466,22 @@
                 }
             });
 
-            // ============================================================
-            // SAVE PAYMENT - FIXED: Uses 'wallet_only' status
-            // ============================================================
             async function savePayment(userId, phone, transactionCode, amount) {
-                console.log('🔍 DEBUG: savePayment() called');
-                console.log('🔍 DEBUG: userId:', userId);
-                console.log('🔍 DEBUG: phone:', phone);
-                console.log('🔍 DEBUG: transactionCode:', transactionCode);
-                console.log('🔍 DEBUG: amount:', amount);
-                
                 if (!supabase) {
-                    console.error('❌ Supabase not initialized!');
                     return { success: false, error: 'Supabase not initialized' };
                 }
                 
                 if (!userId) {
-                    console.error('❌ No userId provided!');
                     return { success: false, error: 'User not logged in' };
                 }
                 
                 try {
-                    // STEP 1: Check if profile exists
-                    console.log('🔍 DEBUG: Checking for existing profile...');
                     const { data: existingProfiles, error: fetchError } = await supabase
                         .from('profiles')
                         .select('id, full_name, status')
                         .eq('user_id', userId);
                     
-                    console.log('🔍 DEBUG: Fetch result:', { data: existingProfiles, error: fetchError });
-                    
                     if (fetchError) {
-                        console.error('❌ Fetch error:', fetchError);
                         return { success: false, error: fetchError.message };
                     }
                     
@@ -505,11 +493,6 @@
                     let result;
                     
                     if (!existingProfiles || existingProfiles.length === 0) {
-                        // ============================================================
-                        // STEP 2: Create new profile with 'wallet_only' status
-                        // This EXCLUDES it from Members list in admin dashboard
-                        // ============================================================
-                        console.log('🔍 DEBUG: Creating new WALLET-ONLY profile...');
                         const newProfile = {
                             user_id: userId,
                             full_name: userName || 'User',
@@ -522,26 +505,20 @@
                             wallet_phone: phoneWithPrefix,
                             wallet_transaction: transactionUpper,
                             wallet_approval_date: now,
-                            status: 'wallet_only',           // ⬅️ CHANGED: 'pending' → 'wallet_only'
+                            status: 'wallet_only',
                             role: 'client',
                             is_active: false,
                             created_at: now,
                             updated_at: now
                         };
-                        console.log('🔍 DEBUG: New profile data:', newProfile);
                         
                         const { data, error } = await supabase
                             .from('profiles')
                             .insert([newProfile])
                             .select();
                         
-                        console.log('🔍 DEBUG: Insert result:', { data, error });
                         result = { data, error };
                     } else {
-                        // ============================================================
-                        // STEP 3: Update existing profile (only wallet fields)
-                        // ============================================================
-                        console.log('🔍 DEBUG: Updating existing profile wallet fields...');
                         const existingId = existingProfiles[0].id;
                         const updateData = {
                             wallet_approval_status: 'pending',
@@ -551,7 +528,6 @@
                             wallet_approval_date: now,
                             updated_at: now
                         };
-                        console.log('🔍 DEBUG: Update data:', updateData);
                         
                         const { data, error } = await supabase
                             .from('profiles')
@@ -559,20 +535,16 @@
                             .eq('id', existingId)
                             .select();
                         
-                        console.log('🔍 DEBUG: Update result:', { data, error });
                         result = { data, error };
                     }
                     
                     if (result.error) {
-                        console.error('❌ Save error:', result.error);
                         return { success: false, error: result.error.message };
                     }
                     
-                    console.log('✅ Payment saved successfully!');
                     return { success: true, data: result.data };
                     
                 } catch (error) {
-                    console.error('❌ Unexpected error:', error);
                     return { success: false, error: error.message || 'Unknown error' };
                 }
             }
@@ -581,11 +553,6 @@
                 const phone = phoneInput.value.trim();
                 const transactionCode = transactionInput.value.trim();
                 const amount = amountInput.value.trim();
-
-                console.log('🔍 DEBUG: Confirm button clicked');
-                console.log('🔍 DEBUG: Phone:', phone);
-                console.log('🔍 DEBUG: Transaction:', transactionCode);
-                console.log('🔍 DEBUG: Amount:', amount);
 
                 if (!amount || parseInt(amount) < 100) {
                     showToast('Please enter a valid amount (minimum KSh100)', 'error');
@@ -630,16 +597,12 @@
                 confirmIcon.style.display = 'none';
 
                 try {
-                    console.log('🔍 DEBUG: Saving payment for user:', currentUserId);
-                    
                     const result = await savePayment(
                         currentUserId,
                         phone,
                         transactionCode,
                         amount
                     );
-
-                    console.log('🔍 DEBUG: Save result:', result);
 
                     if (result.success) {
                         paymentForm.style.display = 'none';
@@ -667,7 +630,6 @@
                     }
 
                 } catch (error) {
-                    console.error('❌ Payment error:', error);
                     showToast('An error occurred: ' + error.message, 'error');
                     
                     confirmBtn.disabled = false;
@@ -710,7 +672,7 @@
                 }
             });
 
-            console.log('✅ Payment Page Loaded - Wallet-only mode active');
+            console.log('✅ Payment Page Loaded');
             
         });
     </script>
