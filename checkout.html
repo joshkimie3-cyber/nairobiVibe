@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Checkout - Nairobi Vibe Escorts</title>
+    <meta name="description" content="Complete your membership payment on Nairobi Vibe.">
+    
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://upnymrrbwlkcwoswpzbe.supabase.co">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://upnymrrbwlkcwoswpzbe.supabase.co" crossorigin>
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- ============================================================
-         SUPABASE CONFIG - NEW KEYS (INLINE)
-         ============================================================ -->
     <script>
         const SUPABASE_URL = 'https://upnymrrbwlkcwoswpzbe.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_nsiBvuQzpXMKetTh60xTuA_8VcT2xDf';
@@ -23,7 +31,7 @@
             if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                 supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 supabaseReady = true;
-                console.log('✅ Supabase initialized with NEW keys');
+                console.log('✅ Supabase initialized');
             }
         } catch(e) {
             console.error('❌ Supabase init error:', e);
@@ -33,7 +41,6 @@
             if (!supabaseReady && typeof window.supabase !== 'undefined' && window.supabase.createClient) {
                 supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 supabaseReady = true;
-                console.log('✅ Supabase initialized (DOM ready)');
             }
         });
     </script>
@@ -50,6 +57,8 @@
             background: #f5f5f5;
             color: #333;
             overflow-x: hidden;
+            font-size: 15px;
+            line-height: 1.5;
         }
         
         .header {
@@ -76,13 +85,13 @@
         .logo-text { color: #fff; font-size: 18px; font-weight: 800; }
         .logo-text span { color: #FE5ACB; }
         
-        .back-link { color: #fff; font-size: 14px; font-weight: 600; padding: 6px 15px; background: rgba(255,255,255,0.15); border-radius: 20px; transition: all 0.3s ease; text-decoration: none; }
+        .back-link { color: #fff; font-size: 14px; font-weight: 600; padding: 8px 16px; background: rgba(255,255,255,0.15); border-radius: 20px; transition: all 0.3s ease; text-decoration: none; }
         .back-link:hover { background: rgba(255,255,255,0.25); }
         .back-link i { margin-right: 6px; }
         
         .main-content { max-width: 900px; margin: 0 auto; padding: 20px 15px; }
         
-        .breadcrumb { font-size: 13px; color: #999; margin-bottom: 20px; }
+        .breadcrumb { font-size: 14px; color: #999; margin-bottom: 20px; }
         .breadcrumb a { color: #E0006C; text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
         .breadcrumb span { color: #666; }
@@ -95,8 +104,8 @@
             border: 1px solid #eee;
         }
         
-        .checkout-title { font-size: 24px; font-weight: 800; color: #E0006C; margin-bottom: 5px; }
-        .checkout-subtitle { font-size: 14px; color: #999; margin-bottom: 25px; }
+        .checkout-title { font-size: 26px; font-weight: 800; color: #E0006C; margin-bottom: 6px; }
+        .checkout-subtitle { font-size: 15px; color: #999; margin-bottom: 25px; }
         
         .plan-summary {
             background: #f8f9fa;
@@ -106,52 +115,52 @@
             border-left: 4px solid #E0006C;
         }
         
-        .plan-summary .plan-name { font-size: 20px; font-weight: 800; color: #333; }
-        .plan-summary .plan-name .plan-badge { font-size: 11px; font-weight: 600; padding: 2px 12px; border-radius: 15px; color: #fff; margin-left: 8px; }
+        .plan-summary .plan-name { font-size: 22px; font-weight: 800; color: #333; }
+        .plan-summary .plan-name .plan-badge { font-size: 12px; font-weight: 600; padding: 3px 12px; border-radius: 15px; color: #fff; margin-left: 8px; display: inline-block; vertical-align: middle; }
         .plan-summary .plan-name .plan-badge.regular { background: #6c757d; }
         .plan-summary .plan-name .plan-badge.prime { background: #007bff; }
         .plan-summary .plan-name .plan-badge.prime-vip { background: #8b5cf6; }
         .plan-summary .plan-name .plan-badge.vip { background: linear-gradient(135deg, #f7053e, #d60435); }
         
-        .plan-summary .plan-details { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 30px; margin-top: 12px; }
+        .plan-summary .plan-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 30px; margin-top: 14px; }
         .plan-summary .plan-details .detail-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #555; }
         .plan-summary .plan-details .detail-item i { color: #E0006C; width: 18px; }
-        .plan-summary .plan-description { margin-top: 12px; padding-top: 12px; border-top: 1px solid #e8e8e8; font-size: 13px; color: #666; line-height: 1.6; }
+        .plan-summary .plan-description { margin-top: 14px; padding-top: 14px; border-top: 1px solid #e8e8e8; font-size: 14px; color: #666; line-height: 1.6; }
         
         .duration-section { margin-bottom: 25px; }
-        .duration-section .duration-label { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 10px; display: block; }
+        .duration-section .duration-label { font-size: 15px; font-weight: 700; color: #333; margin-bottom: 12px; display: block; }
         .duration-options { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .duration-options .duration-option { padding: 12px 8px; border: 2px solid #e8e8e8; border-radius: 10px; background: #fafafa; cursor: pointer; text-align: center; transition: all 0.3s ease; }
-        .duration-options .duration-option:hover { border-color: #E0006C; }
-        .duration-options .duration-option.active { border-color: #E0006C; background: #fce4ec; }
-        .duration-options .duration-option .days { font-size: 14px; font-weight: 700; color: #333; }
-        .duration-options .duration-option .price { font-size: 13px; font-weight: 600; color: #E0006C; }
+        .duration-options .duration-option { padding: 14px 8px; border: 2px solid #e8e8e8; border-radius: 10px; background: #fafafa; cursor: pointer; text-align: center; transition: all 0.3s ease; }
+        .duration-options .duration-option:hover { border-color: #E0006C; transform: translateY(-2px); }
+        .duration-options .duration-option.active { border-color: #E0006C; background: #fce4ec; box-shadow: 0 0 0 3px rgba(224,0,108,0.1); }
+        .duration-options .duration-option .days { font-size: 15px; font-weight: 700; color: #333; }
+        .duration-options .duration-option .price { font-size: 14px; font-weight: 600; color: #E0006C; margin-top: 2px; }
         
         .price-summary { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-bottom: 25px; }
-        .price-summary .price-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; color: #555; }
-        .price-summary .price-row.total { border-top: 2px solid #e8e8e8; margin-top: 8px; padding-top: 12px; font-size: 18px; font-weight: 800; color: #333; }
+        .price-summary .price-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 15px; color: #555; }
+        .price-summary .price-row.total { border-top: 2px solid #e8e8e8; margin-top: 8px; padding-top: 14px; font-size: 20px; font-weight: 800; color: #333; }
         .price-summary .price-row.total .amount { color: #E0006C; }
         
         .payment-section { margin-bottom: 25px; }
-        .payment-section .payment-label { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 10px; display: block; }
+        .payment-section .payment-label { font-size: 15px; font-weight: 700; color: #333; margin-bottom: 12px; display: block; }
         .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .payment-methods .payment-option { padding: 14px 16px; border: 2px solid #e8e8e8; border-radius: 10px; background: #fafafa; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; }
-        .payment-methods .payment-option:hover { border-color: #E0006C; }
-        .payment-methods .payment-option.active { border-color: #E0006C; background: #fce4ec; }
-        .payment-methods .payment-option .payment-icon { font-size: 28px; }
+        .payment-methods .payment-option { padding: 16px 18px; border: 2px solid #e8e8e8; border-radius: 10px; background: #fafafa; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; }
+        .payment-methods .payment-option:hover { border-color: #E0006C; transform: translateY(-2px); }
+        .payment-methods .payment-option.active { border-color: #E0006C; background: #fce4ec; box-shadow: 0 0 0 3px rgba(224,0,108,0.1); }
+        .payment-methods .payment-option .payment-icon { font-size: 30px; }
         .payment-methods .payment-option .payment-icon.mpesa { color: #6fcf97; }
         .payment-methods .payment-option .payment-icon.airtel { color: #ff0000; }
-        .payment-methods .payment-option .payment-name { font-size: 14px; font-weight: 600; color: #333; }
-        .payment-methods .payment-option .payment-desc { font-size: 11px; color: #999; }
+        .payment-methods .payment-option .payment-name { font-size: 15px; font-weight: 600; color: #333; }
+        .payment-methods .payment-option .payment-desc { font-size: 12px; color: #999; }
         
         .btn-pay {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             background: linear-gradient(135deg, #27ae60, #1e8449);
             color: #fff;
             border: none;
             border-radius: 12px;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -159,12 +168,13 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
+            min-height: 60px;
         }
         .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3); }
         .btn-pay:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .btn-pay i { font-size: 20px; }
         
-        .secure-badge { text-align: center; margin-top: 15px; font-size: 13px; color: #999; }
+        .secure-badge { text-align: center; margin-top: 16px; font-size: 14px; color: #999; }
         .secure-badge i { color: #27ae60; margin-right: 5px; }
         
         .loader { display: none; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -173,10 +183,10 @@
         
         .footer { background: #1a0528; color: #ccc; padding: 30px 15px 15px; margin-top: 30px; }
         .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .footer-col h4 { color: #FE5ACB; font-size: 15px; margin-bottom: 8px; }
-        .footer-col p { font-size: 13px; line-height: 1.6; color: #aaa; }
-        .footer-col a { color: #FE5ACB; font-size: 13px; text-decoration: none; }
-        .footer-bottom { max-width: 1200px; margin: 20px auto 0; padding-top: 15px; border-top: 1px solid #2a1a3a; text-align: center; font-size: 11px; color: #666; }
+        .footer-col h4 { color: #FE5ACB; font-size: 16px; margin-bottom: 8px; }
+        .footer-col p { font-size: 14px; line-height: 1.6; color: #aaa; }
+        .footer-col a { color: #FE5ACB; font-size: 14px; text-decoration: none; }
+        .footer-bottom { max-width: 1200px; margin: 20px auto 0; padding-top: 15px; border-top: 1px solid #2a1a3a; text-align: center; font-size: 12px; color: #666; }
         .footer-bottom .social-icons { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
         .footer-bottom .social-icons a { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #2a1a3a; color: #FE5ACB; font-size: 16px; transition: all 0.3s ease; }
         .footer-bottom .social-icons a:hover { background: #FE5ACB; color: #1a0528; }
@@ -190,7 +200,7 @@
             border-radius: 12px;
             color: #fff;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             opacity: 0;
             transition: all 0.4s ease;
@@ -207,14 +217,18 @@
             .duration-options { grid-template-columns: repeat(2, 1fr); }
             .payment-methods { grid-template-columns: 1fr; }
             .plan-summary .plan-details { grid-template-columns: 1fr; }
-            .checkout-card { padding: 20px; }
-            .checkout-title { font-size: 20px; }
+            .checkout-card { padding: 22px; }
+            .checkout-title { font-size: 22px; }
             .footer-inner { grid-template-columns: 1fr; }
+            .btn-pay { font-size: 17px; padding: 16px; min-height: 54px; }
         }
         
         @media (max-width: 480px) {
             .duration-options { grid-template-columns: repeat(2, 1fr); }
             .header-inner { flex-direction: column; text-align: center; }
+            .checkout-card { padding: 18px; }
+            .plan-summary .plan-name { font-size: 19px; }
+            .price-summary .price-row.total { font-size: 18px; }
         }
         
         ::-webkit-scrollbar { width: 4px; }
@@ -307,7 +321,7 @@
             </div>
 
             <button class="btn-pay" id="payBtn">
-                <span id="payBtnText">Pay Now</span>
+                <span id="payBtnText">Pay Now — KSh1,300</span>
                 <span class="loader" id="payLoader"></span>
                 <i class="fas fa-lock" id="payIcon"></i>
             </button>
@@ -324,7 +338,7 @@
         <div class="footer-inner">
             <div class="footer-col">
                 <h4>Nairobi Vibe Escorts</h4>
-                <p>Mombasa escorts and call girls from Mombasa Kenya offering hot massage and escorts services at very affordable rates. Tomba malaya wa mombasa leo.</p>
+                <p>Mombasa escorts and call girls from Mombasa Kenya offering hot massage and escorts services at very affordable rates.</p>
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
@@ -361,7 +375,6 @@
 
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
-            const durationOptions = document.querySelectorAll('.duration-option');
             const paymentOptions = document.querySelectorAll('.payment-option');
             const payBtn = document.getElementById('payBtn');
             const payBtnText = document.getElementById('payBtnText');
@@ -449,8 +462,6 @@
                 planName: plan.name
             };
 
-            console.log('📋 Checkout Data:', window.checkoutData);
-
             document.getElementById('planNameDisplay').textContent = plan.name;
             const badge = document.getElementById('planBadge');
             badge.textContent = plan.badge;
@@ -497,6 +508,9 @@
                 document.getElementById('planPriceDisplay').textContent = 'KSh' + price.toLocaleString();
                 document.getElementById('durationTextDisplay').textContent = days + ' Days';
                 document.getElementById('totalAmount').textContent = 'KSh' + price.toLocaleString();
+                if (payBtnText) {
+                    payBtnText.textContent = 'Pay Now — KSh' + price.toLocaleString();
+                }
             }
 
             paymentOptions.forEach(function(opt) {
@@ -561,7 +575,7 @@
                 }, 4000);
             }
 
-            console.log('✅ Checkout Page Loaded - NEW Supabase keys');
+            console.log('✅ Checkout Page Loaded');
             console.log('📋 Plan:', plan.name);
             console.log('💰 Price: KSh' + initialPrice);
 
